@@ -3,6 +3,8 @@
 
 // input validation methods
 
+Helper::Helper() {}
+
 bool fileExists(std::string filename) {
   // todo
 
