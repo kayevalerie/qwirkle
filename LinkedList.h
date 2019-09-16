@@ -7,7 +7,7 @@
 class LinkedList {
   Node* head;
   Node* tail;
-  size_t size;
+  size_t list_size;
 
  public:
   LinkedList();
@@ -15,7 +15,7 @@ class LinkedList {
 
   int size();
   void clear();
-  int get(int i);
+  Tile* get(int i);
 
   void addFront(Tile* tile);
   void addBack(Tile* tile);

@@ -5,13 +5,12 @@
 #include "Tile.h"
 
 class Node {
-public:
+ public:
+  Node(Tile* tile, Node* next);
+  Node(Node& other);
 
-   Node(Tile* tile, Node* next);
-   Node(Node& other);
-
-   Tile*    tile;
-   Node*    next;
+  Tile* tile;
+  Node* next;
 };
 
-#endif // ASSIGN2_NODE_H
+#endif  // ASSIGN2_NODE_H
