@@ -15,14 +15,12 @@ class LinkedList {
 
   int size();
   void clear();
-  Tile* get(int i);
-
-  void addFront(Tile* tile);
-  void addBack(Tile* tile);
-
   bool contains(Tile* tile);
+  Tile* getFront();  // return tile at the head
+
+  void addTile(Tile* tile);     // add tile to the end of the list
+  void deleteTile(Tile* tile);  // remove specific tile from the list
   void deleteFront();
-  void deleteBack();
 
   void displayContents();
 };

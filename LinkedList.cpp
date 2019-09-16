@@ -25,39 +25,41 @@ void LinkedList::clear() {
   list_size = 0;
 }
 
-Tile* LinkedList::get(int i) {
-  Node* current = head;
-  size_t index = 0;
-  Tile* found = nullptr;
+Tile* LinkedList::getFront() { return head->tile; }
 
-  if (i == 0) {  // if getting the start of the list
-    found = head->tile;
-  } else if (i == list_size - 1) {  // if getting the end of the list
-    found = tail->tile;
-  } else {
-    while (current && index < i) {
-      current = current->next;
-      index++;
-    }
+// Tile* LinkedList::get(int i) {
+//   Node* current = head;
+//   size_t index = 0;
+//   Tile* found = nullptr;
 
-    if (i == index) found = current->tile;
-  }
+//   if (i == 0) {  // if getting the start of the list
+//     found = head->tile;
+//   } else if (i == list_size - 1) {  // if getting the end of the list
+//     found = tail->tile;
+//   } else {
+//     while (current && index < i) {
+//       current = current->next;
+//       index++;
+//     }
 
-  return found;
-}
+//     if (i == index) found = current->tile;
+//   }
 
-void LinkedList::addFront(Tile* tile) {
-  if (list_size == 0) {
-    head = new Node(tile, nullptr);
-  } else {
-    Node* node = new Node(tile, head->next);
-    head = node;
-  }
+//   return found;
+// }
 
-  list_size++;
-}
+// void LinkedList::addFront(Tile* tile) {
+//   if (list_size == 0) {
+//     head = new Node(tile, nullptr);
+//   } else {
+//     Node* node = new Node(tile, head->next);
+//     head = node;
+//   }
 
-void LinkedList::addBack(Tile* tile) {
+//   list_size++;
+// }
+
+void LinkedList::addTile(Tile* tile) {
   if (list_size == 0) {
     tail = new Node(tile, nullptr);
   } else {
@@ -82,6 +84,21 @@ bool LinkedList::contains(Tile* tile) {
   return found;
 }
 
-void LinkedList::deleteFront() { throw std::runtime_error("Not Implemented"); }
+void LinkedList::deleteFront() {
+  if (list_size > 0) {
+    Node* prevHead = head;
+    head = head->next;
+    delete prevHead;
+  } else {
+    // error: no tile to remove
+  }
+  list_size--;
+}
 
-void LinkedList::deleteBack() { throw std::runtime_error("Not Implemented"); }
+void LinkedList::deleteTile(Tile* tile) {
+  // todo
+  if (tile->equals(head->tile)) {  // if tile to delete is at head
+    deleteFront();
+  } else {  // if tile to delete is in the end or the middle
+  }
+}
