@@ -6,6 +6,7 @@
 
 class Helper {
  public:
+  Helper();
   bool fileExists(std::string filename);
   bool isValidTile(Colour colour, Shape shape);
 };

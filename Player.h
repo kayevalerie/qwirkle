@@ -9,12 +9,15 @@ class Player {
   LinkedList* tiles;
   std::string name;
   int points;
+  void clear();
 
  public:
-  Player(std::string name, int points);
+  Player(std::string name, int points, std::string hand);
   ~Player();
-  std::string getName();
+  void clear();
+  void setHand(std::string hand);
   void setPoints(int points);
+  std::string getName();
   int getPoints();
   LinkedList* getTiles();
 };

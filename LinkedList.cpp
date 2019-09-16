@@ -10,8 +10,6 @@ LinkedList::LinkedList() {
 
 LinkedList::~LinkedList() { clear(); }
 
-int LinkedList::size() { return list_size; }
-
 void LinkedList::clear() {
   Node* current = head;
   Node* next;
@@ -25,39 +23,24 @@ void LinkedList::clear() {
   list_size = 0;
 }
 
-Tile* LinkedList::getFront() { return head->tile; }
+int LinkedList::getSize() { return list_size; }
 
-// Tile* LinkedList::get(int i) {
-//   Node* current = head;
-//   size_t index = 0;
-//   Tile* found = nullptr;
+Tile* LinkedList::getFront() { return head->getTile(); }
 
-//   if (i == 0) {  // if getting the start of the list
-//     found = head->tile;
-//   } else if (i == list_size - 1) {  // if getting the end of the list
-//     found = tail->tile;
-//   } else {
-//     while (current && index < i) {
-//       current = current->next;
-//       index++;
-//     }
+bool LinkedList::contains(Tile* tile) {
+  bool found = false;
 
-//     if (i == index) found = current->tile;
-//   }
+  Node* current = head;
 
-//   return found;
-// }
+  while (!found && current) {
+    if (current->getTile()->equals(tile)) {
+      found = true;
+    }
+    current = current->next;
+  }
 
-// void LinkedList::addFront(Tile* tile) {
-//   if (list_size == 0) {
-//     head = new Node(tile, nullptr);
-//   } else {
-//     Node* node = new Node(tile, head->next);
-//     head = node;
-//   }
-
-//   list_size++;
-// }
+  return found;
+}
 
 void LinkedList::addTile(Tile* tile) {
   Node* temp = new Node(tile, nullptr);
@@ -71,21 +54,6 @@ void LinkedList::addTile(Tile* tile) {
   }
 
   list_size++;
-}
-
-bool LinkedList::contains(Tile* tile) {
-  bool found = false;
-
-  Node* current = head;
-
-  while (!found && current) {
-    if (current->tile->equals(tile)) {
-      found = true;
-    }
-    current = current->next;
-  }
-
-  return found;
 }
 
 void LinkedList::deleteFront() {
@@ -104,14 +72,14 @@ void LinkedList::deleteTile(Tile* tile) {
   if (head == nullptr) {
     // error: nothing to delete
   } else {
-    if (tile->equals(head->tile)) {  // if tile to delete is at head
+    if (tile->equals(head->getTile())) {  // if tile to delete is at head
       deleteFront();
     } else {  // if tile to delete is at the end or in the middle
       Node* current = head->next;
       Node* prev = current;
 
       while (!found && current) {
-        if (current->tile->equals(tile)) {
+        if (current->getTile()->equals(tile)) {
           prev->next = current->next;
           delete current;
           list_size--;

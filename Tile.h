@@ -13,9 +13,10 @@ class Tile {
   Shape shape;
 
  public:
+  Tile(Colour colour, Shape shape);
   Colour getColour();
   Shape getShape();
-  bool equals(Tile* toCompare);
+  bool equals(Tile* tile);
 };
 
 #endif  // ASSIGN2_TILE_H

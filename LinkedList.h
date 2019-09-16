@@ -12,16 +12,13 @@ class LinkedList {
  public:
   LinkedList();
   ~LinkedList();
-
-  int size();
   void clear();
-  bool contains(Tile* tile);
+  int getSize();
   Tile* getFront();  // return tile at the head
-
-  void addTile(Tile* tile);     // add tile to the end of the list
-  void deleteTile(Tile* tile);  // remove specific tile from the list
+  bool contains(Tile* tile);
+  void addTile(Tile* tile);  // add tile to the end of the list
   void deleteFront();
-
+  void deleteTile(Tile* tile);  // remove specific tile from the list
   void displayContents();
 };
 
