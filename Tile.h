@@ -16,6 +16,7 @@ class Tile {
   Colour getColour();
   Shape getShape();
   bool equals(Tile* toCompare);
+  bool isValidTile(char Colour, int Shape);
 };
 
 #endif  // ASSIGN2_TILE_H
