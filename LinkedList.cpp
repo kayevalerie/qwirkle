@@ -2,11 +2,7 @@
 #include "LinkedList.h"
 #include <stdexcept>
 
-LinkedList::LinkedList() {
-  head = nullptr;
-  tail = nullptr;
-  list_size = 0;
-}
+LinkedList::LinkedList() : head(nullptr), tail(nullptr), list_size(0) {}
 
 LinkedList::~LinkedList() { clear(); }
 
@@ -63,14 +59,14 @@ void LinkedList::deleteFront() {
     delete prevHead;
     list_size--;
   } else {
-    // error: no tile to remove
+    // error: list is empty
   }
 }
 
 void LinkedList::deleteTile(Tile* tile) {
   bool found = false;
   if (head == nullptr) {
-    // error: nothing to delete
+    // error: list is empty
   } else {
     if (tile->equals(head->getTile())) {  // if tile to delete is at head
       deleteFront();
