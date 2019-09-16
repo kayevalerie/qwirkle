@@ -5,6 +5,10 @@
 #include "Node.h"
 
 class LinkedList {
+  Node* head;
+  Node* tail;
+  size_t size;
+
  public:
   LinkedList();
   ~LinkedList();
@@ -13,17 +17,14 @@ class LinkedList {
   void clear();
   int get(int i);
 
-  void addFront(int data);
-  void addBack(int data);
+  void addFront(Tile* tile);
+  void addBack(Tile* tile);
 
-  bool contains(int value);
+  bool contains(Tile* tile);
   void deleteFront();
   void deleteBack();
 
   void displayContents();
-
- private:
-  Node* head;
 };
 
 #endif  // ASSIGN2_LINKEDLIST_H

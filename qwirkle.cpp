@@ -21,14 +21,3 @@ int getPlayerChoice() {
 
   return -1;
 }
-
-bool hasNoTilesLeft(Player player) {
-  // todo
-  return false;
-}
-
-bool isTileBagEmpty() {
-  // todo
-
-  return false;
-}
