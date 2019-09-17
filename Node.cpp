@@ -3,8 +3,6 @@
 
 Node::Node(Tile* tile, Node* next) : tile(tile), next(next) {}
 
-Node::Node(Node& other) {
-  // TODO
-}
+Node::Node(const Node& other) : tile(other.tile), next(nullptr) {}
 
 Tile* Node::getTile() { return tile; }

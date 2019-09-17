@@ -9,7 +9,7 @@ class Node {
 
  public:
   Node(Tile* tile, Node* next);
-  Node(Node& other);
+  Node(const Node& other);
   Node* next;
   Tile* getTile();
 };

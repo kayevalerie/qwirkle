@@ -4,7 +4,7 @@
 
 #include <vector>
 #include "Tile.h"
-#define INITIAL_SIZE 48
+#define INITIAL_SIZE 48  // 8 x 6
 
 class Board {
   size_t board_size;
