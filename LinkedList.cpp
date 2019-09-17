@@ -1,6 +1,6 @@
 
 #include "LinkedList.h"
-#include <stdexcept>
+#include <iostream>
 
 LinkedList::LinkedList() : head(nullptr), tail(nullptr), list_size(0) {}
 
@@ -88,6 +88,21 @@ void LinkedList::deleteTile(Tile* tile) {
   }
 }
 
-void displayContents() {
-  // todo
+void LinkedList::displayContents() {
+  if (list_size > 0) {  // if list is not empty
+    Node* current = head;
+    int i = 0;
+
+    while (i < list_size) {
+      std::cout << current->getTile()->getColour()
+                << current->getTile()->getShape();
+
+      if (i != list_size - 1) std::cout << ",";
+
+      current = current->next;
+      i++;
+    }
+
+    std::cout << std::endl;
+  }
 }
