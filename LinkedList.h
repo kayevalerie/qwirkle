@@ -19,7 +19,8 @@ class LinkedList {
   bool contains(Tile* tile);
   void addTile(Tile* tile);  // add tile to the end of the list
   void deleteFront();
-  void deleteTile(Tile* tile);  // remove specific tile from the list
+  void replaceTile(Tile* tile, Tile* newTile);  // remove specific tile from the
+                                                // list and replace a new one
   void displayContents();
 };
 

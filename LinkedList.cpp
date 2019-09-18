@@ -8,7 +8,7 @@ LinkedList::~LinkedList() { clear(); }
 
 void LinkedList::clear() {
   Node* current = head;
-  Node* next;
+  Node* next = nullptr;
 
   while (current) {
     next = current->next;
@@ -25,7 +25,6 @@ Tile* LinkedList::getFront() { return head->getTile(); }
 
 bool LinkedList::contains(Tile* tile) {
   bool found = false;
-
   Node* current = head;
 
   while (!found && current) {
@@ -63,11 +62,13 @@ void LinkedList::deleteFront() {
   }
 }
 
-void LinkedList::deleteTile(Tile* tile) {
-  bool found = false;
+void LinkedList::replaceTile(Tile* tile, Tile* newTile) {
   if (list_size == 0) {
     // error: list is empty
   } else {
+    bool found = false;
+    Node* newNode = new Node(newTile, nullptr);
+
     if (tile->equals(head->getTile())) {  // if tile to delete is at head
       deleteFront();
     } else {  // if tile to delete is at the end or in the middle
@@ -77,13 +78,17 @@ void LinkedList::deleteTile(Tile* tile) {
       while (!found && current) {
         if (current->getTile()->equals(tile)) {
           found = true;
-          prev->next = current->next;
-          delete current;
-          list_size--;
         } else {
           prev = current;
           current = current->next;
         }
+      }
+
+      if (found) {
+        prev->next = newNode;
+        newNode->next = current->next;
+        delete current;
+        list_size--;
       }
     }
   }
