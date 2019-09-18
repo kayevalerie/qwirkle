@@ -65,24 +65,25 @@ void LinkedList::deleteFront() {
 
 void LinkedList::deleteTile(Tile* tile) {
   bool found = false;
-  if (head == nullptr) {
+  if (list_size == 0) {
     // error: list is empty
   } else {
     if (tile->equals(head->getTile())) {  // if tile to delete is at head
       deleteFront();
     } else {  // if tile to delete is at the end or in the middle
-      Node* current = head->next;
-      Node* prev = current;
+      Node* current = head;
+      Node* prev = nullptr;
 
       while (!found && current) {
         if (current->getTile()->equals(tile)) {
+          found = true;
           prev->next = current->next;
           delete current;
           list_size--;
-          found = true;
+        } else {
+          prev = current;
+          current = current->next;
         }
-        prev = current;
-        current = current->next;
       }
     }
   }
