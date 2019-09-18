@@ -2,12 +2,13 @@
 #ifndef ASSIGN2_LINKEDLIST_H
 #define ASSIGN2_LINKEDLIST_H
 
+#include <iostream>
 #include "Node.h"
 
 class LinkedList {
   Node* head;
   Node* tail;
-  size_t list_size;
+  size_t list_size;  // remove this? (additional cost)
 
  public:
   LinkedList();
