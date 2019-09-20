@@ -4,18 +4,21 @@
 
 #include <vector>
 #include "Tile.h"
-#define INITIAL_SIZE 48  // 8 x 6
+#define ROWS 6
+#define COLS 8
 
 class Board {
-  size_t board_size;
-  std::vector<Tile> grid;
+  int rows;
+  int cols;
+  std::vector<std::vector<Tile>> grid;
 
  public:
   Board();
   ~Board();
   void clear();
-  int getSize();
-  Tile* getTile(int x, int y);
+  int getRows();
+  int getCols();
+  Tile getTile(char row, int col);
   void displayBoard();
 };
 

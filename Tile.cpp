@@ -10,3 +10,5 @@ Shape Tile::getShape() { return shape; }
 bool Tile::equals(Tile* tile) {
   return colour == tile->getColour() && shape == tile->getShape();
 }
+
+std::string Tile::toString() { return colour + "" + shape; }

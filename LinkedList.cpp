@@ -53,10 +53,16 @@ void LinkedList::addTile(Tile* tile) {
 
 void LinkedList::deleteFront() {
   if (list_size > 0) {
-    Node* prevHead = head;
-    head = head->next;
-    delete prevHead;
-    list_size--;
+    if (list_size == 1) {  // if there's only one element in the list
+      delete head;
+      head = nullptr;
+      tail = nullptr;
+    } else {
+      Node* prevHead = head;
+      head = head->next;
+      delete prevHead;
+      list_size--;
+    }
   } else {
     // error: list is empty
   }
@@ -100,8 +106,7 @@ void LinkedList::displayContents() {
     int i = 0;
 
     while (i < list_size) {
-      std::cout << current->getTile()->getColour()
-                << current->getTile()->getShape();
+      std::cout << current->getTile()->toString();
 
       if (i != list_size - 1) std::cout << ",";
 

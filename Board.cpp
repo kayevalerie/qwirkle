@@ -1,19 +1,33 @@
 #include <Board.h>
+#include <iostream>
 
-Board::Board() : board_size(INITIAL_SIZE) {
-  std::vector<Tile> grid(INITIAL_SIZE);
+Board::Board() : rows(ROWS), cols(COLS) {
+  std::vector<Tile> vec(COLS);
+  std::vector<std::vector<Tile> > grid(ROWS, vec);
 }
 
 Board::~Board() { clear(); }
 
-void Board::clear() { board_size = 0; }
+void Board::clear() {
+  rows = 0;
+  cols = 0;
+}
 
-int Board::getSize() { return board_size; }
+int Board::getRows() { return rows; }
 
-Tile* Board::getTile(int x, int y) {
-  // todo
+int Board::getCols() { return cols; }
+
+Tile Board::getTile(char row, int col) {
+  int int_row = row - 'A';
+  return grid[int_row][col];
 }
 
 void Board::displayBoard() {
   // todo
+
+  // for (unsigned int i = 0; i < grid.size(); i++) {
+  //   for (unsigned int j = 0; j < grid[i].size(); j++)
+  //     std::cout << grid[i][j].getColour() << grid[i][j].getShape() << " ";
+  //   std::cout << std::endl;
+  // }
 }
