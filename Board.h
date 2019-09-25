@@ -20,6 +20,7 @@ class Board {
   int getCols();
   Tile getTile(char row, int col);
   void displayBoard();
+  int getPrintedBoardWidth(int regularWidth);
 };
 
 #endif  // ASSIGN2_BOARD_H
