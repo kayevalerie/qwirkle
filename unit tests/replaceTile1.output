@@ -1,3 +1,14 @@
+Welcome to Qwirkle!
+
+Menu
+-------
+1. New Game
+2. Load Game
+3. Show student information
+4. Quit
+
+>
+
 Enter the name of the file from which to load the game
 
 >
@@ -42,5 +53,5 @@ F    |    |    |    |    |
 Your hand is
 P1,P6,B4,B1,Y1,P3
 
-
+>
 
