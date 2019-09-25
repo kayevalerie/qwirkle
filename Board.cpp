@@ -1,9 +1,15 @@
 #include <Board.h>
 #include <iostream>
 
-Board::Board() : rows(ROWS), cols(COLS) {
-  std::vector<Tile> vec(COLS);
-  std::vector<std::vector<Tile> > grid(ROWS, vec);
+Board::Board()
+    : rows(ROWS),
+      cols(COLS),
+      grid(std::vector<std::vector<Tile> >(ROWS, std::vector<Tile>(COLS / 2))) {
+  if (COLS % 2) {
+    for (unsigned int i = 0; i < grid.size(); i++) {
+      if (i % 2 == 0) grid[i].resize(COLS / 2 + 1);
+    }
+  }
 }
 
 Board::~Board() { clear(); }
