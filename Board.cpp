@@ -1,4 +1,5 @@
 #include <Board.h>
+#include <iomanip>
 #include <iostream>
 
 #define BOARDFRAME 4
@@ -31,49 +32,50 @@ Tile Board::getTile(char row, int col) {
 }
 
 void Board::displayBoard() {
- 
-    char rowLetter = 'A';
-	for (int i=0; i<COLS; i++) {
-		if (i%2 == 0) {
-			std::cout<<setw(5)<<i;
-		}
-	}
+  char rowLetter = 'A';
 
-	std::cout<<"\n  ";
-	for (int i=0;i<getPrintedBoardWidth(COLS);i++) {
-		std::cout<<'-';
-	}
-	std::cout<<"\n";
-	for (int i=0; i< grid.size(); i++) {
-		std::cout<<rowLetter<<" ";
-		for (int j=0; j<grid[i].size(); j++) {
-			if (i%2 == 0) {
-				std::cout<<"| "<<grid[i][j].getColour()<< grid[i][j].getShape() <<" " ;
-			}
-			else if (i%2 != 0) {
-				std::cout<<"   | "<<grid[i][j].getColour()<< grid[i][j].getShape() " ";
-			}
-			if (j == grid[i].size() - 1) {
-				std::cout<< "|\n";
-			}
-		}
-		rowLetter += 1;
-	}
-	std::cout<<"  ";
-	for (int i=0;i<getPrintedBoardWidth(COLS);i++) {
-		std::cout<<'-';
-	}
-	std::cout<< "\n   ";
-	for (int i=0; i<COLS; i++) {
-		if (i%2 != 0) {
-			std::cout<<setw(5)<<i;
-		}
-	}
+  for (int i = 0; i < COLS; i++) {
+    if (i % 2 == 0) {
+      std::cout << std::setw(5) << i;
+    }
+  }
 
-	std::cout<<"\n  ";
-  
+  std::cout << "\n  ";
+  for (int i = 0; i < getPrintedBoardWidth(COLS); i++) {
+    std::cout << '-';
+  }
+  std::cout << "\n";
+  for (unsigned int i = 0; i < grid.size(); i++) {
+    std::cout << rowLetter << " ";
+    for (unsigned int j = 0; j < grid[i].size(); j++) {
+      if (i % 2 == 0) {
+        std::cout << "| " << grid[i][j] << " ";
+      } else if (i % 2 != 0) {
+        if (j == 0) {
+          std::cout << "   | " << grid[i][j] << " ";
+        } else
+          std::cout << "| " << grid[i][j] << " ";
+      }
+      if (j == grid[i].size() - 1) {
+        std::cout << "|\n";
+      }
+    }
+    rowLetter += 1;
+  }
+  std::cout << "  ";
+  for (int i = 0; i < getPrintedBoardWidth(COLS); i++) {
+    std::cout << '-';
+  }
+  std::cout << "\n   ";
+  for (int i = 0; i < COLS; i++) {
+    if (i % 2 != 0) {
+      std::cout << std::setw(5) << i;
+    }
+  }
+
+  std::cout << "\n  ";
 }
 
 int Board::getPrintedBoardWidth(int regularWidth) {
-	return (regularWidth*2) + (regularWidth/2) + BOARDFRAME);
+  return (regularWidth * 2) + (regularWidth / 2) + BOARDFRAME;
 }

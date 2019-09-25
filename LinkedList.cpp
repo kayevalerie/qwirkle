@@ -103,7 +103,7 @@ void LinkedList::replaceTile(Tile* tile, Tile* newTile) {
 void LinkedList::displayContents() {
   if (list_size > 0) {  // if list is not empty
     Node* current = head;
-    int i = 0;
+    unsigned int i = 0;
 
     while (i < list_size) {
       std::cout << current->getTile()->toString();

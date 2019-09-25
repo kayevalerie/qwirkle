@@ -7,8 +7,8 @@ Colour Tile::getColour() { return colour; }
 
 Shape Tile::getShape() { return shape; }
 
-bool Tile::equals(Tile* tile) {
+bool Tile::equals(Tile *tile) {
   return colour == tile->getColour() && shape == tile->getShape();
 }
 
-std::string Tile::toString() { return colour + "" + shape; }
+std::string Tile::toString() { return colour + std::to_string(shape); }

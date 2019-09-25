@@ -18,7 +18,7 @@ class Tile {
   Tile(Colour colour, Shape shape);
   Colour getColour();
   Shape getShape();
-  bool equals(Tile* tile);
+  bool equals(Tile *tile);
   std::string toString();
 };
 
