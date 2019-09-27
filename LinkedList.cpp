@@ -23,6 +23,8 @@ int LinkedList::getSize() { return list_size; }
 
 Tile* LinkedList::getFront() { return head->getTile(); }
 
+Tile LinkedList::getTile(int i) {}  // todo
+
 bool LinkedList::contains(Tile* tile) {
   bool found = false;
   Node* current = head;
@@ -67,6 +69,8 @@ void LinkedList::deleteFront() {
     // error: list is empty
   }
 }
+
+void LinkedList::deleteAt(int i) {}  // todo
 
 void LinkedList::replaceTile(Tile* tile, Tile* newTile) {
   if (list_size == 0) {

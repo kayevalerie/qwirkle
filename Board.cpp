@@ -26,9 +26,33 @@ int Board::getRows() { return rows; }
 
 int Board::getCols() { return cols; }
 
-Tile Board::getTile(char row, int col) {
-  int int_row = row - 'A';
-  return grid[int_row][col];
+Tile Board::getTile(int row, int col) { return grid[row][col]; }
+
+bool Board::isValidPosition(int row, int col) {
+  // check if accessible position
+
+  // check if already occupied
+}
+
+bool Board::hasValidAdjacentTiles(Tile tile, int row, int col) {
+  // check if tile's DIRECT adjacents match
+}
+
+void Board::addTile(Tile tile, char row, int col) {
+  int row_pos = row - 'A';
+  int col_pos = -1;
+
+  if (col % 2) {  // even column
+    col_pos = col / 2;
+  } else {
+    col_pos = (col - 1) / 2;
+  }
+
+  if (isValidPosition(row_pos, col_pos)) {
+    if (hasValidAdjacentTiles(tile, row_pos, col_pos)) {
+      grid[row_pos][col_pos] = tile;
+    }
+  }
 }
 
 void Board::displayBoard() {
@@ -49,12 +73,12 @@ void Board::displayBoard() {
     std::cout << rowLetter << " ";
     for (unsigned int j = 0; j < grid[i].size(); j++) {
       if (i % 2 == 0) {
-        std::cout << "| " << grid[i][j] << " ";
+        std::cout << "| " << grid[i][j].toString() << " ";
       } else if (i % 2 != 0) {
         if (j == 0) {
-          std::cout << "   | " << grid[i][j] << " ";
+          std::cout << "   | " << grid[i][j].toString() << " ";
         } else
-          std::cout << "| " << grid[i][j] << " ";
+          std::cout << "| " << grid[i][j].toString() << " ";
       }
       if (j == grid[i].size() - 1) {
         std::cout << "|\n";

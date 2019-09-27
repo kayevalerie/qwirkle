@@ -8,14 +8,17 @@
 class LinkedList {
   Node* head;
   Node* tail;
-  size_t list_size;  // remove this? (additional cost)
+  size_t list_size;
+  void clear();
+  Tile getTile(int i);   // todo
+  void deleteAt(int i);  // todo
 
  public:
   LinkedList();
   ~LinkedList();
-  void clear();
   int getSize();
   Tile* getFront();  // return tile at the head
+  void shuffle();
   bool contains(Tile* tile);
   void addTile(Tile* tile);  // add tile to the end of the list
   void deleteFront();

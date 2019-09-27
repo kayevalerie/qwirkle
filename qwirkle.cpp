@@ -1,4 +1,5 @@
 #include <iostream>
+
 #include "LinkedList.h"
 #include "Player.h"
 
@@ -19,10 +20,15 @@ int main(void) {
   }
   tileBag->displayContents();
 
+  // shuffle contents of tileBag
+  tileBag->shuffle();
+  tileBag->displayContents();
+
   LinkedList* list = new LinkedList();
   // while loop here
 
   delete list;
+  delete tileBag;
 
   return EXIT_SUCCESS;
 }

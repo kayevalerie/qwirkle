@@ -23,4 +23,4 @@ std::string Player::getName() { return name; }
 
 int Player::getPoints() { return points; }
 
-LinkedList* Player::getTiles() { return tiles; }
+LinkedList* Player::getHand() { return tiles; }

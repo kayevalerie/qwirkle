@@ -12,15 +12,19 @@ class Board {
   int cols;
   std::vector<std::vector<Tile>> grid;
 
+  int getPrintedBoardWidth(int regularWidth);
+  void clear();
+  Tile getTile(int row, int col);
+  bool isValidPosition(int row, int col);
+  bool hasValidAdjacentTiles(Tile tile, int row, int col);
+
  public:
   Board();
   ~Board();
-  void clear();
   int getRows();
   int getCols();
-  Tile getTile(char row, int col);
+  void addTile(Tile tile, char row, int col);
   void displayBoard();
-  int getPrintedBoardWidth(int regularWidth);
 };
 
 #endif  // ASSIGN2_BOARD_H
