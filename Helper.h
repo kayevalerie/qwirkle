@@ -3,12 +3,19 @@
 #define ASSIGN2_HELPER_H
 
 #include "Tile.h"
+namespace Help
+{
 
-class Helper {
- public:
+class Helper
+{
+public:
   Helper();
-  bool fileExists(std::string filename);
+  bool isValidFormat(std::string filename);
   bool isValidTile(Colour colour, Shape shape);
+  bool isASCII(std::string n);
+  bool isNumber(std::string h);
 };
 
-#endif  // ASSIGN2_HELPER_H
+} // namespace helperspace
+
+#endif // ASSIGN2_HELPER_H
