@@ -11,7 +11,7 @@ namespace Help
 
 bool isASCII(std::string n)
 {
-  int i;
+  unsigned int i;
 
   for (i = 0; i < n.size(); i++)
   {
@@ -26,7 +26,7 @@ bool isASCII(std::string n)
 
 bool isNumber(std::string h)
 {
-  int i;
+  unsigned int i;
 
   for (i = 0; i < h.size(); i++)
   {
