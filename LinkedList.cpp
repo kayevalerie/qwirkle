@@ -92,9 +92,16 @@ void LinkedList::replaceTile(Tile* tile, Tile* newTile) {
 
       if (found) {
         prev->next = newNode;
-        newNode->next = current->next;
+
+        // if the element to replace is the last element in the list
+        if (!current->next) {
+          // set it as the new tail
+          tail = newNode;
+        } else {
+          newNode->next = current->next;
+        }
+
         delete current;
-        list_size--;
       }
     }
   }
