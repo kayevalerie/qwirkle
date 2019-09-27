@@ -170,9 +170,4 @@ void displayMainMenu()
 
     } while (choice != 4 && !std::cin.eof());
 
-<<<<<<< HEAD
 }
-=======
-  return -1;
-}
->>>>>>> 8707699db358c42a086163b1e3f200f3c9dbd4a4
