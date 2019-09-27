@@ -1,6 +1,7 @@
 
 #include "LinkedList.h"
 #include <iostream>
+#include <
 
 LinkedList::LinkedList() : head(nullptr), tail(nullptr), list_size(0) {}
 
@@ -124,3 +125,7 @@ void LinkedList::displayContents() {
     std::cout << std::endl;
   }
 }
+
+// void LinkedList::shuffle() {
+    // int rand = get random value with srand
+    // for (unsigned int i = 0;
