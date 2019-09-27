@@ -8,6 +8,31 @@ char arr_color[] = {'R', 'O', 'Y', 'G', 'P', 'B'};
 int arr_shape[] = {1, 2, 3, 4, 5, 6};
 
 int main(void) {
+  
+  //display welcome message
+  //run 'display menu' method 
+  //get user choice(get character method in the helper)
+  //run appropriate method(if choice == 1->-get user input for the name of the players
+  //                                       -create a new instance of the game class(run game constructor: 1 game, 1 board,
+  //                                                                                 1 tile bag(linked list), 2 new players,
+  //                                                                                 for each player initialize a linked list
+  //                                                                                 with 6 tiles each taken from the tile bag,
+  //                                                                                 initialize the score to 0)
+  //                                       -display 'Let's play' message
+  //                                       -run the while loop( while(!finished) display 'getCurrentPlayer(), it's your turn'
+  //                                                             get user scores, display scores, display board, 
+  //                                                             display current user's hand, display '>' for user prompt
+  //                                                             get user prompt, check if command correct, run command, update 
+  //                                                             data structures, change currentPlayer)
+  //                                       -if out of the loop (display 'Goodbye' and exit)
+  //                     (if choice == 2-> -get user input for the name of the file(check if the file exists and the format is corect)
+  //                                       -create a new instance of the game class and set all the variables' values to the ones in
+  //                                         the file
+  //                                       -run regular while loop
+  //                     (if choice == 3-> -display student's info
+  //                                       -display menu)
+  //                     (if choice == 4-> -display 'goodbye' 
+  //                                       -exit)
   LinkedList* tileBag = new LinkedList();
 
   for (int i = 0; i < 6; ++i) {
@@ -145,4 +170,9 @@ void displayMainMenu()
 
     } while (choice != 4 && !std::cin.eof());
 
+<<<<<<< HEAD
 }
+=======
+  return -1;
+}
+>>>>>>> 8707699db358c42a086163b1e3f200f3c9dbd4a4
