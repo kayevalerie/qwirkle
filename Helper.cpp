@@ -1,18 +1,101 @@
-#include <Helper.h>
+#include <iostream>
 #include <string>
+#include <fstream>
+#include <sstream>
+#include <iostream>
 
 // input validation methods
 
-Helper::Helper() {}
+namespace Help
+{
 
-bool fileExists(std::string filename) {
-  // todo
+bool isASCII(std::string n)
+{
+  int i;
+
+  for (i = 0; i < n.size(); i++)
+  {
+    if (isalpha(n[i]) == 0)
+    {
+      return false;
+    }
+  }
 
   return true;
 }
 
-bool isValidTile(char Colour, int Shape) {
+bool isNumber(std::string h)
+{
+  int i;
+
+  for (i = 0; i < h.size(); i++)
+  {
+    if (isdigit(h[i]) == 0)
+    {
+      return false;
+    }
+  }
+  return true;
+}
+
+bool isValidFormat(std::string fileName)
+{
+  std::fstream infile;
+  infile.open(fileName);
+
+  if (infile.fail())
+  {
+    return false;
+  }
+
+  std::string hold[50];
+  std::string line;
+  int count = 0;
+
+  while (getline(infile, line))
+  {
+    hold[count] = line;
+    count++;
+  }
+
+  // validate name is ASCII - check each char of string
+
+  if (isASCII(hold[0]) == false && isASCII(hold[3]) == false)
+  {
+    std::cout << hold[0] << std::endl;
+    std::cout << hold[3] << std::endl;
+    std::cout << "Incorrect Format - Name Must Only Contain Letters" << std::endl;
+    return false;
+  }
+
+  // validate score is number
+  else if (isNumber(hold[1]) == false && isNumber(hold[4]) == false)
+  {
+    std::cout << "Incorrect File Format - Score Not Number" << std::endl;
+    return false;
+  }
+
+  // std::stringstream p1h(hold[2]);
+  // std::stringstream p2h(hold[5]);
+  // std::stringstream tbc(hold[7]);
+
+  //validate player hands and tilebags is comma seperated list
+  //     else if (hold[2] || hold[5] || hold[7]){
+
+  //     }
+
+  // //validate board is same as cout
+  //     else if (hold[6]){
+
+  //     }
+
+  return true;
+}
+
+bool isValidTile(char Colour, int Shape)
+{
   // todo
 
   return true;
 }
+} // namespace helperspace
