@@ -20,7 +20,9 @@ int main(void) {
   //                                       -display 'Let's play' message
   //                                       -run the while loop( while(!finished) display 'getCurrentPlayer(), it's your turn'
   //                                                             get user scores, display scores, display board, 
-  //                                                             display current user's hand, display '>' for user prompt)
+  //                                                             display current user's hand, display '>' for user prompt
+  //                                                             get user prompt, check if command correct, run command, update 
+  //                                                             data structures, change currentPlayer)
   //                                       -if out of the loop (display 'Goodbye' and exit)
   //                     (if choice == 2-> -get user input for the name of the file(check if the file exists and the format is corect)
   //                                       -create a new instance of the game class and set all the variables' values to the ones in
