@@ -3,8 +3,8 @@
 #include <string>
 
 Player::Player(std::string name, int points, LinkedList* tiles)
-    : name(name), points(points), tiles(new LinkedList()) {
-  setHand(contents);
+    : name(name), points(points), hand(new LinkedList(*tiles)) {
+// setHand(contents);
 }
 
 Player::~Player() { clear(); }
@@ -16,7 +16,7 @@ void Player::setHand(LinkedList* tiles) {
 }
 
 void Player::setPoints(int points) {
-  points = points;
+  this->points = points;
 }
 
 std::string Player::getName() { return name; }
