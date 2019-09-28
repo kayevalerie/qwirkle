@@ -2,7 +2,7 @@
 #include <cstring>
 #include <string>
 
-Player::Player(std::string name, int points, std::string contents)
+Player::Player(std::string name, int points, LinkedList* tiles)
     : name(name), points(points), tiles(new LinkedList()) {
   setHand(contents);
 }
@@ -11,12 +11,12 @@ Player::~Player() { clear(); }
 
 void Player::clear() { delete tiles; }
 
-void Player::setHand(std::string hand) {
+void Player::setHand(LinkedList* tiles) {
   // todo
 }
 
 void Player::setPoints(int points) {
-  // todo
+  points = points;
 }
 
 std::string Player::getName() { return name; }
