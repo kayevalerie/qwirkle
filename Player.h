@@ -6,14 +6,14 @@
 #include "LinkedList.h"
 
 class Player {
-  LinkedList* tiles;
+  LinkedList* hand;
   std::string name;
   int points;
   void clear();
-  void setHand(std::string hand);
+  void setHand(LinkedList* tiles);
 
  public:
-  Player(std::string name, int points, std::string hand);
+  Player(std::string name, int points, LinkedList* tiles);
   ~Player();
   void setPoints(int points);
   int getPoints();
