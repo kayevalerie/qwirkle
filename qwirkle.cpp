@@ -65,78 +65,7 @@ int main(void) {
   return EXIT_SUCCESS;
 }
 
-void newGameMenu()
-{
-    std::string player1Name;
-    std::string player2Name;
-    std::cout << "Starting a new game !\n"
-              << "Enter A Name For Player 1: \n";
-    
-    //Placeholder for test
-
-    std::cin >> player1Name;
-    std::cout << std::endl;
-
-    std::cout << "Enter A Name For Player 2: \n";
-    
-    //Placeholder for test
-    
-    std::cin >> player2Name;
-    std::cout << std::endl;
-
-    //initialise new game here
-
-    std::cout << "Let's Play!\n";
-}
-
-void loadGameMenu()
-{
-    std::string fileName;
-    std::cout << "Enter the filename of game you wish to load : \n";
-    std::cin >> fileName;
-    
-    Help::Helper b;
-
-    if (b.isValidFormat(fileName) == true)
-    {
-
-        std::cout << "Qwirkle game loaded succesfully. \n";
-
-        //load game to previous state here
-    }
-    else
-    {
-        std::cout << "Invalid file!";
-    }
-}
-
-void exitGame()
-{
-    std::cout << "Goodbye. \n";
-}
-
-void showStudentInfo()
-{
-    std::cout << "----------------------------------\n"
-              << "Name: Tan Do\n"
-              << "Student ID: s3712467\n"
-              << "Email: s3712467@student.rmit.edu.au\n"
-              << "\n"
-              << "Name: Kay Ng\n"
-              << "Student ID: s3766374\n"
-              << "Email: s3766374@student.rmit.edu.au\n"
-              << "\n"
-              << "Name: Ewa Rusiecka\n"
-              << "Student ID: s3797191\n"
-              << "Email: s3797191@student.rmit.edu.au\n"
-              << "\n"
-              << "Name: Vincent Gallo\n"
-              << "Student ID: s3602478\n"
-              << "Email: s3602478@student.rmit.edu.au\n"
-              << "----------------------------------\n";
-}
-
-void displayMainMenu()
+void displayMenu()
 {
     int choice = 0;
     do
@@ -165,7 +94,7 @@ void displayMainMenu()
 
         else if (choice == 2)
         {
-            loadGameMenu();
+            loadGame();
         }
 
         else if (choice == 3)
@@ -179,9 +108,89 @@ void displayMainMenu()
         }
         else
         {
-            std::cout << "Invalid Input" << std::endl;
+            std::cout << "This option does not exist, please try again" << std::endl;
         }
 
     } while (choice != 4 && !std::cin.eof());
 
 }
+
+void newGameMenu()
+{
+    std::string player1Name;
+    std::string player2Name;
+    std::cout << "Starting a new game of Qwirkle!\n"
+              << "Enter a name for player 1: \n";
+    
+    //Placeholder for test
+  
+    std::cout << ">\n";
+
+    std::cin >> player1Name;
+  //better input handling needed
+    std::cout << std::endl;
+
+    std::cout << "Enter a name for player 2: \n";
+    
+    //Placeholder for test
+    
+    std::cout << ">\n";
+    std::cin >> player2Name;
+  //better input handling needed
+    std::cout << std::endl;
+
+    Game game = new Game(player1Name, player2Name);
+    game.run();
+}
+
+void loadGameMenu()
+{
+    std::string fileName;
+    std::cout << "Enter the name of the file from which to load the game\n";
+    std::cin >> fileName;
+    
+    Help::Helper b;
+
+    //
+    if (b.isValidFormat(fileName) == true)
+    {
+
+        std::cout << "Qwirkle game loaded succesfully. \n";
+        //need a method that goes through the file line by line and initializes the variables and data structures
+        Game game = new Game();
+        game.run();
+    }
+    else
+    {
+        std::cout << "The format of this file is not correct. Please try again";
+    }
+}
+
+void exitGame()
+{
+    std::cout << "Goodbye! \n";
+}
+
+void showStudentInfo()
+{
+  
+    std::cout << "----------------------------------\n"
+              << "Name: Tan Do\n"
+              << "Student ID: s3712467\n"
+              << "Email: s3712467@student.rmit.edu.au\n"
+              << "\n"
+              << "Name: Kay Ng\n"
+              << "Student ID: s3766374\n"
+              << "Email: s3766374@student.rmit.edu.au\n"
+              << "\n"
+              << "Name: Ewa Rusiecka\n"
+              << "Student ID: s3797191\n"
+              << "Email: s3797191@student.rmit.edu.au\n"
+              << "\n"
+              << "Name: Vincent Gallo\n"
+              << "Student ID: s3602478\n"
+              << "Email: s3602478@student.rmit.edu.au\n"
+              << "----------------------------------\n";
+}
+
+
