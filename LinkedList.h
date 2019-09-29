@@ -10,15 +10,16 @@ class LinkedList {
   Node* tail;
   size_t list_size;
   void clear();
-  Tile getTile(int i);   // todo
-  void deleteAt(int i);  // todo
+  Tile get(int i);
+  void deleteAt(int i);
 
  public:
   LinkedList();
+  LinkedList(const LinkedList& list);
   ~LinkedList();
   int getSize();
   Tile* getFront();  // return tile at the head
-  void shuffle();
+  LinkedList* shuffle();
   bool contains(Tile* tile);
   void addTile(Tile* tile);  // add tile to the end of the list
   void deleteFront();

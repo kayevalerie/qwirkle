@@ -1,9 +1,13 @@
 
 #include "LinkedList.h"
-#include <iostream>
 #include <stdlib.h>
+#include <iostream>
 
 LinkedList::LinkedList() : head(nullptr), tail(nullptr), list_size(0) {}
+
+LinkedList::LinkedList(const LinkedList& list) {
+  // todo
+}
 
 LinkedList::~LinkedList() { clear(); }
 
@@ -24,7 +28,9 @@ int LinkedList::getSize() { return list_size; }
 
 Tile* LinkedList::getFront() { return head->getTile(); }
 
-Tile LinkedList::getTile(int i) {}  // todo
+Tile LinkedList::get(int i) {
+  // todo
+}
 
 bool LinkedList::contains(Tile* tile) {
   bool found = false;
@@ -71,7 +77,9 @@ void LinkedList::deleteFront() {
   }
 }
 
-void LinkedList::deleteAt(int i) {}  // todo
+void LinkedList::deleteAt(int i) {
+  // todo
+}
 
 void LinkedList::replaceTile(Tile* tile, Tile* newTile) {
   if (list_size == 0) {
@@ -131,10 +139,9 @@ void LinkedList::displayContents() {
 }
 
 LinkedList* LinkedList::shuffle() {
-    LinkedList* shuffledList = new LinkedList();
-    for (unsigned int i = 0; i < list_size; i++) {
-      int randomIndex = rand()%list_size;
-      shuffledList->addTile(new Tile(this->getTile(randomIndex));
-      this->deleteTile();
-    }
-      
+  LinkedList* shuffledList = new LinkedList();
+  for (unsigned int i = 0; i < list_size; i++) {
+    int randomIndex = rand() % list_size;
+    shuffledList->addTile(new Tile(this->getTile(randomIndex)));
+    deleteTile();
+  }

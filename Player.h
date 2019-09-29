@@ -10,7 +10,6 @@ class Player {
   std::string name;
   int points;
   void clear();
-  void setHand(LinkedList* tiles);
 
  public:
   Player(std::string name, int points, LinkedList* tiles);
