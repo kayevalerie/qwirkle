@@ -5,8 +5,14 @@
 
 LinkedList::LinkedList() : head(nullptr), tail(nullptr), list_size(0) {}
 
-LinkedList::LinkedList(const LinkedList& list) {
-  // todo
+LinkedList::LinkedList(const LinkedList& src)
+    : head(nullptr), tail(nullptr), list_size(0) {
+  Node* current = src.head;
+
+  while (current) {
+    addTile(current->getTile());
+    current = current->next;
+  }
 }
 
 LinkedList::~LinkedList() { clear(); }
@@ -28,8 +34,27 @@ int LinkedList::getSize() { return list_size; }
 
 Tile* LinkedList::getFront() { return head->getTile(); }
 
-Tile LinkedList::get(int i) {
-  // todo
+Tile* LinkedList::get(unsigned int i) {
+  Tile* tile = nullptr;
+
+  if (i == 0) {
+    tile = head->getTile();
+  } else if (i == list_size - 1) {
+    tile = tail->getTile();
+  } else if (i < list_size) {
+    Node* current = head->next;
+    unsigned int index = 1;
+
+    while (index < i) {
+      current = current->next;
+      index++;
+    }
+    tile = current->getTile();
+  } else {
+    // error: invalid index
+  }
+
+  return tile;
 }
 
 bool LinkedList::contains(Tile* tile) {
@@ -77,8 +102,33 @@ void LinkedList::deleteFront() {
   }
 }
 
-void LinkedList::deleteAt(int i) {
-  // todo
+void LinkedList::deleteAt(unsigned int i) {
+  if (i == 0) {
+    deleteFront();
+  } else if (i < list_size) {  // delete at the end or in the middle
+    Node* current = head->next;
+    Node* prev = head;
+    unsigned int index = 1;
+
+    while (index < i) {
+      prev = current;
+      current = current->next;
+      index++;
+    }
+
+    if (!current->next) {  // deleting the last node in the list
+      prev->next = nullptr;
+      tail = prev;
+    } else {
+      prev->next = current->next;
+    }
+
+    delete current;
+    list_size--;
+
+  } else {
+    // error: invalid index
+  }
 }
 
 void LinkedList::replaceTile(Tile* tile, Tile* newTile) {

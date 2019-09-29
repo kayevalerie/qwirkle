@@ -10,12 +10,12 @@ class LinkedList {
   Node* tail;
   size_t list_size;
   void clear();
-  Tile get(int i);
-  void deleteAt(int i);
+  Tile* get(unsigned int i);
+  void deleteAt(unsigned int i);
 
  public:
   LinkedList();
-  LinkedList(const LinkedList& list);
+  LinkedList(const LinkedList& src);
   ~LinkedList();
   int getSize();
   Tile* getFront();  // return tile at the head
