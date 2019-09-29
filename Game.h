@@ -9,7 +9,7 @@ class Game {
   Board board;
   Player playerOne;
   Player playerTwo;
-  LinkedList tileBag;
+  LinkedList* tileBag;
 
   void clear();
   void createTileBag();
