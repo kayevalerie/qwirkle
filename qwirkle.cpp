@@ -34,6 +34,12 @@ int main(void) {
   //                                       -display menu)
   //                     (if choice == 4-> -display 'goodbye' 
   //                                       -exit)
+  
+  std::cout<<"Welcome to Qwirkle!\n";
+  displayMenu();
+  
+  
+  
   LinkedList* tileBag = new LinkedList();
 
   for (int i = 0; i < 6; ++i) {
@@ -137,12 +143,14 @@ void displayMainMenu()
     {
         std::cout << "\n"
                   << "Menu\n"
-                  << "----\n"
+                  << "-------\n"
                   << "1. New Game\n"
                   << "2. Load Game\n"
-                  << "3. Show Student Information\n"
+                  << "3. Show student information\n"
                   << "4. Quit\n"
+                  << "\n>"
                   << std::endl;
+        
 
         std::cin >> choice;
         while (!std::cin >> choice)
