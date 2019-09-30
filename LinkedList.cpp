@@ -2,6 +2,7 @@
 #include "LinkedList.h"
 #include <stdlib.h>
 #include <iostream>
+#include <random>
 
 LinkedList::LinkedList() : head(nullptr), tail(nullptr), list_size(0) {}
 
@@ -188,10 +189,18 @@ void LinkedList::displayContents() {
   }
 }
 
-LinkedList* LinkedList::shuffle() {
-  LinkedList* shuffledList = new LinkedList();
-  for (unsigned int i = 0; i < list_size; i++) {
-    int randomIndex = rand() % list_size;
-    shuffledList->addTile(new Tile(this->getTile(randomIndex)));
-    deleteTile();
+void LinkedList::shuffle() {
+    int min = 0;
+    int max = list_size;
+    int seed = 98;
+    std::default_random_engine engine(seed);
+    int value = -1;
+    for (unsigned int i = 0; i < list_size; i++) {
+      
+      std::uniform_int_distribution<int> uniform_dist(min, max);
+      int randomIndex = uniform_dist(engine);
+      Tile* toBeShuffled = get(randomIndex);
+      delete(randomIndex);
+      addFront(toBeShuffled);
+      min++;
   }
