@@ -7,6 +7,9 @@ Player::Player(std::string name, int points, LinkedList* tiles)
   // setHand(contents);
 }
 
+Player::Player(std::string name, int points) 
+    : name(name), points(points) {}
+
 Player::~Player() { clear(); }
 
 void Player::clear() { delete hand; }
@@ -18,3 +21,8 @@ std::string Player::getName() { return name; }
 int Player::getPoints() { return points; }
 
 LinkedList* Player::getHand() { return hand; }
+
+void Player::setHand(LinkedList* tiles) {
+    hand = new LinkedList(tiles);
+    //not sure if a copy needed
+}
