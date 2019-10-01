@@ -37,6 +37,7 @@ int main(void) {
   
   std::cout<<"Welcome to Qwirkle!\n";
   displayMenu();
+  exitGame();
 
   return EXIT_SUCCESS;
 }
