@@ -76,7 +76,7 @@ void Game::run() {
   std::cout << "Game over\n"
             << "Score for " << playerOne.getName() << ": " << playerOne.getPoints() << "\n"
             << "Score for " << playerTwo.getName() << ": " << playerTwo.getPoints() << "\n"
-            << "Player " << getWinningPlayer->getName() << " won!\n";
+            << "Player " << getWinningPlayer()->getName() << " won!\n";
 
 }
 
