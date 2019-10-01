@@ -190,17 +190,16 @@ void LinkedList::displayContents() {
 }
 
 void LinkedList::shuffle() {
-    int min = 0;
-    int max = list_size;
-    int seed = 98;
-    std::default_random_engine engine(seed);
-    int value = -1;
-    for (unsigned int i = 0; i < list_size; i++) {
-      
-      std::uniform_int_distribution<int> uniform_dist(min, max);
-      int randomIndex = uniform_dist(engine);
-      Tile* toBeShuffled = get(randomIndex);
-      delete(randomIndex);
-      addFront(toBeShuffled);
-      min++;
+  int min = 0;
+  int max = list_size;
+  int seed = 98;
+  std::default_random_engine engine(seed);
+  int value = -1;
+  for (unsigned int i = 0; i < list_size; i++) {
+    std::uniform_int_distribution<int> uniform_dist(min, max);
+    int randomIndex = uniform_dist(engine);
+    Tile* toBeShuffled = get(randomIndex);
+    deleteAt(randomIndex);
+    addTile(toBeShuffled);
+    min++;
   }

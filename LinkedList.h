@@ -19,12 +19,13 @@ class LinkedList {
   ~LinkedList();
   int getSize();
   Tile* getFront();  // return tile at the head
-  LinkedList* shuffle();
+  void shuffle();
   bool contains(Tile* tile);
   void addTile(Tile* tile);  // add tile to the end of the list
   void deleteFront();
-  void replaceTile(Tile* tile, Tile* newTile);  // remove specific tile from the
-                                                // list and replace a new one
+  void replaceTile(Tile* tile,
+                   Tile* newTile);  // remove a specific tile from the
+                                    // list and replace with a new one
   void displayContents();
 };
 
