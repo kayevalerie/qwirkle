@@ -6,7 +6,7 @@
 
 // input validation methods
 
-namespace Help
+namespace Helper
 {
 
 bool isASCII(std::string n)
