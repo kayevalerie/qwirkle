@@ -16,6 +16,7 @@ class Tile {
 
  public:
   Tile(Colour colour, Shape shape);
+  Tile(Tile& toCopy);
   Colour getColour();
   Shape getShape();
   bool equals(Tile *tile);
