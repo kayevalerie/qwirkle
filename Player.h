@@ -12,8 +12,8 @@ class Player {
   void clear();
 
  public:
+  Player(std::string name);
   Player(std::string name, int points, LinkedList* tiles);
-  Player(std::string name, int points);
   ~Player();
   void setPoints(int points);
   int getPoints();

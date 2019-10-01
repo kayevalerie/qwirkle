@@ -3,12 +3,9 @@
 #include <string>
 
 Player::Player(std::string name, int points, LinkedList* tiles)
-    : name(name), points(points), hand(new LinkedList(*tiles)) {
-  // setHand(contents);
-}
+    : name(name), points(points), hand(new LinkedList(*tiles)) {}
 
-Player::Player(std::string name, int points) 
-    : name(name), points(points) {}
+Player::Player(std::string name) : name(name), points(0), hand(nullptr) {}
 
 Player::~Player() { clear(); }
 
@@ -23,6 +20,6 @@ int Player::getPoints() { return points; }
 LinkedList* Player::getHand() { return hand; }
 
 void Player::setHand(LinkedList* tiles) {
-    hand = new LinkedList(*tiles);
-    //not sure if a copy needed
+  hand = new LinkedList(*tiles);
+  // not sure if a copy needed
 }
