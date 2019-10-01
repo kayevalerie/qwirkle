@@ -11,7 +11,7 @@ LinkedList::LinkedList(const LinkedList& src)
   Node* current = src.head;
 
   while (current) {
-    addTile(current->getTile());
+    addTile(new Tile(*(current->getTile())));
     current = current->next;
   }
 }
