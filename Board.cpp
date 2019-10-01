@@ -40,7 +40,7 @@ bool Board::isValidPosition(int row, int col) {
     valid = false;
   }
 
-  // if already occupied
+  // check if already occupied
   if (tile) {
     valid = false;
   }
@@ -55,17 +55,21 @@ bool Board::hasValidAdjacentTiles(Tile tile, int row, int col) {
 void Board::addTile(Tile tile, char row, int col) {
   int row_pos = row - 'A';
   int col_pos = -1;
+  bool validCoordinates = true;
 
-  if (col % 2) {  // even column
+  if (row_pos % 2 && col % 2) {  // even row and column
     col_pos = col / 2;
-  } else {
+  } else if (!row_pos % 2 && !col % 2) {  // odd row and column
     col_pos = (col - 1) / 2;
+  } else {
+    validCoordinates = false;
   }
 
-  if (isValidPosition(row_pos, col_pos)) {
-    if (hasValidAdjacentTiles(tile, row_pos, col_pos)) {
-      grid[row_pos][col_pos] = tile;
-    }
+  if (validCoordinates && isValidPosition(row_pos, col_pos) &&
+      hasValidAdjacentTiles(tile, row_pos, col_pos)) {
+    grid[row_pos][col_pos] = tile;
+  } else {
+    // error message?
   }
 }
 
