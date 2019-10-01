@@ -10,6 +10,7 @@ class Game {
   Player playerOne;
   Player playerTwo;
   LinkedList* tileBag;
+  
 
   void clear();
   void createTileBag();
