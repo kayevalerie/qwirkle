@@ -7,7 +7,6 @@ Game::Game() {}
 Game::Game(std::string playerOneName, std::string playerTwoName) : 
   playerOne(new Player(playerOneName)),
   playerTwo(new Player(playerTwoName)),
-  finished(false),
   board(new Board()) {
   
   char arr_color[] = {'R', 'O', 'Y', 'G', 'P', 'B'};
