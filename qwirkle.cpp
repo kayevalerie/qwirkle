@@ -100,7 +100,7 @@ void newGameMenu()
     
     //Placeholder for test
   
-    std::cout << ">\n";
+    std::cout << "> ";
 
     std::cin >> player1Name;
   //better input handling needed
@@ -110,7 +110,7 @@ void newGameMenu()
     
     //Placeholder for test
     
-    std::cout << ">\n";
+    std::cout << "> ";
     std::cin >> player2Name;
   //better input handling needed
     std::cout << std::endl;
