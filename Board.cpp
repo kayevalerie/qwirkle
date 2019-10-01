@@ -29,9 +29,23 @@ int Board::getCols() { return cols; }
 Tile Board::getTile(int row, int col) { return grid[row][col]; }
 
 bool Board::isValidPosition(int row, int col) {
-  // check if accessible position
+  bool valid = true;
+  Tile* tile = nullptr;
 
-  // check if already occupied
+  // check if accessible position
+  try {
+    *tile = grid.at(row).at(col);
+  } catch (const std::exception& ex) {
+    // out of range
+    valid = false;
+  }
+
+  // if already occupied
+  if (tile) {
+    valid = false;
+  }
+
+  return valid;
 }
 
 bool Board::hasValidAdjacentTiles(Tile tile, int row, int col) {
