@@ -7,7 +7,6 @@ Game::Game() {}
 Game::Game(std::string playerOneName, std::string playerTwoName) : 
   playerOne(new Player(playerOneName)),
   playerTwo(new Player(playerTwoName)),
-  finished(false),
   board(new Board()) {
   
   char arr_color[] = {'R', 'O', 'Y', 'G', 'P', 'B'};
@@ -77,7 +76,7 @@ void Game::run() {
   std::cout << "Game over\n"
             << "Score for " << playerOne.getName() << ": " << playerOne.getPoints() << "\n"
             << "Score for " << playerTwo.getName() << ": " << playerTwo.getPoints() << "\n"
-            << "Player " << getWinningPlayer->getName() << " won!\n";
+            << "Player " << getWinningPlayer()->getName() << " won!\n";
 
 }
 
@@ -119,7 +118,18 @@ void Game::handleCommand() {
  else if ((tokens.size() == 2) && (!tokens[0].compare("replace"))) {
    //replace tile method
  } 
-}   
+}  
+void Game::placeTile(std::string tile, std::string index) {
+  //check if it's a valid tile
+  //check if the user has that tile in their hand
+  //check if it's a valid index
+  //check if that spot is not taken already
+  //check if the user can put that specific tile there(refer to qwirkle rules)
+  //add that tile to the board vector
+  //delete that tile from the user's hand
+  //draw another tile from the tile bag and add it to the user's hand
+  //calculate the score and update the user's score
+}
          
          
         
