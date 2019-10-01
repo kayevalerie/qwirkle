@@ -134,7 +134,7 @@ void loadGameMenu() {
   std::cin >> fileName;
 
   //
-  if (Help::isValidFormat(fileName) == true) {
+  if (Helper::isValidFormat(fileName) == true) {
     std::cout << "Qwirkle game loaded succesfully. \n";
     // need a method that goes through the file line by line and initializes the
     // variables and data structures

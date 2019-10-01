@@ -5,7 +5,7 @@
 
 // input validation methods
 
-namespace Help {
+namespace Helper {
 
 bool isASCII(std::string n) {
   unsigned int i;
@@ -80,4 +80,4 @@ bool isValidFormat(std::string fileName) {
   return true;
 }
 
-}  // namespace Help
+}  // namespace Helper
