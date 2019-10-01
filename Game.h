@@ -6,25 +6,25 @@
 #include "Player.h"
 
 class Game {
-  Board board;
-  Player playerOne;
-  Player playerTwo;
+  Board* board;
+  Player* playerOne;
+  Player* playerTwo;
   LinkedList* tileBag;
-  
 
   void clear();
-  void createTileBag();
   void addPlayer(Player player);
   void placeTile(Player player,
                  Tile tile);  // (call board addTile)
   void computePoints(Player player);
   void takeTurn(Player player);
+  bool isFinished();
+  Player* getWinningPlayer();
 
  public:
   Game();
+  Game(std::string playerOneName, std::string playerTwoName);
   ~Game();
-  void startGame();
-  bool gameEnd();
+  void run();
   Player getPlayerOne();
   Player getPlayerTwo();
   Board getBoard();
