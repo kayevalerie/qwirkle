@@ -57,6 +57,9 @@ void Game::run() {
   std::cout << "Let's play\n";
   
   while(!isFinished) {
+    if (!count%2) currentPlayer = &playerOne;
+    else if (count%2) currentPlayer = &playerTwo;
+    
     std::cout << currentPlayer->getName() << ", it's your turn\n";
     std::cout << "Score for " << playerOne.getName() << ": " << playerOne.getPoints();
     std::cout << "Score for " << playerTwo.getName() << ": " << playerTwo.getPoints();
@@ -65,7 +68,11 @@ void Game::run() {
     std::cout << "> ";
     
     //handle command
-  
+    //add tile to board/replace tile
+    //draw tile
+    //update score
+    count++;
+    
   }
   
   std::cout << "Game over\n"
