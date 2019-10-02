@@ -29,30 +29,10 @@ int Board::getCols() { return cols; }
 Tile Board::getTile(int row, int col) { return grid[row][col]; }
 
 bool Board::isValidPosition(int row, int col) {
-  bool valid = true;
-  Tile* tile = nullptr;
-
-  // check if accessible position
-  try {
-    *tile = grid.at(row).at(col);
-  } catch (const std::exception& ex) {
-    // out of range
-    valid = false;
-  }
-
-  // check if already occupied
-  if (tile) {
-    valid = false;
-  }
-
-  return valid;
+  return row >= 0 && row <= rows && col >= 0 && col <= cols;
 }
 
-bool Board::hasValidAdjacentTiles(Tile tile, int row, int col) {
-  // check if tile's DIRECT adjacents match
-}
-
-void Board::addTile(Tile tile, char row, int col) {
+bool Board::isValidPosition(char row, int col) {
   int row_pos = row - 'A';
   int col_pos = -1;
   bool validCoordinates = true;
@@ -65,11 +45,77 @@ void Board::addTile(Tile tile, char row, int col) {
     validCoordinates = false;
   }
 
-  if (validCoordinates && isValidPosition(row_pos, col_pos) &&
-      hasValidAdjacentTiles(tile, row_pos, col_pos)) {
-    grid[row_pos][col_pos] = tile;
-  } else {
-    // error message?
+  return (validCoordinates && isValidPosition(row_pos, col_pos));
+}
+
+bool Board::isOccupied(int row, int col) {
+  bool occupied = false;
+  Tile* tile = nullptr;
+  *tile = grid.at(row).at(col);
+
+  if (tile) {
+    occupied = true;
+    delete tile;
+  }
+
+  return occupied;
+}
+
+bool Board::hasValidAdjacentTiles(Tile* tile, int row, int col, bool odd_col) {
+  bool color_match = false;
+  bool shape_match = false;
+
+  if (odd_col) {
+    if (isValidPosition(row - 1, col) ||
+        isValidPosition(row + 1, col + 1)) {  // check left diagonals
+      if (isValidPosition(row - 1, col) &&
+          isOccupied(row - 1, col)) {  // top left
+        if (grid[row - 1][col].getColour() == grid[row][col].getColour())
+          color_match = true;
+        else if (grid[row - 1][col].getShape() == grid[row][col].getShape())
+          shape_match = true;
+      }
+
+      if (isValidPosition(row + 1, col + 1) &&
+          isOccupied(row + 1, col + 1)) {  // bottom right
+        if (grid[row + 1][col + 1].getColour() == grid[row][col].getColour())
+          color_match = true;
+        else if (grid[row + 1][col + 1].getShape() == grid[row][col].getShape())
+          shape_match = true;
+      }
+    }
+    if (isValidPosition(row - 1, col) ||
+        isValidPosition(row + 1, col + 1)) {  // check right diagonals
+    }
+  }  // if odd_col
+  else {
+    // check left diagonals
+
+    // check right diagonals
+  }
+
+  return color_match || shape_match;
+}
+}
+
+void Board::addTile(Tile* tile, char row, int col) {
+  if (isValidPosition(row, col)) {
+    int row_pos = row - 'A';
+    int col_pos = -1;
+    bool odd_col = false;
+
+    if (col % 2) {  // even column
+      col_pos = col / 2;
+    } else if (!col % 2) {  // odd column
+      col_pos = (col - 1) / 2;
+      odd_col = true;
+    }
+
+    if (hasValidAdjacentTiles(tile, row_pos, col_pos, odd_col)) {
+      grid[row_pos][col_pos] = *tile;
+    } else {
+      // error message?
+    }
   }
 }
 
