@@ -1,6 +1,9 @@
 #include "Game.h"
 #include <iostream>
 #include <string>
+#include <algorithm>
+#include <stdio.h>
+#include <cstring>
 
 Game::Game() {}
 
@@ -9,8 +12,19 @@ Game::Game(std::string playerOneName, std::string playerTwoName) :
   playerTwo(new Player(playerTwoName)),
   board(new Board()) {
   
-  char arr_color[] = {'R', 'O', 'Y', 'G', 'P', 'B'};
-  int arr_shape[] = {1, 2, 3, 4, 5, 6};
+  arr_color[0] = 'R';
+  arr_color[1] = 'O';
+  arr_color[2] = 'Y';
+  arr_color[3] = 'G';
+  arr_color[4] = 'P';
+  arr_color[5] = 'B';
+  arr_shape[0] = 1;
+  arr_shape[1] = 2;
+  arr_shape[2] = 3;
+  arr_shape[3] = 4;
+  arr_shape[4] = 5;
+  arr_shape[5] = 6;
+    
   tileBag = new LinkedList();
 
   for (int i = 0; i < 6; ++i) {
@@ -115,7 +129,7 @@ void Game::handleCommand() {
     placeTile(tokens[1], tokens[3]);
  }
  else if ((tokens.size() == 2) && (!tokens[0].compare("replace"))) {
-   //replace tile method
+   //replace tile metho
  } 
 }  
 void Game::placeTile(std::string tile, std::string index) {
@@ -128,6 +142,22 @@ void Game::placeTile(std::string tile, std::string index) {
   //delete that tile from the user's hand
   //draw another tile from the tile bag and add it to the user's hand
   //calculate the score and update the user's score
+}
+         
+bool Game::isTileValid(std::string tile) {
+  bool valid = false;
+  int n = tile.length();
+  char c_tile[n+1];
+  strcpy(c_tile, tile.c_str());
+  
+  bool colorExists = false;
+  colorExists = std::find(std::begin(arr_color), std::end(arr_color), c_tile[0]) != std::end(arr_color);
+  bool shapeExists = false;
+  shapeExists = std::find(std::begin(arr_shape), std::end(arr_shape), c_tile[1] - '0') != std::end(arr_shape);
+  if (colorExists && shapeExists) {
+    valid = true;
+  }
+  return valid;
 }
          
          
