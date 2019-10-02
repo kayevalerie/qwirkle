@@ -11,8 +11,8 @@ class Game {
   Player* playerOne;
   Player* playerTwo;
   LinkedList* tileBag;
-  char arr_color[SIZE];
-  int arr_shape[SIZE];
+  char* arr_color[SIZE];
+  int* arr_shape[SIZE];
 
   void clear();
   void addPlayer(Player player);
