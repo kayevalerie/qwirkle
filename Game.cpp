@@ -38,10 +38,9 @@ Game::Game(std::string playerOneName, std::string playerTwoName) :
   playerOne.setHand(*playerOneHand);
   playerTwo.setHand(*playerTwoHand);  
     
-  //can we delete the playerOneHand and playerTwoHand?
-  
-    
-  //set current player
+  //tentative
+    delete[] playerOneHand;
+    delete[] playerTwoHand;
   
  }
  

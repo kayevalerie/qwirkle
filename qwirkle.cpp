@@ -104,25 +104,50 @@ void displayMenu() {
 void newGameMenu() {
   std::string player1Name;
   std::string player2Name;
-  std::cout << "Starting a new game of Qwirkle!\n"
-            << "Enter a name for player 1: \n";
+  std::cout << "Starting a new game of Qwirkle!\n";
+  
+  int end1 = 0;
+    while (end1 == 0)
+    {
 
-  // Placeholder for test
+        std::cout << "Enter A Name For Player 1: \n";
+        std::cout << "> ";
+        std::cin >> player1Name;
 
-  std::cout << "> ";
-
-  std::cin >> player1Name;
-  // better input handling needed
+        if (Helper::isASCII(player1Name) == false)
+        {
+            std::cout << "Player 1 Name Must Only Contain Letters" << std::endl;
+        }
+        else
+        {
+            end1 = 1;
+        }
+    }
+  
   std::cout << std::endl;
 
-  std::cout << "Enter a name for player 2: \n";
+  //input handling works for both player 1 and player 2, however could be a better way to do it?
 
-  // Placeholder for test
+  int end2 = 0;
+    while (end2 == 0)
+    {
 
-  std::cout << "> ";
-  std::cin >> player2Name;
-  // better input handling needed
+        std::cout << "Enter A Name For Player 2: \n";
+        std::cout << "> ";
+        std::cin >> player2Name;
+
+        if (Helper::isASCII(player2Name) == false)
+        {
+            std::cout << "Player 2 Name Must Only Contain Letters" << std::endl;
+        }
+        else
+        {
+            end2 = 1;
+        }
+    }
   std::cout << std::endl;
+
+  std::cout << "Let's play!" << std::endl;
 
   Game* game = new Game(player1Name, player2Name);
   game->run();

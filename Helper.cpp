@@ -35,6 +35,7 @@ bool isValidFormat(std::string fileName) {
   infile.open(fileName);
 
   if (infile.fail()) {
+    std::cout << "File Does Not Exist" << std::endl;
     return false;
   }
 
