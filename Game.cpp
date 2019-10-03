@@ -165,18 +165,11 @@ void Game::placeTile(std::string tile, std::string index,
 }
 
 bool Game::isTileValid(char* c_tile) {
-  bool valid = false;
-  bool colorExists = false;
+  bool colorExists = std::find(std::begin(arr_color), std::end(arr_color),
+                               c_tile[0] - '0') != std::end(arr_color);
 
-  colorExists = std::find(std::begin(arr_color), std::end(arr_color),
-                          c_tile[0] - '0') != std::end(arr_color);
+  bool shapeExists = std::find(std::begin(arr_shape), std::end(arr_shape),
+                               c_tile[1] - '0') != std::end(arr_shape);
 
-  bool shapeExists = false;
-  shapeExists = std::find(std::begin(arr_shape), std::end(arr_shape),
-                          c_tile[1] - '0') != std::end(arr_shape);
-  if (colorExists && shapeExists) {
-    valid = true;
-  }
-
-  return valid;
+  return colorExists && shapeExists;
 }
