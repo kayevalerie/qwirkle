@@ -138,21 +138,26 @@ void Game::handleCommand(Player* currentPlayer) {
 void Game::placeTile(std::string tile, std::string index,
                      Player* currentPlayer) {
   int n = tile.length();
-  char c_tile[n + 1];
-  strcpy(c_tile, tile.c_str());
-
+  if (n == 2) {
+      char c_tile[2];
+      strcpy(c_tile, tile.c_str());
+  }
   int k = index.length();
-  char c_index[k + 1];
-  strcpy(c_index, index.c_str());
+  if (k == 2) {
+      char c_index[2];
+      strcpy(c_index, index.c_str());
+  }
+  char row = c_index[0];
+  int col = c_index[1] - '0';
 
   bool tileValid = isTileValid(c_tile);
-  bool indexValid = board.isValidPosition([c_index[0], c_index[1]);
+  bool indexValid = board.isValidPosition(row, col);
   
-  Tile tile(c_index[0], c_index[1]);                    
+  Tile tile(c_tile[0], c_tile[1]);                    
   bool hasTile = currentPlayer->getHand->contains(&tile);
   
   if (tileValid && indexValid) {
-    board.addTile(&tile, index);
+    board.addTile(&tile, row, col);
   }
 
   // check if the user has that tile in their hand
@@ -166,11 +171,11 @@ void Game::placeTile(std::string tile, std::string index,
 }
 
 bool Game::isTileValid(char* c_tile) {
-  bool colorExists = std::find(std::begin(arr_color), std::end(arr_color),
+  bool colorValid = std::find(std::begin(arr_color), std::end(arr_color),
                                c_tile[0] - '0') != std::end(arr_color);
 
-  bool shapeExists = std::find(std::begin(arr_shape), std::end(arr_shape),
+  bool shapeValid = std::find(std::begin(arr_shape), std::end(arr_shape),
                                c_tile[1] - '0') != std::end(arr_shape);
 
-  return colorExists && shapeExists;
+  return colorValid && shapeValid;
 }
