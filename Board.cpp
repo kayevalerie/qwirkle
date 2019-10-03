@@ -96,7 +96,6 @@ bool Board::hasValidAdjacentTiles(Tile* tile, int row, int col, bool odd_col) {
 
   return color_match || shape_match;
 }
-}
 
 void Board::addTile(Tile* tile, char row, int col) {
   if (isValidPosition(row, col)) {

@@ -2,12 +2,16 @@
 
 #include "Game.h"
 #include "Helper.h"
-#include "LinkedList.h"
 
 char arr_color[] = {'R', 'O', 'Y', 'G', 'P', 'B'};
 int arr_shape[] = {1, 2, 3, 4, 5, 6};
 
+void displayMenu();
 void loadGame();
+void showStudentInfo();
+void loadGameMenu();
+void newGameMenu();
+void exitGame();
 
 int main(void) {
   // display welcome message
@@ -105,46 +109,37 @@ void newGameMenu() {
   std::string player1Name;
   std::string player2Name;
   std::cout << "Starting a new game of Qwirkle!\n";
-  
+
   int end1 = 0;
-    while (end1 == 0)
-    {
+  while (end1 == 0) {
+    std::cout << "Enter A Name For Player 1: \n";
+    std::cout << "> ";
+    std::cin >> player1Name;
 
-        std::cout << "Enter A Name For Player 1: \n";
-        std::cout << "> ";
-        std::cin >> player1Name;
-
-        if (Helper::isASCII(player1Name) == false)
-        {
-            std::cout << "Player 1 Name Must Only Contain Letters" << std::endl;
-        }
-        else
-        {
-            end1 = 1;
-        }
+    if (Helper::isASCII(player1Name) == false) {
+      std::cout << "Player 1 Name Must Only Contain Letters" << std::endl;
+    } else {
+      end1 = 1;
     }
-  
+  }
+
   std::cout << std::endl;
 
-  //input handling works for both player 1 and player 2, however could be a better way to do it?
+  // input handling works for both player 1 and player 2, however could be a
+  // better way to do it?
 
   int end2 = 0;
-    while (end2 == 0)
-    {
+  while (end2 == 0) {
+    std::cout << "Enter A Name For Player 2: \n";
+    std::cout << "> ";
+    std::cin >> player2Name;
 
-        std::cout << "Enter A Name For Player 2: \n";
-        std::cout << "> ";
-        std::cin >> player2Name;
-
-        if (Helper::isASCII(player2Name) == false)
-        {
-            std::cout << "Player 2 Name Must Only Contain Letters" << std::endl;
-        }
-        else
-        {
-            end2 = 1;
-        }
+    if (Helper::isASCII(player2Name) == false) {
+      std::cout << "Player 2 Name Must Only Contain Letters" << std::endl;
+    } else {
+      end2 = 1;
     }
+  }
   std::cout << std::endl;
 
   std::cout << "Let's play!" << std::endl;
@@ -158,12 +153,12 @@ void loadGameMenu() {
   std::cout << "Enter the name of the file from which to load the game\n";
   std::cin >> fileName;
 
-  //
   if (Helper::isValidFormat(fileName) == true) {
     std::cout << "Qwirkle game loaded succesfully. \n";
     // need a method that goes through the file line by line and initializes the
     // variables and data structures
-    Game* game = new Game();
+    // TODO
+    Game* game = new Game("test", "test2");
     game->run();
   } else {
     std::cout << "The format of this file is not correct. Please try again";
@@ -182,7 +177,7 @@ void showStudentInfo() {
             << "Student ID: s3712467\n"
             << "Email: s3712467@student.rmit.edu.au\n"
             << "\n"
-            << "Name: Kay Ng\n"
+            << "Name: Kaye Ng\n"
             << "Student ID: s3766374\n"
             << "Email: s3766374@student.rmit.edu.au\n"
             << "\n"

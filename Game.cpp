@@ -76,8 +76,9 @@ void Game::run() {
     std::cout << "Score for " << playerTwo.getName() << ": "
               << playerTwo.getPoints();
     board.displayBoard();
-    std::cout << "Your hand is\n"
-              << currentPlayer->getHand()->displayContents();
+
+    std::cout << "Your hand is\n";
+    currentPlayer->getHand()->displayContents();
     std::cout << "> ";
 
     handleCommand(currentPlayer);
@@ -121,15 +122,15 @@ void Game::handleCommand(Player* currentPlayer) {
   std::stringstream ss(userInput);
   std::string intermediate;
   std::vector<std::string> tokens;
+
   while (getline(std::cin, intermediate, ' ')) {
     tokens.push_back(intermediate);
   }
 
-  if ((tokens.size() == PCOMMANDSIZE) && (!tokens[0].compare("place")) &&
-      (!tokens[2].compare("at"))) {
+  if (tokens.size() == PCOMMANDSIZE && !tokens[0].compare("place") &&
+      !tokens[2].compare("at")) {
     placeTile(tokens[1], tokens[3], currentPlayer);
-  } else if ((tokens.size() == RCOMMANDSIZE) &&
-             (!tokens[0].compare("replace"))) {
+  } else if (tokens.size() == RCOMMANDSIZE && !tokens[0].compare("replace")) {
     // replace tile method
   }
 }
@@ -151,7 +152,7 @@ void Game::placeTile(std::string tile, std::string index,
   bool hasTile = currentPlayer->getHand->contains(&tile);
   
   if (tileValid && indexValid) {
-    board.addTile(tile, index);
+    board.addTile(&tile, index);
   }
 
   // check if the user has that tile in their hand

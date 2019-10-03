@@ -3,6 +3,8 @@
 #include <sstream>
 #include <string>
 
+#include "Helper.h"
+
 // input validation methods
 
 namespace Helper {
