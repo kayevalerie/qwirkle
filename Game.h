@@ -7,30 +7,28 @@
 #include "Player.h"
 
 class Game {
-  Board* board;
-  Player* playerOne;
-  Player* playerTwo;
+  Board board;
+  Player playerOne;
+  Player playerTwo;
   LinkedList* tileBag;
   char arr_color[SIZE];
   int arr_shape[SIZE];
 
   void clear();
   void addPlayer(Player player);
-  void placeTile(Player player,
-                 Tile tile);  // (call board addTile)
+  void placeTile(std::string tile, std::string index,
+                 Player* currentPlayer);  // (call board addTile)
   void computePoints(Player player);
   void takeTurn(Player player);
   bool isFinished();
+  bool isTileValid(char* c_tile);
+  void handleCommand(Player* currentPlayer);
   Player* getWinningPlayer();
 
  public:
-  Game();
   Game(std::string playerOneName, std::string playerTwoName);
   ~Game();
   void run();
-  Player getPlayerOne();
-  Player getPlayerTwo();
-  Board getBoard();
 };
 
 #endif  // ASSIGN2_GAME_H
