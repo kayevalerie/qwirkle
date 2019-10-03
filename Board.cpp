@@ -55,7 +55,6 @@ bool Board::isOccupied(int row, int col) {
 
   if (tile) {
     occupied = true;
-    delete tile;
   }
 
   return occupied;
@@ -97,25 +96,25 @@ bool Board::hasValidAdjacentTiles(Tile* tile, int row, int col, bool odd_col) {
   return color_match || shape_match;
 }
 
-void Board::addTile(Tile* tile, char row, int col) {
-  if (isValidPosition(row, col)) {
-    int row_pos = row - 'A';
-    int col_pos = -1;
-    bool odd_col = false;
+bool Board::addTile(Tile* tile, char row, int col) {
+  bool validMove = true;
+  int row_pos = row - 'A';
+  int col_pos = -1;
+  bool odd_col = false;
 
-    if (col % 2) {  // even column
-      col_pos = col / 2;
-    } else if (!col % 2) {  // odd column
-      col_pos = (col - 1) / 2;
-      odd_col = true;
-    }
-
-    if (hasValidAdjacentTiles(tile, row_pos, col_pos, odd_col)) {
-      grid[row_pos][col_pos] = *tile;
-    } else {
-      // error message?
-    }
+  if (col % 2) {  // even column
+    col_pos = col / 2;
+  } else if (!col % 2) {  // odd column
+    col_pos = (col - 1) / 2;
+    odd_col = true;
   }
+
+  if (hasValidAdjacentTiles(tile, row_pos, col_pos, odd_col)) {
+    grid[row_pos][col_pos] = *tile;
+  } else {
+    validMove = false;
+  }
+  return validMove;
 }
 
 void Board::displayBoard() {

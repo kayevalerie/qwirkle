@@ -24,7 +24,7 @@ class Board {
   ~Board();
   int getRows();
   int getCols();
-  void addTile(Tile* tile, char row, int col);
+  bool addTile(Tile* tile, char row, int col);
   bool isValidPosition(char row, int col);
   void displayBoard();
 };
