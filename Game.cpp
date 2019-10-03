@@ -52,8 +52,8 @@ Game::Game(std::string playerOneName, std::string playerTwoName) :
   }
    
     
-  playerOne.setHand(*playerOneHand);
-  playerTwo.setHand(*playerTwoHand);  
+  playerOne->setHand(playerOneHand);
+  playerTwo->setHand(playerTwoHand);  
     
   //tentative
     delete[] playerOneHand;
