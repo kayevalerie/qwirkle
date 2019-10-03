@@ -3,7 +3,7 @@
 
 Tile::Tile(Colour colour, Shape shape) : colour(colour), shape(shape) {}
 
-Tile::Tile(Tile& toCopy) : colour(toCopy.getColour()), shape(toCopy.getColour()) {}
+Tile::Tile(Tile& toCopy) : colour(toCopy.getColour()), shape(toCopy.getShape()) {}
 
 Colour Tile::getColour() { return colour; }
 
