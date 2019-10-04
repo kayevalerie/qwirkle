@@ -21,13 +21,3 @@ void Player::setHand(LinkedList* tiles) {
 }
 
 LinkedList* Player::getHand() { return hand; }
-
-void Player::drawTile(LinkedList* tileBag) {
-  Tile* tile = tileBag->getFront();
-
-  // delete from tileBag
-  tileBag->deleteFront();
-
-  // add to the player hand
-  hand->addTile(tile);
-}

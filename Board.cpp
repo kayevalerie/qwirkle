@@ -210,6 +210,8 @@ int Board::countRightDiagonalTiles(Tile* tile, int row, int col) {
 
     if (row % 2) curCol--;  // if currently in even position
   }                         // while
+
+  return count;
 }
 
 bool Board::addTile(Tile* tile, char row, int col) {

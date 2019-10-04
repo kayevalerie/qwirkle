@@ -182,3 +182,12 @@ bool Game::isTileValid(char* c_tile) {
 
   return colorValid && shapeValid;
 }
+
+Tile Game::drawTileFromBag() {
+  Tile* tile = tileBag->getFront();
+
+  // delete from tileBag
+  tileBag->deleteFront();
+
+  return *tile;
+}

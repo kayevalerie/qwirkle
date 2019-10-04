@@ -23,6 +23,7 @@ class Game {
   bool isFinished();
   bool isTileValid(char* c_tile);
   void handleCommand(Player* currentPlayer);
+  Tile drawTileFromBag();
   Player* getWinningPlayer();
 
  public:

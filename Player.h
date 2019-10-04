@@ -20,7 +20,6 @@ class Player {
   int getPoints();
   void setHand(LinkedList* tiles);
   LinkedList* getHand();
-  void drawTile(LinkedList* tileBag);
 };
 
 #endif  // ASSIGN2_PLAYER_H
