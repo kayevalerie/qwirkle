@@ -29,6 +29,8 @@ class Board {
   int getCols();
   bool addTile(Tile* tile, char row, int col);
   bool isValidPosition(char row, int col);
+  bool isInBounds(char row, int col);
+  bool isOccupied(char row, int col);
   void displayBoard();
 };
 
