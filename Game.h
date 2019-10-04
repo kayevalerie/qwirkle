@@ -16,13 +16,13 @@ class Game {
 
   void clear();
   void addPlayer(Player player);
-  void placeTile(std::string tileInput, std::string locationInput,
+  bool placeTile(std::string tileInput, std::string locationInput,
                  Player* currentPlayer);
   void computePoints(Player player);
   void takeTurn(Player player);
   bool isFinished();
   bool isTileValid(char* c_tile);
-  void handleCommand(Player* currentPlayer);
+  bool handleCommand(Player* currentPlayer);
   Tile drawTileFromBag();
   Player* getWinningPlayer();
 
