@@ -4,7 +4,7 @@
 
 namespace Helper {
 bool isValidFormat(std::string filename);
-bool isValidTile(Colour colour, Shape shape);
+// bool isValidTile(Colour colour, Shape shape);
 bool isASCII(std::string n);
 bool isNumber(std::string h);
 }  // namespace Helper

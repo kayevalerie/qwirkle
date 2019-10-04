@@ -174,7 +174,39 @@ void LinkedList::replaceTile(Tile* tile, Tile* newTile) {
 }
 
 void LinkedList::deleteTile(Tile* tile) {
-  // todo
+  if (list_size == 0) {
+    // error: list is empty
+  } else if (contains(tile)) {
+    bool found = false;
+
+    if (tile->equals(head->getTile())) {  // if tile to delete is at head
+      deleteFront();
+    } else {  // if tile to delete is at the end or in the middle
+      Node* current = head;
+      Node* prev = nullptr;
+
+      while (!found && current) {
+        if (current->getTile()->equals(tile)) {
+          found = true;
+        } else {
+          prev = current;
+          current = current->next;
+        }
+      }
+
+      if (found) {
+        // if the element to delete is the last element in the list
+        if (!current->next)
+          tail = prev;  // set the previous node as the new tail
+
+        prev->next = current->next;
+        delete current;
+        list_size--;
+      }
+    }
+  } else {
+    // error: element was not found
+  }
 }
 
 void LinkedList::displayContents() {
