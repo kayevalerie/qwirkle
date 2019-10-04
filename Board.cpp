@@ -29,7 +29,7 @@ int Board::getCols() { return cols; }
 Tile Board::getTile(int row, int col) { return grid[row][col]; }
 
 bool Board::isInBounds(int row, int col) {
-  return row >= 0 && row <= rows && col >= 0 && col <= cols;
+  return row >= 0 && row < rows && col >= 0 && col < cols;
 }
 
 bool Board::isValidPosition(char row, int col) {
