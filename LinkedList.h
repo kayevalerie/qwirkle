@@ -25,6 +25,7 @@ class LinkedList {
   void replaceTile(Tile* tile,
                    Tile* newTile);  // remove a specific tile from the
                                     // list and replace with a new one
+  void deleteTile(Tile* tile);
   void displayContents();
 };
 

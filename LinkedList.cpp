@@ -140,7 +140,9 @@ void LinkedList::replaceTile(Tile* tile, Tile* newTile) {
     Node* newNode = new Node(newTile, nullptr);
 
     if (tile->equals(head->getTile())) {  // if tile to delete is at head
+      newNode->next = head->next;
       deleteFront();
+      head = newNode;
     } else {  // if tile to delete is at the end or in the middle
       Node* current = head;
       Node* prev = nullptr;
@@ -169,6 +171,10 @@ void LinkedList::replaceTile(Tile* tile, Tile* newTile) {
       }
     }
   }
+}
+
+void LinkedList::deleteTile(Tile* tile) {
+  // todo
 }
 
 void LinkedList::displayContents() {
