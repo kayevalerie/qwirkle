@@ -135,30 +135,33 @@ void Game::handleCommand(Player* currentPlayer) {
   }
 }
 
-void Game::placeTile(std::string tile, std::string index,
+void Game::placeTile(std::string tileInput, std::string locationInput,
                      Player* currentPlayer) {
-  int n = tile.length();
+  int n = tileInput.length();
+  char* c_tile = nullptr;
+
   if (n == 2) {
-      char c_tile[2];
-      strcpy(c_tile, tile.c_str());
+    *c_tile = tileInput[2];
+    strcpy(c_tile, tileInput.c_str());
   }
-  int k = index.length();
-  if (k == 2) {
-      char c_index[2];
-      strcpy(c_index, index.c_str());
+
+  n = locationInput.length();
+  char* c_index = nullptr;
+  if (n == 2) {
+    *c_index = locationInput[2];
+    strcpy(c_index, locationInput.c_str());
   }
+
   char row = c_index[0];
   int col = c_index[1] - '0';
 
   bool tileValid = isTileValid(c_tile);
   bool indexValid = board.isValidPosition(row, col);
-  
-  Tile tile(c_tile[0], c_tile[1]);                    
-  bool hasTile = currentPlayer->getHand->contains(&tile);
-  
-  if (tileValid && indexValid) {
-    board.addTile(&tile, row, col);
-  }
+
+  Tile tile(c_tile[0], c_tile[1]);
+  bool hasTile = currentPlayer->getHand()->contains(&tile);
+
+  if (tileValid && indexValid) board.addTile(&tile, row, col);
 
   // check if the user has that tile in their hand
   // check if it's a valid index
@@ -172,10 +175,10 @@ void Game::placeTile(std::string tile, std::string index,
 
 bool Game::isTileValid(char* c_tile) {
   bool colorValid = std::find(std::begin(arr_color), std::end(arr_color),
-                               c_tile[0] - '0') != std::end(arr_color);
+                              c_tile[0] - '0') != std::end(arr_color);
 
   bool shapeValid = std::find(std::begin(arr_shape), std::end(arr_shape),
-                               c_tile[1] - '0') != std::end(arr_shape);
+                              c_tile[1] - '0') != std::end(arr_shape);
 
   return colorValid && shapeValid;
 }

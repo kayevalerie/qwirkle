@@ -9,15 +9,20 @@ Player::~Player() { clear(); }
 
 void Player::clear() { delete hand; }
 
-void Player::setPoints(int points) { this->points = points; }
-
 std::string Player::getName() { return name; }
 
-int Player::getPoints() { return points; }
+void Player::setPoints(int points) { this->points = points; }
 
-LinkedList* Player::getHand() { return hand; }
+int Player::getPoints() { return points; }
 
 void Player::setHand(LinkedList* tiles) {
   hand = new LinkedList(*tiles);
   // not sure if a copy needed
+}
+
+LinkedList* Player::getHand() { return hand; }
+
+void Player::drawTile(LinkedList* tileBag) {
+  // todo
+  Tile* tile = tileBag->getFront();
 }
