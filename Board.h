@@ -16,8 +16,11 @@ class Board {
   void clear();
   Tile getTile(int row, int col);
   bool isOccupied(int row, int col);
-  bool isValidPosition(int row, int col);
-  bool hasValidAdjacentTiles(Tile* tile, int row, int col, bool odd_col);
+  bool isInBounds(int row, int col);
+  int countLeftDiagonalTiles(Tile* tile, int row, int col);
+  int countRightDiagonalTiles(Tile* tile, int row, int col);
+  int translateCol(int col);
+  int* hasValidAdjacentTiles(Tile* tile, int row, int col);
 
  public:
   Board();

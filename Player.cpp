@@ -1,6 +1,4 @@
 #include "Player.h"
-#include <cstring>
-#include <string>
 
 Player::Player(std::string name, int points, LinkedList* tiles)
     : name(name), points(points), hand(new LinkedList(*tiles)) {}
