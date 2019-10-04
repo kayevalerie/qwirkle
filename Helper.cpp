@@ -51,13 +51,21 @@ bool isHandValid(std::string a){
 
 bool isValidFormat(std::string fileName)
 {
+  bool fileVal = true;
+  bool nameVal = true;
+  bool scoreVal = true;
+  bool handVal = true;
+  bool boardVal = true;
+  bool bagVal = true;
+
+  bool valid = false;
   std::fstream infile;
   infile.open(fileName);
 
   if (infile.fail())
   {
     std::cout << "File Does Not Exist" << std::endl;
-    return false;
+    fileVal = false;
   }
 
   std::string hold[50];
@@ -78,34 +86,67 @@ bool isValidFormat(std::string fileName)
     std::cout << hold[3] << std::endl;
     std::cout << "Incorrect Format - Name Must Only Contain Letters"
               << std::endl;
-    return false;
+    nameVal = false;
   }
 
   // validate score is number
   else if (isNumber(hold[1]) == false && isNumber(hold[4]) == false)
   {
     std::cout << "Incorrect File Format - Score Not Number" << std::endl;
-    return false;
+    scoreVal = false;
   }
 
   // validate player hands 
 
- 
+ // change this (to check format)
   else if (isHandValid(hold[2]) == false && isHandValid(hold[5]) == false)
     {
      std::cout << "Incorrect File Format - Tile Hands" << std::endl;
-     return false
+     handVal = false;
     }
   
   // //validate board is same as cout
 
   // else if (hold[6].find){
+    std::string test;
+    std::vector<std::string> token;
+    
+    while (getline(hold[6], test, "    ")){
+      token.push_back(test);
+    }
+    for (int i = 0, i < token.size(), i++){
+      if (isNumber(token[i]) && token[0] == 0 && token[i+1] == token[i] + 2){
+
+      }
+    }
+   
+    int rowLength = hold[7].length();
+    int dashCount = 0;
+    if (rowLength > 0){
+      char dashRow[rowLength];
+      strcpy(dashRow, hold[7].c_str());
+      if(dashRow[0] == " " && dashRow[1] == " "){
+    
+        for(int i = 2, i <= rowLength, i++){
+          dashRow[i] == "-";
+          dashCount++;
+
+        }
+      }
+    }
+  std::vector<std::string> token2;
+  while (getline(hold[8], test, "|")){
+      token.push_back(test);
+    }
+
+
+
 
   // hold[6] to hold[14]
 
   //     }
 
-  return true;
+  return (fileVal && nameVal && scoreVal && handVal && boardVal && handVal)
 }
 
 } // namespace Helper
