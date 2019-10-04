@@ -15,12 +15,12 @@ class Player {
   Player(std::string name);
   Player(std::string name, int points, LinkedList* tiles);
   ~Player();
+  std::string getName();
   void setPoints(int points);
   int getPoints();
-  void drawTile(LinkedList* tileBag);
-  std::string getName();
-  LinkedList* getHand();
   void setHand(LinkedList* tiles);
+  LinkedList* getHand();
+  void drawTile(LinkedList* tileBag);
 };
 
 #endif  // ASSIGN2_PLAYER_H

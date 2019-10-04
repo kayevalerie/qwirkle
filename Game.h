@@ -16,8 +16,8 @@ class Game {
 
   void clear();
   void addPlayer(Player player);
-  void placeTile(std::string tile, std::string index,
-                 Player* currentPlayer);  // (call board addTile)
+  void placeTile(std::string tileInput, std::string locationInput,
+                 Player* currentPlayer);
   void computePoints(Player player);
   void takeTurn(Player player);
   bool isFinished();

@@ -28,7 +28,7 @@ int Board::getCols() { return cols; }
 
 Tile Board::getTile(int row, int col) { return grid[row][col]; }
 
-bool Board::isValidPosition(int row, int col) {
+bool Board::isInBounds(int row, int col) {
   return row >= 0 && row <= rows && col >= 0 && col <= cols;
 }
 
@@ -45,75 +45,183 @@ bool Board::isValidPosition(char row, int col) {
     validCoordinates = false;
   }
 
-  return (validCoordinates && isValidPosition(row_pos, col_pos));
+  return validCoordinates && isInBounds(row_pos, col_pos);
 }
 
 bool Board::isOccupied(int row, int col) {
   bool occupied = false;
   Tile* tile = nullptr;
-  *tile = grid.at(row).at(col);
+  *tile = grid[row][col];
 
-  if (tile) {
-    occupied = true;
-  }
+  if (tile) occupied = true;
 
   return occupied;
 }
 
-bool Board::hasValidAdjacentTiles(Tile* tile, int row, int col, bool odd_col) {
-  bool color_match = false;
-  bool shape_match = false;
+int* Board::hasValidAdjacentTiles(Tile* tile, int row, int col) {
+  int match_adjacents[BOARDFRAME] = {-1, -1, -1, -1};
 
-  if (odd_col) {
-    if (isValidPosition(row - 1, col) ||
-        isValidPosition(row + 1, col + 1)) {  // check left diagonals
-      if (isValidPosition(row - 1, col) &&
-          isOccupied(row - 1, col)) {  // top left
-        if (grid[row - 1][col].getColour() == grid[row][col].getColour())
-          color_match = true;
-        else if (grid[row - 1][col].getShape() == grid[row][col].getShape())
-          shape_match = true;
-      }
-
-      if (isValidPosition(row + 1, col + 1) &&
-          isOccupied(row + 1, col + 1)) {  // bottom right
-        if (grid[row + 1][col + 1].getColour() == grid[row][col].getColour())
-          color_match = true;
-        else if (grid[row + 1][col + 1].getShape() == grid[row][col].getShape())
-          shape_match = true;
-      }
+  if (!row % 2) {  // if checking for odd col
+    if (isValidPosition(row - 1, col) &&
+        isOccupied(row - 1, col)) {  // check top left
+      if (grid[row - 1][col].getColour() == tile->getColour())
+        match_adjacents[0] = 0;
+      else if (grid[row - 1][col].getShape() == tile->getShape())
+        match_adjacents[0] = 1;
     }
-    if (isValidPosition(row - 1, col) ||
-        isValidPosition(row + 1, col + 1)) {  // check right diagonals
-    }
-  }  // if odd_col
-  else {
-    // check left diagonals
 
-    // check right diagonals
+    if (isValidPosition(row + 1, col + 1) &&
+        isOccupied(row + 1, col + 1)) {  // check bottom right
+      if (grid[row + 1][col + 1].getColour() == tile->getColour())
+        match_adjacents[1] = 0;
+      else if (grid[row + 1][col + 1].getShape() == tile->getShape())
+        match_adjacents[1] = 1;
+    }
+
+    if (isValidPosition(row - 1, col + 1) &&
+        isOccupied(row - 1, col + 1)) {  // check top right
+      if (grid[row - 1][col + 1].getColour() == tile->getColour())
+        match_adjacents[2] = 0;
+      else if (grid[row - 1][col + 1].getShape() == tile->getShape())
+        match_adjacents[2] = 1;
+    }
+
+    if (isValidPosition(row + 1, col) &&
+        isOccupied(row + 1, col)) {  // check bottom left
+      if (grid[row + 1][col].getColour() == tile->getColour())
+        match_adjacents[3] = 0;
+      else if (grid[row + 1][col].getShape() == tile->getShape())
+        match_adjacents[3] = 1;
+    }
+  } else {  // if even col
+    if (isValidPosition(row - 1, col - 1) &&
+        isOccupied(row - 1, col - 1)) {  // check top left
+      if (grid[row - 1][col - 1].getColour() == tile->getColour())
+        match_adjacents[0] = 0;
+      else if (grid[row - 1][col - 1].getShape() == tile->getShape())
+        match_adjacents[0] = 1;
+    }
+
+    if (isValidPosition(row + 1, col) &&
+        isOccupied(row + 1, col)) {  // check bottom right
+      if (grid[row + 1][col].getColour() == tile->getColour())
+        match_adjacents[1] = 0;
+      else if (grid[row + 1][col].getShape() == tile->getShape())
+        match_adjacents[1] = 1;
+    }
+
+    if (isValidPosition(row - 1, col) &&
+        isOccupied(row - 1, col)) {  // check top right
+      if (grid[row - 1][col].getColour() == tile->getColour())
+        match_adjacents[2] = 0;
+      else if (grid[row - 1][col].getShape() == tile->getShape())
+        match_adjacents[2] = 1;
+    }
+
+    if (isValidPosition(row + 1, col - 1) &&
+        isOccupied(row + 1, col - 1)) {  // check bottom left
+      if (grid[row + 1][col - 1].getColour() == tile->getColour())
+        match_adjacents[3] = 0;
+      else if (grid[row + 1][col - 1].getShape() == tile->getShape())
+        match_adjacents[3] = 1;
+    }
   }
 
-  return color_match || shape_match;
+  return match_adjacents;
+}
+
+int translateCol(int col) {
+  int curCol = -1;
+
+  if (col % 2) {  // even column
+    curCol = col / 2;
+  } else if (!col % 2) {  // odd column
+    curCol = (col - 1) / 2;
+  }
+  return curCol;
+}
+
+int Board::countLeftDiagonalTiles(Tile* tile, int row, int col) {
+  int count = 1;  // count current tile
+
+  // validate top left
+  int curRow = row;
+  int curCol = col;
+  bool hasSameTile = false;
+
+  while (!hasSameTile && isInBounds(curRow, curCol)) {
+    if (isOccupied(curRow, curCol)) {
+      count++;
+      if (grid[curRow][curCol].equals(tile)) hasSameTile = true;
+    }
+
+    curRow--;
+
+    if (row % 2) curCol--;  // if currently in even position
+  }                         // while
+
+  // validate bottom right
+  curRow = row;
+  curCol = col;
+
+  while (!hasSameTile && isInBounds(curRow, curCol)) {
+    if (isOccupied(curRow, curCol)) {
+      count++;
+      if (grid[curRow][curCol].equals(tile)) hasSameTile = true;
+    }
+
+    curRow++;
+
+    if (!row % 2) curCol++;  // if currently in odd position
+  }                          // while
+
+  return count;
+}
+
+int Board::countRightDiagonalTiles(Tile* tile, int row, int col) {
+  // validate top right
+  int curRow = row;
+  int curCol = col;
+  bool hasSameTile = false;
+  int count = 1;
+
+  while (!hasSameTile && isInBounds(curRow, curCol)) {
+    if (isOccupied(curRow, curCol)) {
+      count++;
+      if (grid[curRow][curCol].equals(tile)) hasSameTile = true;
+    }
+
+    curRow--;
+
+    if (!row % 2) curCol++;  // if currently in odd position
+  }                          // while
+
+  // validate bottom left
+  curRow = row;
+  curCol = col;
+
+  while (!hasSameTile && isInBounds(curRow, curCol)) {
+    if (isOccupied(curRow, curCol)) {
+      count++;
+      if (grid[curRow][curCol].equals(tile)) hasSameTile = true;
+    }
+
+    curRow++;
+
+    if (row % 2) curCol--;  // if currently in even position
+  }                         // while
 }
 
 bool Board::addTile(Tile* tile, char row, int col) {
   bool validMove = true;
   int row_pos = row - 'A';
-  int col_pos = -1;
-  bool odd_col = false;
+  int col_pos = translateCol(col);
 
-  if (col % 2) {  // even column
-    col_pos = col / 2;
-  } else if (!col % 2) {  // odd column
-    col_pos = (col - 1) / 2;
-    odd_col = true;
-  }
-
-  if (hasValidAdjacentTiles(tile, row_pos, col_pos, odd_col)) {
+  if (hasValidAdjacentTiles(tile, row_pos, col_pos))
     grid[row_pos][col_pos] = *tile;
-  } else {
+  else
     validMove = false;
-  }
+
   return validMove;
 }
 
