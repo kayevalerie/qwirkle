@@ -1,29 +1,27 @@
 
 #ifndef ASSIGN2_GAME_H
 #define ASSIGN2_GAME_H
-#define SIZE 6
 
 #include "Board.h"
+#include "LinkedList.h"
 #include "Player.h"
 
+#include <string>
+
 class Game {
-  Board board;
   Player playerOne;
   Player playerTwo;
+  Board board;
   LinkedList* tileBag;
-  char arr_color[SIZE];
-  int arr_shape[SIZE];
 
   void clear();
   void addPlayer(Player player);
-  bool placeTile(std::string tileInput, std::string locationInput,
+  void handleCommand(Player* currentPlayer);
+  void placeTile(std::string tileInput, std::string locationInput,
                  Player* currentPlayer);
-  void computePoints(Player player);
-  void takeTurn(Player player);
-  bool isFinished();
-  bool isTileValid(char* c_tile);
-  bool handleCommand(Player* currentPlayer);
   Tile drawTileFromBag();
+  void computePoints(Player player);  // todo
+  bool isFinished();
   Player* getWinningPlayer();
 
  public:

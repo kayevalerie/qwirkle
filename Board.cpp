@@ -1,4 +1,4 @@
-#include <Board.h>
+#include "Board.h"
 #include <iomanip>
 #include <iostream>
 
@@ -61,8 +61,10 @@ bool Board::isOccupied(char row, int col) {
   return isOccupied(row_pos, col_pos);
 }
 
-int* Board::hasValidAdjacentTiles(Tile* tile, int row, int col) {
-  int match_adjacents[BOARDFRAME] = {-1, -1, -1, -1};
+int* Board::hasValidAdjacentTiles(int* match_adjacents, Tile* tile, int row,
+                                  int col) {
+  // int match_adjacents[BOARDFRAME] = {-1, -1, -1, -1};
+  // TO READ: https://www.geeksforgeeks.org/return-local-array-c-function/
 
   if (!row % 2) {  // if checking for odd col
     if (isInBounds(row - 1, col) &&
@@ -133,7 +135,7 @@ int* Board::hasValidAdjacentTiles(Tile* tile, int row, int col) {
   return match_adjacents;
 }
 
-int translateCol(int col) {
+int Board::translateCol(int col) {
   int curCol = -1;
 
   if (col % 2) {  // even column
@@ -144,7 +146,7 @@ int translateCol(int col) {
   return curCol;
 }
 
-int Board::countLeftDiagonalTiles(Tile* tile, int row, int col) {
+int Board::countLeftDiagonalTiles(Tile tile, int row, int col) {
   int count = 1;  // count current tile
 
   // validate top left
@@ -181,7 +183,7 @@ int Board::countLeftDiagonalTiles(Tile* tile, int row, int col) {
   return count;
 }
 
-int Board::countRightDiagonalTiles(Tile* tile, int row, int col) {
+int Board::countRightDiagonalTiles(Tile tile, int row, int col) {
   // validate top right
   int curRow = row;
   int curCol = col;
@@ -217,15 +219,19 @@ int Board::countRightDiagonalTiles(Tile* tile, int row, int col) {
   return count;
 }
 
-bool Board::addTile(Tile* tile, char row, int col) {
+bool Board::addTile(Tile tile, char row, int col) {
   bool validMove = true;
-  int row_pos = row - 'A';
-  int col_pos = translateCol(col);
+  // int row_pos = row - 'A';
+  // int col_pos = translateCol(col);
 
-  if (hasValidAdjacentTiles(tile, row_pos, col_pos))
-    grid[row_pos][col_pos] = *tile;
-  else
-    validMove = false;
+  // int match_adjacents[BOARDFRAME] = {-1, -1, -1, -1};
+  // int* result = hasValidAdjacentTiles(match_adjacents, tile, row_pos,
+  // col_pos);
+
+  // if (hasValidAdjacentTiles(match_adjacents, tile, row_pos, col_pos))
+  //   grid[row_pos][col_pos] = *tile;
+  // else
+  //   validMove = false;
 
   return validMove;
 }
@@ -272,7 +278,7 @@ void Board::displayBoard() {
     }
   }
 
-  std::cout << "\n  ";
+  std::cout << "\n";
 }
 
 int Board::getPrintedBoardWidth(int regularWidth) {

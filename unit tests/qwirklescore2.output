@@ -9,7 +9,7 @@ Menu
 
 >
 
-Enter the name of the file from which to load the game
+Enter the name of the file from which to load the game:
 
 >
 
@@ -30,7 +30,6 @@ E | G4 |    | P2 |    |
 F    |    |    | G2 |    |
   -------------------------
        1    3    5    7    
-
 
 Your hand is
 P1,P6,B4,R2,O4,P2

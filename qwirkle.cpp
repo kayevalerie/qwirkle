@@ -3,11 +3,7 @@
 #include "Game.h"
 #include "Helper.h"
 
-char arr_color[] = {'R', 'O', 'Y', 'G', 'P', 'B'};
-int arr_shape[] = {1, 2, 3, 4, 5, 6};
-
 void displayMenu();
-void loadGame();
 void showStudentInfo();
 void loadGameMenu();
 void newGameMenu();
@@ -69,6 +65,8 @@ int main(void) {
 
 void displayMenu() {
   int choice = 0;
+  bool quit = false;
+
   do {
     std::cout << "\n"
               << "Menu\n"
@@ -77,47 +75,45 @@ void displayMenu() {
               << "2. Load Game\n"
               << "3. Show student information\n"
               << "4. Quit\n"
-              << "\n>" << std::endl;
+              << "\n> ";
 
     std::cin >> choice;
+
     while (!std::cin >> choice) {
       std::cin.clear();
       std::cin.ignore(100, '\n');
     }
-    if (choice == 1) {
+
+    if (choice == 1)
       newGameMenu();
-    }
-
-    else if (choice == 2) {
-      loadGame();
-    }
-
-    else if (choice == 3) {
+    else if (choice == 2)
+      loadGameMenu();
+    else if (choice == 3)
       showStudentInfo();
-    }
-
-    else if (choice == 4) {
+    else if (choice == 4)
       exitGame();
-    } else {
-      std::cout << "This option does not exist, please try again" << std::endl;
-    }
+    else if (std::cin.eof())
+      quit = true;
+    else
+      std::cout << "This option does not exist, please try again\n";
 
-  } while (choice != 4 && !std::cin.eof());
+  } while (!quit && choice != 4);
 }
 
 void newGameMenu() {
   std::string player1Name;
   std::string player2Name;
-  std::cout << "Starting a new game of Qwirkle!\n";
+  std::cout << "\nStarting a new game of Qwirkle!\n";
 
   int end1 = 0;
-  while (end1 == 0) {
-    std::cout << "Enter A Name For Player 1: \n";
-    std::cout << "> ";
+  while (!end1) {
+    std::cout << "\nEnter a name for player 1: \n";
+    std::cout << "\n> ";
     std::cin >> player1Name;
 
-    if (Helper::isASCII(player1Name) == false) {
-      std::cout << "Player 1 Name Must Only Contain Letters" << std::endl;
+    if (!Helper::isASCII(player1Name)) {
+      std::cout << "Error: name must only contain letters. Please input your "
+                   "name again\n";
     } else {
       end1 = 1;
     }
@@ -129,13 +125,14 @@ void newGameMenu() {
   // better way to do it?
 
   int end2 = 0;
-  while (end2 == 0) {
-    std::cout << "Enter A Name For Player 2: \n";
-    std::cout << "> ";
+  while (!end2) {
+    std::cout << "\nEnter a name for player 2: \n";
+    std::cout << "\n> ";
     std::cin >> player2Name;
 
-    if (Helper::isASCII(player2Name) == false) {
-      std::cout << "Player 2 Name Must Only Contain Letters" << std::endl;
+    if (!Helper::isASCII(player2Name)) {
+      std::cout << "Error: name must only contain letters. Please input your "
+                   "name again\n";
     } else {
       end2 = 1;
     }
@@ -144,32 +141,28 @@ void newGameMenu() {
 
   std::cout << "Let's play!" << std::endl;
 
-  Game* game = new Game(player1Name, player2Name);
-  game->run();
+  Game game(player1Name, player2Name);
+  game.run();
 }
 
 void loadGameMenu() {
   std::string fileName;
-  std::cout << "Enter the name of the file from which to load the game\n";
+  std::cout << "Enter the name of the file from which to load the game:\n";
   std::cin >> fileName;
 
-  if (Helper::isValidFormat(fileName) == true) {
+  if (Helper::isValidFormat(fileName)) {
     std::cout << "Qwirkle game loaded succesfully. \n";
     // need a method that goes through the file line by line and initializes the
     // variables and data structures
     // TODO
-    Game* game = new Game("test", "test2");
-    game->run();
+    Game game("test", "test2");
+    game.run();
   } else {
-    std::cout << "The format of this file is not correct. Please try again";
+    std::cout << "The format of this file is not correct. Please try again\n";
   }
 }
 
-void loadGame() {
-  // todo
-}
-
-void exitGame() { std::cout << "Goodbye! \n"; }
+void exitGame() { std::cout << "\n\nGoodbye! \n"; }
 
 void showStudentInfo() {
   std::cout << "----------------------------------\n"

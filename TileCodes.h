@@ -2,20 +2,25 @@
 #ifndef ASSIGN1_TILECODES_H
 #define ASSIGN1_TILECODES_H
 
-// Colours
-#define RED    'R'
-#define ORANGE 'O'
-#define YELLOW 'Y'
-#define GREEN  'G'
-#define BLUE   'B'
-#define PURPLE 'P'
+#include <array>
+#include <string>
 
-// Shapes
-#define CIRCLE    1
-#define STAR_4    2
-#define DIAMOND   3
-#define SQUARE    4
-#define STAR_6    5
-#define CLOVER    6
+#define COLOUR_SIZE 6
+#define SHAPE_SIZE 6
 
-#endif // ASSIGN1_TILECODES_H
+enum class Colour {
+  RED = 'R',
+  ORANGE = 'O',
+  YELLOW = 'Y',
+  GREEN = 'G',
+  BLUE = 'B',
+  PURPLE = 'P'
+};
+
+enum class Shape { CIRCLE = 1, STAR_4, DIAMOND, SQUARE, STAR_6, CLOVER };
+
+extern const std::array<Colour, COLOUR_SIZE> colours;
+extern const std::array<Shape, SHAPE_SIZE> shapes;
+bool isCodeValid(std::string code);
+
+#endif  // ASSIGN1_TILECODES_H

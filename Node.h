@@ -5,13 +5,14 @@
 #include "Tile.h"
 
 class Node {
-  Tile* tile;
+  Tile tile;
 
  public:
-  Node(Tile* tile, Node* next);
+  Node();  // to remove
+  Node(Tile tile, Node* next);
   Node(const Node& other);
   Node* next;
-  Tile* getTile();
+  Tile getTile();
 };
 
 #endif  // ASSIGN2_NODE_H

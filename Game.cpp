@@ -1,39 +1,25 @@
 #include "Game.h"
 #include <stdio.h>
-#include <algorithm>
 #include <cstring>
 #include <iostream>
 #include <sstream>
-#include <string>
 
 #define PCOMMANDSIZE 4
 #define RCOMMANDSIZE 2
+#define PLAYER_HAND_SIZE 6
 
 Game::Game(std::string playerOneName, std::string playerTwoName)
     : playerOne(Player(playerOneName)),
       playerTwo(Player(playerTwoName)),
       board(Board()) {
-  arr_color[0] = 'R';
-  arr_color[1] = 'O';
-  arr_color[2] = 'Y';
-  arr_color[3] = 'G';
-  arr_color[4] = 'P';
-  arr_color[5] = 'B';
-  arr_shape[0] = 1;
-  arr_shape[1] = 2;
-  arr_shape[2] = 3;
-  arr_shape[3] = 4;
-  arr_shape[4] = 5;
-  arr_shape[5] = 6;
-
   tileBag = new LinkedList();
 
-  for (int i = 0; i < 6; ++i) {
-    for (int j = 0; j < 6; ++j) {
-      Tile* newTile = new Tile(arr_color[i], arr_shape[j]);
+  for (int i = 0; i < PLAYER_HAND_SIZE; ++i) {
+    for (int j = 0; j < PLAYER_HAND_SIZE; ++j) {
+      Tile tile = Tile(colours.at(i), shapes.at(j));
 
-      tileBag->addTile(newTile);
-      tileBag->addTile(newTile);
+      tileBag->addTile(tile);
+      tileBag->addTile(tile);
     }
   }
 
@@ -42,7 +28,7 @@ Game::Game(std::string playerOneName, std::string playerTwoName)
   LinkedList* playerOneHand = new LinkedList();
   LinkedList* playerTwoHand = new LinkedList();
 
-  for (int i = 0; i < 6; ++i) {
+  for (int i = 0; i < PLAYER_HAND_SIZE; ++i) {
     playerOneHand->addTile(tileBag->getFront());
     tileBag->deleteFront();
     playerTwoHand->addTile(tileBag->getFront());
@@ -59,32 +45,36 @@ Game::Game(std::string playerOneName, std::string playerTwoName)
 
 Game::~Game() { clear(); }
 
+void Game::clear() {
+  // todo
+}
+
 void Game::run() {
   Player* currentPlayer = &playerOne;
-  int count = 0;
-  std::cout << "Let's play\n";
+  int turn = 0;
 
   while (!isFinished()) {
-    if (!count % 2)
+    if (!turn % 2)
       currentPlayer = &playerOne;
-    else if (count % 2)
+    else if (turn % 2)
       currentPlayer = &playerTwo;
 
-    std::cout << currentPlayer->getName() << ", it's your turn\n";
+    std::cout << '\n' << currentPlayer->getName() << ", it's your turn\n";
     std::cout << "Score for " << playerOne.getName() << ": "
-              << playerOne.getPoints();
+              << playerOne.getPoints() << '\n';
     std::cout << "Score for " << playerTwo.getName() << ": "
-              << playerTwo.getPoints();
+              << playerTwo.getPoints() << '\n';
     board.displayBoard();
 
-    std::cout << "Your hand is\n";
+    std::cout << "\nYour hand is\n";
     currentPlayer->getHand()->displayContents();
     std::cout << "> ";
 
     handleCommand(currentPlayer);
-    // handle command
-    // add tile to board(draw tile, update score)/replace tile
-    count++;
+    // add tile to board(draw tile, update score)
+    // replace tile
+
+    turn++;
   }
 
   std::cout << "Game over\n"
@@ -112,13 +102,19 @@ Player* Game::getWinningPlayer() {
 }
 
 void Game::handleCommand(Player* currentPlayer) {
-  std::string userInput = "";
+  // todo
+
+  std::string userInput;
+
   while (std::cin.peek() == '\n') {
     std::cout << "Command not recognized. Try 'place X at Y' or 'replace X'\n";
     std::cin.ignore();
   }
 
   std::getline(std::cin, userInput);
+
+  std::cout << userInput;
+
   std::stringstream ss(userInput);
   std::string intermediate;
   std::vector<std::string> tokens;
@@ -137,31 +133,38 @@ void Game::handleCommand(Player* currentPlayer) {
 
 void Game::placeTile(std::string tileInput, std::string locationInput,
                      Player* currentPlayer) {
-  int n = tileInput.length();
-  char* c_tile = nullptr;
+  // int n = tileInput.length();
+  // char* c_tile = nullptr;
 
-  if (n == 2) {
-    *c_tile = tileInput[2];
-    strcpy(c_tile, tileInput.c_str());
+  // if (n == 2) {
+  //   *c_tile = tileInput[2];
+  //   strcpy(c_tile, tileInput.c_str());
+  // }
+
+  // n = locationInput.length();
+  // char* c_index = nullptr;
+  // if (n == 2) {
+  //   *c_index = locationInput[2];
+  //   strcpy(c_index, locationInput.c_str());
+  // }
+
+  // char row = c_index[0];
+  // int col = c_index[1] - '0';
+
+  char row = tileInput.at(0);
+  int col = tileInput.at(1) - '0';
+
+  if (isCodeValid(locationInput) && board.isValidPosition(row, col)) {
+    Tile tile(static_cast<Colour>(locationInput.at(0)),
+              static_cast<Shape>(locationInput.at(1) - '0'));
+    bool hasTile = currentPlayer->getHand()->contains(tile);
+
+    if (!hasTile) {
+      board.addTile(tile, row, col);
+      currentPlayer->getHand()->deleteTile(tile);
+      currentPlayer->getHand()->addTile(drawTileFromBag());
+    }
   }
-
-  n = locationInput.length();
-  char* c_index = nullptr;
-  if (n == 2) {
-    *c_index = locationInput[2];
-    strcpy(c_index, locationInput.c_str());
-  }
-
-  char row = c_index[0];
-  int col = c_index[1] - '0';
-
-  bool tileValid = isTileValid(c_tile);
-  bool indexValid = board.isValidPosition(row, col);
-
-  Tile tile(c_tile[0], c_tile[1]);
-  bool hasTile = currentPlayer->getHand()->contains(&tile);
-
-  if (tileValid && indexValid) board.addTile(&tile, row, col);
 
   // check if the user has that tile in their hand
   // check if it's a valid index
@@ -173,21 +176,11 @@ void Game::placeTile(std::string tileInput, std::string locationInput,
   // calculate the score and update the user's score
 }
 
-bool Game::isTileValid(char* c_tile) {
-  bool colorValid = std::find(std::begin(arr_color), std::end(arr_color),
-                              c_tile[0] - '0') != std::end(arr_color);
-
-  bool shapeValid = std::find(std::begin(arr_shape), std::end(arr_shape),
-                              c_tile[1] - '0') != std::end(arr_shape);
-
-  return colorValid && shapeValid;
-}
-
 Tile Game::drawTileFromBag() {
-  Tile* tile = tileBag->getFront();
+  Tile tile = tileBag->getFront();
 
   // delete from tileBag
   tileBag->deleteFront();
 
-  return *tile;
+  return tile;
 }

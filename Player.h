@@ -6,9 +6,9 @@
 #include "LinkedList.h"
 
 class Player {
-  LinkedList* hand;
   std::string name;
   int points;
+  LinkedList* hand;
   void clear();
 
  public:

@@ -1,6 +1,6 @@
 
 #include "LinkedList.h"
-#include <stdlib.h>
+
 #include <iostream>
 #include <random>
 
@@ -11,7 +11,7 @@ LinkedList::LinkedList(const LinkedList& src)
   Node* current = src.head;
 
   while (current) {
-    addTile(new Tile(*(current->getTile())));
+    addTile(current->getTile());
     current = current->next;
   }
 }
@@ -33,10 +33,10 @@ void LinkedList::clear() {
 
 int LinkedList::getSize() { return list_size; }
 
-Tile* LinkedList::getFront() { return head->getTile(); }
+Tile LinkedList::getFront() { return head->getTile(); }
 
-Tile* LinkedList::get(unsigned int i) {
-  Tile* tile = nullptr;
+Tile LinkedList::get(unsigned int i) {
+  Tile tile;
 
   if (i == 0) {
     tile = head->getTile();
@@ -58,12 +58,12 @@ Tile* LinkedList::get(unsigned int i) {
   return tile;
 }
 
-bool LinkedList::contains(Tile* tile) {
+bool LinkedList::contains(Tile tile) {
   bool found = false;
   Node* current = head;
 
   while (!found && current) {
-    if (current->getTile()->equals(tile)) {
+    if (current->getTile().equals(tile)) {
       found = true;
     }
     current = current->next;
@@ -72,7 +72,7 @@ bool LinkedList::contains(Tile* tile) {
   return found;
 }
 
-void LinkedList::addTile(Tile* tile) {
+void LinkedList::addTile(Tile tile) {
   Node* temp = new Node(tile, nullptr);
 
   if (list_size == 0) {  // if list is empty
@@ -132,14 +132,14 @@ void LinkedList::deleteAt(unsigned int i) {
   }
 }
 
-void LinkedList::replaceTile(Tile* tile, Tile* newTile) {
+void LinkedList::replaceTile(Tile tile, Tile newTile) {
   if (list_size == 0) {
     // error: list is empty
   } else {
     bool found = false;
     Node* newNode = new Node(newTile, nullptr);
 
-    if (tile->equals(head->getTile())) {  // if tile to delete is at head
+    if (tile.equals(head->getTile())) {  // if tile to delete is at head
       newNode->next = head->next;
       deleteFront();
       head = newNode;
@@ -148,7 +148,7 @@ void LinkedList::replaceTile(Tile* tile, Tile* newTile) {
       Node* prev = nullptr;
 
       while (!found && current) {
-        if (current->getTile()->equals(tile)) {
+        if (current->getTile().equals(tile)) {
           found = true;
         } else {
           prev = current;
@@ -173,20 +173,20 @@ void LinkedList::replaceTile(Tile* tile, Tile* newTile) {
   }
 }
 
-void LinkedList::deleteTile(Tile* tile) {
+void LinkedList::deleteTile(Tile tile) {
   if (list_size == 0) {
     // error: list is empty
   } else if (contains(tile)) {
     bool found = false;
 
-    if (tile->equals(head->getTile())) {  // if tile to delete is at head
+    if (tile.equals(head->getTile())) {  // if tile to delete is at head
       deleteFront();
     } else {  // if tile to delete is at the end or in the middle
       Node* current = head;
       Node* prev = nullptr;
 
       while (!found && current) {
-        if (current->getTile()->equals(tile)) {
+        if (current->getTile().equals(tile)) {
           found = true;
         } else {
           prev = current;
@@ -215,7 +215,7 @@ void LinkedList::displayContents() {
     unsigned int i = 0;
 
     while (i < list_size) {
-      std::cout << current->getTile()->toString();
+      std::cout << current->getTile().toString();
 
       if (i != list_size - 1) std::cout << ",";
 
@@ -223,21 +223,22 @@ void LinkedList::displayContents() {
       i++;
     }
 
-    std::cout << std::endl;
+    std::cout << "\n\n";
   }
 }
 
 void LinkedList::shuffle() {
+  // todo
+
   int min = 0;
   int max = list_size;
   int seed = 98;
   std::default_random_engine engine(seed);
-  // int value = -1;
 
   for (unsigned int i = 0; i < list_size; i++) {
     std::uniform_int_distribution<int> uniform_dist(min, max);
     int randomIndex = uniform_dist(engine);
-    Tile* toBeShuffled = get(randomIndex);
+    Tile toBeShuffled = get(randomIndex);
     deleteAt(randomIndex);
     addTile(toBeShuffled);
     min++;
