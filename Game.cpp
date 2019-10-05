@@ -70,11 +70,7 @@ void Game::run() {
     currentPlayer->getHand()->displayContents();
     std::cout << "> ";
 
-    handleCommand(currentPlayer);
-    // add tile to board(draw tile, update score)
-    // replace tile
-
-    turn++;
+    if (handleCommand(currentPlayer)) turn++;
   }
 
   std::cout << "Game over\n"
@@ -101,38 +97,79 @@ Player* Game::getWinningPlayer() {
   return winningPlayer;
 }
 
-void Game::handleCommand(Player* currentPlayer) {
-  // todo
+bool Game::handleCommand(Player* currentPlayer) {
+  bool validCommand = true;
+
+  // add tile to board(draw tile, update score)
+  // replace tile
+
+  // error: infinite loop when ctrl+D is pressed
 
   std::string userInput;
 
-  while (std::cin.peek() == '\n') {
-    std::cout << "Command not recognized. Try 'place X at Y' or 'replace X'\n";
-    std::cin.ignore();
-  }
+  do {
+    std::cout << "> ";
+    std::getline(std::cin, userInput);
 
-  std::getline(std::cin, userInput);
+    std::stringstream ss(userInput);
+    std::string intermediate;
+    std::vector<std::string> tokens;
 
-  std::cout << userInput;
+    while (getline(ss, intermediate, ' ')) {
+      if (!intermediate.empty()) tokens.push_back(intermediate);
+    }
 
-  std::stringstream ss(userInput);
-  std::string intermediate;
-  std::vector<std::string> tokens;
+    if (tokens.size() == PCOMMANDSIZE && !tokens[0].compare("place") &&
+        !tokens[2].compare("at")) {
+      if (tokens[1].length() == 2 && tokens[3].length() == 2) {
+        if (!placeTile(tokens[1], tokens[3], currentPlayer))
+          validCommand = false;
+      } else  // if the 2nd and 4th tokens don't have a length of two
+        validCommand = false;
+    }
 
-  while (getline(std::cin, intermediate, ' ')) {
-    tokens.push_back(intermediate);
-  }
+    else if (tokens.size() == RCOMMANDSIZE && !tokens[0].compare("replace")) {
+      // replace tile method
+      if (tokens[1].length() == 2) {
+        if (isCodeValid(tokens[1])) {
+          Tile toReplace(static_cast<Colour>(tokens[1].at(0)),
+                         static_cast<Shape>(tokens[1].at(1) - '0'));
 
-  if (tokens.size() == PCOMMANDSIZE && !tokens[0].compare("place") &&
-      !tokens[2].compare("at")) {
-    placeTile(tokens[1], tokens[3], currentPlayer);
-  } else if (tokens.size() == RCOMMANDSIZE && !tokens[0].compare("replace")) {
-    // replace tile method
-  }
+          if (currentPlayer->getHand()->contains(toReplace)) {
+            currentPlayer->getHand()->replaceTile(toReplace, drawTileFromBag());
+
+            std::cout << "tile replaced, player hand: ";
+            currentPlayer->getHand()->displayContents();
+          } else {
+            validCommand = false;
+            std::cout << "\nThis tile is not in your hand. Please try again\n";
+          }
+        } else {
+          validCommand = false;
+          std::cout << "\nThis tile does not exist. Please try again\n";
+        }
+      } else {
+        validCommand = false;
+        std::cout
+            << "\nCommand not recognized. Try 'place <tile> at <location>' "
+               "or 'replace <tile>'\n";
+      }
+    }
+
+    else {
+      validCommand = false;
+      std::cout << "\nCommand not recognized. Try 'place <tile> at <location>' "
+                   "or 'replace <tile>'\n";  // todo : UPDATE ERROR MESSAGES IN
+                                             // UNIT TESTS
+    }
+  } while (!validCommand);
+
+  return validCommand;
 }
 
-void Game::placeTile(std::string tileInput, std::string locationInput,
+bool Game::placeTile(std::string tileInput, std::string locationInput,
                      Player* currentPlayer) {
+  bool valid = true;
   // int n = tileInput.length();
   // char* c_tile = nullptr;
 
@@ -163,8 +200,14 @@ void Game::placeTile(std::string tileInput, std::string locationInput,
       board.addTile(tile, row, col);
       currentPlayer->getHand()->deleteTile(tile);
       currentPlayer->getHand()->addTile(drawTileFromBag());
-    }
+    } else
+      valid = false;
+  } else {
+    // throw exception??
+    valid = false;
   }
+
+  return valid;
 
   // check if the user has that tile in their hand
   // check if it's a valid index
@@ -181,6 +224,8 @@ Tile Game::drawTileFromBag() {
 
   // delete from tileBag
   tileBag->deleteFront();
+
+  tileBag->displayContents();
 
   return tile;
 }

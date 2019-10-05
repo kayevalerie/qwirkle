@@ -36,12 +36,12 @@ int LinkedList::getSize() { return list_size; }
 Tile LinkedList::getFront() { return head->getTile(); }
 
 Tile LinkedList::get(unsigned int i) {
-  Tile tile;
+  Tile* tile = nullptr;
 
   if (i == 0) {
-    tile = head->getTile();
+    *tile = head->getTile();
   } else if (i == list_size - 1) {
-    tile = tail->getTile();
+    *tile = tail->getTile();
   } else if (i < list_size) {
     Node* current = head->next;
     unsigned int index = 1;
@@ -50,12 +50,12 @@ Tile LinkedList::get(unsigned int i) {
       current = current->next;
       index++;
     }
-    tile = current->getTile();
+    *tile = current->getTile();
   } else {
     // error: invalid index
   }
 
-  return tile;
+  return *tile;
 }
 
 bool LinkedList::contains(Tile tile) {
@@ -141,7 +141,7 @@ void LinkedList::replaceTile(Tile tile, Tile newTile) {
 
     if (tile.equals(head->getTile())) {  // if tile to delete is at head
       newNode->next = head->next;
-      deleteFront();
+      delete head;
       head = newNode;
     } else {  // if tile to delete is at the end or in the middle
       Node* current = head;
@@ -230,17 +230,17 @@ void LinkedList::displayContents() {
 void LinkedList::shuffle() {
   // todo
 
-  int min = 0;
-  int max = list_size;
-  int seed = 98;
-  std::default_random_engine engine(seed);
+  // int min = 0;
+  // int max = list_size;
+  // int seed = 98;
+  // std::default_random_engine engine(seed);
 
-  for (unsigned int i = 0; i < list_size; i++) {
-    std::uniform_int_distribution<int> uniform_dist(min, max);
-    int randomIndex = uniform_dist(engine);
-    Tile toBeShuffled = get(randomIndex);
-    deleteAt(randomIndex);
-    addTile(toBeShuffled);
-    min++;
-  }
+  // for (unsigned int i = 0; i < list_size; i++) {
+  //   std::uniform_int_distribution<int> uniform_dist(min, max);
+  //   int randomIndex = uniform_dist(engine);
+  //   Tile toBeShuffled = get(randomIndex);
+  //   deleteAt(randomIndex);
+  //   addTile(toBeShuffled);
+  //   min++;
+  // }
 }

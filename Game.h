@@ -16,8 +16,8 @@ class Game {
 
   void clear();
   void addPlayer(Player player);
-  void handleCommand(Player* currentPlayer);
-  void placeTile(std::string tileInput, std::string locationInput,
+  bool handleCommand(Player* currentPlayer);
+  bool placeTile(std::string tileInput, std::string locationInput,
                  Player* currentPlayer);
   Tile drawTileFromBag();
   void computePoints(Player player);  // todo
