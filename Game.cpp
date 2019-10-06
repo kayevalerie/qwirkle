@@ -136,8 +136,8 @@ bool Game::handleCommand(Player* currentPlayer) {
           if (currentPlayer->getHand()->contains(toReplace)) {
             currentPlayer->getHand()->replaceTile(toReplace, drawTileFromBag());
 
-            std::cout << "tile replaced, player hand: ";
-            currentPlayer->getHand()->displayContents();
+            //std::cout << "tile replaced, player hand: ";
+            //currentPlayer->getHand()->displayContents();
           } else {
             validCommand = false;
             std::cout << "\nThis tile is not in your hand. Please try again\n";
@@ -168,53 +168,35 @@ bool Game::handleCommand(Player* currentPlayer) {
 bool Game::placeTile(std::string tileInput, std::string locationInput,
                      Player* currentPlayer) {
   bool valid = true;
-  // int n = tileInput.length();
-  // char* c_tile = nullptr;
-
-  // if (n == 2) {
-  //   *c_tile = tileInput[2];
-  //   strcpy(c_tile, tileInput.c_str());
-  // }
-
-  // n = locationInput.length();
-  // char* c_index = nullptr;
-  // if (n == 2) {
-  //   *c_index = locationInput[2];
-  //   strcpy(c_index, locationInput.c_str());
-  // }
-
-  // char row = c_index[0];
-  // int col = c_index[1] - '0';
 
   char row = tileInput.at(0);
   int col = tileInput.at(1) - '0';
 
-  if (isCodeValid(locationInput) && board.isValidPosition(row, col)) {
-    Tile tile(static_cast<Colour>(locationInput.at(0)),
-              static_cast<Shape>(locationInput.at(1) - '0'));
-    bool hasTile = currentPlayer->getHand()->contains(tile);
+  if (isCodeValid(tileInput)) {
+      if (board.isValidPosition(row, col)) {
+            Tile tile(static_cast<Colour>(tileInput.at(0)),
+            static_cast<Shape>(tileInput.at(1) - '0'));
+            bool hasTile = currentPlayer->getHand()->contains(tile);
 
-    if (!hasTile) {
-      board.addTile(tile, row, col);
-      currentPlayer->getHand()->deleteTile(tile);
-      currentPlayer->getHand()->addTile(drawTileFromBag());
-    } else
-      valid = false;
+            if (hasTile) {
+                board.addTile(tile, row, col);
+                currentPlayer->getHand()->deleteTile(tile);
+                currentPlayer->getHand()->addTile(drawTileFromBag());
+            } else {
+                valid = false;
+                std::cout << "\nThis tile is not in your hand. Please try again\n"; 
+            }
+      } else {
+            //do we need to check for out of bounds?
+            std::cout << "\nThis spot does not exist. Please try again\n";
+            // throw exception??
+      }
   } else {
-    // throw exception??
+    std::cout << "This tile does not exist. Please try again\n";
     valid = false;
   }
 
   return valid;
-
-  // check if the user has that tile in their hand
-  // check if it's a valid index
-  // check if that spot is not taken already
-  // check if the user can put that specific tile there(refer to qwirkle rules)
-  // add that tile to the board vector
-  // delete that tile from the user's hand
-  // draw another tile from the tile bag and add it to the user's hand
-  // calculate the score and update the user's score
 }
 
 Tile Game::drawTileFromBag() {
@@ -222,8 +204,6 @@ Tile Game::drawTileFromBag() {
 
   // delete from tileBag
   tileBag->deleteFront();
-
-  tileBag->displayContents();
 
   return tile;
 }
