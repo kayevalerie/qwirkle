@@ -103,8 +103,6 @@ bool Game::handleCommand(Player* currentPlayer) {
   // add tile to board(draw tile, update score)
   // replace tile
 
-  // error: infinite loop when ctrl+D is pressed
-
   std::string userInput;
 
   do {
@@ -162,7 +160,7 @@ bool Game::handleCommand(Player* currentPlayer) {
                    "or 'replace <tile>'\n";  // todo : UPDATE ERROR MESSAGES IN
                                              // UNIT TESTS
     }
-  } while (!validCommand);
+  } while (std::cin.good() && !std::cin.eof() && !validCommand);
 
   return validCommand;
 }
