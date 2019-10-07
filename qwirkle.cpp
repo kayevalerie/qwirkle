@@ -157,7 +157,7 @@ void showStudentInfo() {
 
 void readFile(std::string filename) {
   std::ifstream file(filename);
-  std:string line;
+  std::string line;
   if (file.is_open())
   {
     while (getline(file,line) )
