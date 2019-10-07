@@ -40,21 +40,21 @@ bool isNumber(std::string h)
   return true;
 }
 
-bool isHandValid(std::string a)
-{
-  std::string tile;
-  std::string validTileChars = "RGBPOY123456";
-  while (a.good())
-  {
-    getline(a, tile, ',');
+// bool isHandValid(std::string a)
+// {
+//   std::string tile;
+//   std::string validTileChars = "RGBPOY123456";
+//   while (a.good())
+//   {
+//     getline(a, tile, ',');
 
-    if (tile.length()) != 2 && tile.find_first_not_of(validTileChars) != std::string::npos)
-    {
-      return false;
-    }
-  }
-  return true;
-}
+//     if (tile.length()) != 2 && tile.find_first_not_of(validTileChars) != std::string::npos)
+//     {
+//       return false;
+//     }
+//   }
+//   return true;
+// }
 
 //bool isBoardValid(std::string b){
 //   bool valid = true;
