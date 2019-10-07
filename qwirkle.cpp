@@ -101,7 +101,7 @@ void newGameMenu() {
 
 void loadGameMenu() {
   std::string fileName;
-  valid = false;
+  bool valid = false;
   std::cout << "Enter the name of the file from which to load the game:\n";
   while (!valid) {
     do {
@@ -115,6 +115,7 @@ void loadGameMenu() {
     } else {
       std::cout << "The format of this file is not correct. Please try again\n";
     }
+  }
 }
 
 void exitGame() { std::cout << "\n\nGoodbye! \n"; }
