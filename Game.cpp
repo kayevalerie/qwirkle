@@ -59,7 +59,10 @@ void Game::run() {
     else if (turn % 2)
       currentPlayer = &playerTwo;
 
-    std::cout << "tile bag is: " << tileBag->displayContents();  
+     //for now
+    std::cout << "tile bag is: ";
+    tileBag->displayContents();  
+      std::cout << "\n";
       
       
       
