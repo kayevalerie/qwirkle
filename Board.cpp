@@ -44,6 +44,8 @@ bool Board::isValidPosition(char row,
                             int col) {  // does not accept positions like A1, B2
   int row_pos = row - 'A';
 
+  std::cout << "row = " << row_pos << " col = " << col;
+
   return (row_pos % 2 && col % 2) || (!row_pos % 2 && !col % 2);
 }
 
@@ -149,20 +151,20 @@ bool Board::hasValidAdjacentTiles(Tile tile, int row, int col) {
     }
   }
 
-  bool has_Shape =
-      std::any_of(std::begin(match_adjacents), std::end(match_adjacents),
-                  [&](int i) { return i == 1; });
+  // bool has_Shape =
+  //     std::any_of(std::begin(match_adjacents), std::end(match_adjacents),
+  //                 [&](int i) { return i == 1; });
 
-  bool has_Color =
-      std::any_of(std::begin(match_adjacents), std::end(match_adjacents),
-                  [&](int i) { return i == 0; });
+  // bool has_Color =
+  //     std::any_of(std::begin(match_adjacents), std::end(match_adjacents),
+  //                 [&](int i) { return i == 0; });
 
-  if (!has_Shape)
+  // if (!has_Shape)
 
-    for (int i = 0; i < ADJACENT_SIZE; i++) {
-      std::cout << "match_adjacents[" << i << "] = " << match_adjacents[i]
-                << "\n";
-    }
+  for (int i = 0; i < ADJACENT_SIZE; i++) {
+    std::cout << "match_adjacents[" << i << "] = " << match_adjacents[i]
+              << "\n";
+  }
 
   // if (match_adjacents[]) {
   // }

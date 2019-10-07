@@ -54,12 +54,17 @@ void Game::run() {
   int turn = 0;
 
   while (!isFinished()) {
-    if (!turn % 2)
+    if (turn % 2 == 0)
       currentPlayer = &playerOne;
-    else if (turn % 2)
+    else if (turn % 2 != 0)
       currentPlayer = &playerTwo;
 
-    std::cout << '\n' << currentPlayer->getName() << ", it's your turn\n";
+    // for now
+    std::cout << "tile bag is: ";
+    tileBag->displayContents();
+    std::cout << "\n";
+
+    std::cout << '\n' << currentPlayer->getName() << ", it's your turn\n\n";
     std::cout << "Score for " << playerOne.getName() << ": "
               << playerOne.getPoints() << '\n';
     std::cout << "Score for " << playerTwo.getName() << ": "
@@ -99,7 +104,6 @@ Player* Game::getWinningPlayer() {
 
 bool Game::handleCommand(Player* currentPlayer) {
   bool validCommand = true;
-  bool action = false;
 
   std::string userInput;
 
@@ -119,7 +123,7 @@ bool Game::handleCommand(Player* currentPlayer) {
         !tokens[2].compare("at")) {
       if (tokens[1].length() == 2 && tokens[3].length() == 2) {
         if (placeTile(tokens[1], tokens[3], currentPlayer)) {
-          action = true;
+          validCommand = true;
         } else {
           validCommand = false;
           std::cout
@@ -139,7 +143,7 @@ bool Game::handleCommand(Player* currentPlayer) {
 
           if (currentPlayer->getHand()->contains(toReplace)) {
             currentPlayer->getHand()->replaceTile(toReplace, drawTileFromBag());
-            action = true;
+            validCommand = true;
             // std::cout << "tile replaced, player hand: ";
             // currentPlayer->getHand()->displayContents();
           } else {
@@ -164,13 +168,13 @@ bool Game::handleCommand(Player* currentPlayer) {
                    "or 'replace <tile>'\n";  // todo : UPDATE ERROR MESSAGES IN
                                              // UNIT TESTS
     }
-  } while (std::cin.good() && !std::cin.eof() && (!validCommand || !action));
+  } while (std::cin.good() && !std::cin.eof() && !validCommand);
 
   return validCommand;
 }
 
 bool Game::placeTile(std::string tileInput, std::string locationInput,
-                     Player* currentPlayer, int turn) {
+                     Player* currentPlayer) {
   bool valid = true;
 
   char row = tileInput.at(0);

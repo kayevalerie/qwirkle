@@ -19,6 +19,7 @@ int main(void) {
 
 void displayMenu() {
   int choice = 0;
+  std::string choiceString;
   bool quit = false;
 
   do {
@@ -31,19 +32,12 @@ void displayMenu() {
               << "4. Quit\n"
               << "\n> ";
 
-    std::cin >> choice;
-
-    while (!std::cin >> choice) {
-      std::cin.clear();
-      std::cin.ignore(100, '\n');
+    while (std::cin.peek() == '\n') {
+      std::cin.ignore();
     }
 
-    // while (std::cin.peek() == "\n") {
-    //   std::cin.clear();
-    //   std::cin.ignore(100, '\n');
-    // }
-
-    // getline(std::cin, choice);
+    getline(std::cin, choiceString);
+    choice = std::stoi(choiceString);
 
     if (choice == 1)
       newGameMenu();
@@ -120,9 +114,11 @@ void loadGameMenu() {
   bool valid = false;
   std::cout << "Enter the name of the file from which to load the game:\n";
   while (!valid) {
-    do {
-      std::cin >> fileName;
-    } while (std::cin.good() && !std::cin.eof());
+    while (std::cin.peek() == '\n') {
+      std::cout << "Please input the name of the file\n> ";
+      std::cin.ignore();
+    }
+    getline(std::cin, fileName);
     if (Helper::isValidFormat(fileName)) {
       Game game("test", "test2");
       std::cout << "Qwirkle game loaded successfully. \n";

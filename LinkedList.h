@@ -10,8 +10,8 @@ class LinkedList {
   Node* tail;
   size_t list_size;
   void clear();
-  Tile get(unsigned int i);
   void deleteAt(unsigned int i);
+  Node* get(unsigned int i);
 
  public:
   LinkedList();
