@@ -59,6 +59,10 @@ void Game::run() {
     else if (turn % 2)
       currentPlayer = &playerTwo;
 
+    std::cout << "tile bag is: " << tileBag->displayContents();  
+      
+      
+      
     std::cout << '\n' << currentPlayer->getName() << ", it's your turn\n\n";
     std::cout << "Score for " << playerOne.getName() << ": "
               << playerOne.getPoints() << '\n';
