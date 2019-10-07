@@ -54,9 +54,9 @@ void Game::run() {
   int turn = 0;
 
   while (!isFinished()) {
-    if (!turn % 2)
+    if (turn % 2 == 0)
       currentPlayer = &playerOne;
-    else if (turn % 2)
+    else if (turn % 2 != 0)
       currentPlayer = &playerTwo;
 
      //for now
@@ -138,10 +138,7 @@ bool Game::handleCommand(Player* currentPlayer) {
                          static_cast<Shape>(tokens[1].at(1) - '0'));
 
           if (currentPlayer->getHand()->contains(toReplace)) {
-            currentPlayer->getHand()->replaceTile(toReplace, drawTileFromBag());
-
-            //std::cout << "tile replaced, player hand: ";
-            //currentPlayer->getHand()->displayContents();
+                currentPlayer->getHand()->replaceTile(toReplace, drawTileFromBag());
           } else {
             validCommand = false;
             std::cout << "\nThis tile is not in your hand. Please try again\n";
