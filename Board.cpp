@@ -37,6 +37,7 @@ bool Board::isInBounds(int row, int col) {
 bool Board::isInBounds(char row, int col) {
   int row_pos = row - 'A';
   int col_pos = translateCol(col);
+
   return isInBounds(row_pos, col_pos);
 }
 
@@ -51,14 +52,17 @@ bool Board::isOccupied(int row, int col) {
   Tile tile;
   tile = grid[row][col];
 
+  std::cout << "in isOccupied, row = " << row << " col = " << col << "\n";
+
   return tile.getColour() != Colour::NONE && tile.getShape() != Shape::NONE;
 }
 
-bool Board::isOccupied(char row, int col) {
-  int row_pos = row - 'A';
-  int col_pos = translateCol(col);
-  return isOccupied(row_pos, col_pos);
-}
+// bool Board::isOccupied(char row, int col) {
+//   int row_pos = row - 'A';
+//   int col_pos = translateCol(col);
+
+//   return isOccupied(row_pos, col_pos);
+// }
 
 bool Board::hasValidAdjacentTiles(Tile tile, int row, int col) {
   bool valid = true;
@@ -219,17 +223,25 @@ bool Board::hasValidAdjacentTiles(Tile tile, int row, int col) {
       valid = false;
   }
 
+  std::cout << "in hasValidAdjacentTiles(), VALID = " << valid << '\n';
+
   return valid;
 }
 
 int Board::translateCol(int col) {
   int curCol = -1;
 
-  if (col % 2) {  // even column
-    curCol = col / 2;
-  } else if (!col % 2) {  // odd column
+  if (col % 2 == 0) {  // even column
+    if (col == 0)
+      curCol = 0;
+    else
+      curCol = (col / 2);
+  } else {  // odd column
     curCol = (col - 1) / 2;
   }
+
+  // std::cout << "in translatecol, col = " << col << " curCol = " << curCol;
+
   return curCol;
 }
 
@@ -323,12 +335,14 @@ bool Board::addTile(Tile tile, char row, int col) {
   int row_pos = row - 'A';
   int col_pos = translateCol(col);
 
-  if (hasValidAdjacentTiles(tile, row_pos, col_pos))
-    grid[row_pos][col_pos] = tile;
-  else {
+  // std::cout << "\nIN ADDTILE(), COL_POS = " << col_pos;
+
+  if (hasValidAdjacentTiles(tile, row_pos, col_pos)) {
+    // std::cout << "row = " << row_pos << " col = " << col_pos << '\n';
+    grid.at(row_pos).at(col_pos) = tile;
+    std::cout << " valid adjacent tiles\n";
+  } else
     valid = false;
-    std::cout << "INVALID MOVE";
-  }
 
   return valid;
 }

@@ -39,8 +39,8 @@ Game::Game(std::string playerOneName, std::string playerTwoName)
   playerTwo.setHand(playerTwoHand);
 
   // tentative
-  // delete[] playerOneHand;
-  // delete[] playerTwoHand;
+  delete playerOneHand;
+  delete playerTwoHand;
 }
 
 Game::~Game() { clear(); }
@@ -181,6 +181,8 @@ bool Game::placeTile(std::string tileInput, std::string locationInput,
   bool valid = true;
   char row = locationInput.at(0);
   int col = locationInput.at(1) - '0';
+
+  // std::cout << "in PlaceTile(), COL = " << col << '\n';
 
   if (isCodeValid(tileInput)) {
     if (board.isValidPosition(row, col)) {
