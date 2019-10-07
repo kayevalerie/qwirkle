@@ -68,7 +68,7 @@ void Game::run() {
 
     std::cout << "\nYour hand is\n";
     currentPlayer->getHand()->displayContents();
-    std::cout << "> ";
+    std::cout << "\n\n> ";
 
     if (handleCommand(currentPlayer)) turn++;
   }
@@ -99,9 +99,6 @@ Player* Game::getWinningPlayer() {
 
 bool Game::handleCommand(Player* currentPlayer) {
   bool validCommand = true;
-
-  // add tile to board(draw tile, update score)
-  // replace tile
 
   std::string userInput;
 
