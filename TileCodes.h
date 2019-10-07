@@ -14,10 +14,11 @@ enum class Colour {
   YELLOW = 'Y',
   GREEN = 'G',
   BLUE = 'B',
-  PURPLE = 'P'
+  PURPLE = 'P',
+  NONE = 'N'
 };
 
-enum class Shape { CIRCLE = 1, STAR_4, DIAMOND, SQUARE, STAR_6, CLOVER };
+enum class Shape { NONE = 0, CIRCLE, STAR_4, DIAMOND, SQUARE, STAR_6, CLOVER };
 
 extern const std::array<Colour, COLOUR_SIZE> colours;
 extern const std::array<Shape, SHAPE_SIZE> shapes;

@@ -8,7 +8,7 @@ class Node {
   Tile tile;
 
  public:
-  Node();  // to remove
+  // Node();
   Node(Tile tile, Node* next);
   Node(const Node& other);
   Node* next;
