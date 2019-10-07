@@ -20,6 +20,7 @@ int main(void) {
 
 void displayMenu() {
   int choice = 0;
+  std::string choiceString;
   bool quit = false;
 
   do {
@@ -32,12 +33,12 @@ void displayMenu() {
               << "4. Quit\n"
               << "\n> ";
 
-    while (std::cin.peek() == "\n") {
-      std::cin.clear();
-      std::cin.ignore(100, '\n');
+    while (std::cin.peek() == '\n') {
+      std::cin.ignore();
     }
     
-    getline(std::cin, choice)
+    getline(std::cin, choiceString);
+    choice = std::stoi(choiceString);
 
     if (choice == 1)
       newGameMenu();
