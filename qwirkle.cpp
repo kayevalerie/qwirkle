@@ -64,6 +64,11 @@ void newGameMenu() {
   while (!end1) {
     std::cout << "\nEnter a name for player 1: \n";
     std::cout << "\n> ";
+    
+    while (std::cin.peek() == '\n') {
+      std::cout << "Please input the name\n> ";
+      std::cin.ignore();
+    }
     std::cin >> player1Name;
 
     if (!Helper::isASCII(player1Name)) {
@@ -82,6 +87,11 @@ void newGameMenu() {
   while (!end2) {
     std::cout << "\nEnter a name for player 2: \n";
     std::cout << "\n> ";
+    
+    while (std::cin.peek() == '\n') {
+      std::cout << "Please input the name\n> ";
+      std::cin.ignore();
+    }
     std::cin >> player2Name;
 
     if (!Helper::isASCII(player2Name)) {
