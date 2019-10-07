@@ -32,12 +32,12 @@ void displayMenu() {
               << "4. Quit\n"
               << "\n> ";
 
-    std::cin >> choice;
-
-    while (!std::cin >> choice) {
+    while (std::cin.peek() == "\n") {
       std::cin.clear();
       std::cin.ignore(100, '\n');
     }
+    
+    getline(std::cin, choice)
 
     if (choice == 1)
       newGameMenu();
@@ -69,7 +69,7 @@ void newGameMenu() {
       std::cout << "Please input the name\n> ";
       std::cin.ignore();
     }
-    std::cin >> player1Name;
+    getline(std::cin, player1Name);
 
     if (!Helper::isASCII(player1Name)) {
       std::cout << "Error: name must only contain letters. Please input your "
@@ -92,7 +92,8 @@ void newGameMenu() {
       std::cout << "Please input the name\n> ";
       std::cin.ignore();
     }
-    std::cin >> player2Name;
+    
+    getline(std::cin, player2Name);
 
     if (!Helper::isASCII(player2Name)) {
       std::cout << "Error: name must only contain letters. Please input your "
