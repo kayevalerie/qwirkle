@@ -35,7 +35,7 @@ int LinkedList::getSize() { return list_size; }
 
 Tile LinkedList::getFront() { return head->getTile(); }
 
-Tile LinkedList::get(unsigned int i) {
+Tile* LinkedList::get(unsigned int i) {
   Tile* tile = nullptr;
 
   if (i == 0) {
@@ -228,19 +228,20 @@ void LinkedList::displayContents() {
 }
 
 void LinkedList::shuffle() {
-  // todo
+  todo
 
-  // int min = 0;
-  // int max = list_size;
-  // int seed = 98;
-  // std::default_random_engine engine(seed);
+  int min = 0;
+  int max = list_size;
+  int seed = 98;
+  std::default_random_engine engine(seed);
 
-  // for (unsigned int i = 0; i < list_size; i++) {
-  //   std::uniform_int_distribution<int> uniform_dist(min, max);
-  //   int randomIndex = uniform_dist(engine);
-  //   Tile toBeShuffled = get(randomIndex);
-  //   deleteAt(randomIndex);
-  //   addTile(toBeShuffled);
-  //   min++;
-  // }
+  for (unsigned int i = 0; i < list_size; i++) {
+    std::uniform_int_distribution<int> uniform_dist(min, max);
+    int randomIndex = uniform_dist(engine);
+    Tile* toBeShuffled = get(randomIndex);
+     std::cout << "tile is: " << toBeShuffled->toString << '\n';
+    deleteAt(randomIndex);
+    addTile(*toBeShuffled);
+    max--;
+  }
 }
