@@ -10,22 +10,29 @@
 
 namespace Helper {
 
-bool isASCII(std::string n) {
-  unsigned int i;
-
-  for (i = 0; i < n.size(); i++) {
-    if (isalpha(n[i]) == 0) {
-      return false;
+bool isASCII(std::string n)
+{
+    unsigned int i;
+    for (i = 0; i < n.size(); i++)
+    {
+        if (isalpha(n[i]) == 0)
+        {
+            return false;
+        }
     }
     return true;
 }
 
-bool isNumber(std::string h) {
-  unsigned int i;
+bool isNumber(std::string h)
+{
+    unsigned int i;
 
-  for (i = 0; i < h.size(); i++) {
-    if (isdigit(h[i]) == 0) {
-      return false;
+    for (i = 0; i < h.size(); i++)
+    {
+        if (isdigit(h[i]) == 0)
+        {
+            return false;
+        }
     }
     return true;
 }
