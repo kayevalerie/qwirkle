@@ -68,7 +68,7 @@ void Game::run() {
 
     std::cout << "\nYour hand is\n";
     currentPlayer->getHand()->displayContents();
-    std::cout << "\n\n> ";
+    std::cout << "\n\n";
 
     if (handleCommand(currentPlayer)) turn++;
   }
