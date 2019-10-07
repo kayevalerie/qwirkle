@@ -23,6 +23,8 @@ Game::Game(std::string playerOneName, std::string playerTwoName)
     }
   }
 
+  tileBag->displayContents();
+
   tileBag->shuffle();
 
   LinkedList* playerOneHand = new LinkedList();
@@ -176,12 +178,10 @@ bool Game::handleCommand(Player* currentPlayer) {
 bool Game::placeTile(std::string tileInput, std::string locationInput,
                      Player* currentPlayer) {
   bool valid = true;
-
-  char row = tileInput.at(0);
-  int col = tileInput.at(1) - '0';
+  char row = locationInput.at(0);
+  int col = locationInput.at(1) - '0';
 
   if (isCodeValid(tileInput)) {
-    std::cout << "row = " << row << " col = " << col;
     if (board.isValidPosition(row, col)) {
       Tile tile(static_cast<Colour>(tileInput.at(0)),
                 static_cast<Shape>(tileInput.at(1) - '0'));

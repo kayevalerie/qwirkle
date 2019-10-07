@@ -42,11 +42,17 @@ bool Board::isInBounds(char row, int col) {
 
 bool Board::isValidPosition(char row,
                             int col) {  // does not accept positions like A1, B2
+  std::cout << "char row = " << row;
+
   int row_pos = row - 'A';
+  std::cout << "Row = " << row_pos;
 
-  std::cout << "row = " << row_pos << " col = " << col;
+  std::cout << " Col = " << col << "\n";
 
-  return (row_pos % 2 && col % 2) || (!row_pos % 2 && !col % 2);
+  std::cout << (row_pos % 2 && col % 2);
+  std::cout << !(row_pos % 2) && !(col % 2);
+
+  return (row_pos % 2 && col % 2) || (!(row_pos % 2) && !(col % 2));
 }
 
 bool Board::isOccupied(int row, int col) {
@@ -72,6 +78,7 @@ bool Board::hasValidAdjacentTiles(Tile tile, int row, int col) {
   if (!row % 2) {  // if checking for odd col
     if (isInBounds(row - 1, col) &&
         isOccupied(row - 1, col)) {  // check top left
+      std::cout << "IN BOUNDS & OCCUPIED";
       if (grid[row - 1][col].getColour() == tile.getColour())
         match_adjacents[0] = 0;
       else if (grid[row - 1][col].getShape() == tile.getShape())
@@ -112,6 +119,8 @@ bool Board::hasValidAdjacentTiles(Tile tile, int row, int col) {
   } else {  // if even col
     if (isInBounds(row - 1, col - 1) &&
         isOccupied(row - 1, col - 1)) {  // check top left
+
+      std::cout << "IN BOUNDS & OCCUPIED";
       if (grid[row - 1][col - 1].getColour() == tile.getColour())
         match_adjacents[0] = 0;
       else if (grid[row - 1][col - 1].getShape() == tile.getShape())
@@ -165,9 +174,6 @@ bool Board::hasValidAdjacentTiles(Tile tile, int row, int col) {
     std::cout << "match_adjacents[" << i << "] = " << match_adjacents[i]
               << "\n";
   }
-
-  // if (match_adjacents[]) {
-  // }
 
   return valid;
 }
