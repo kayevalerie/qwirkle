@@ -99,6 +99,7 @@ Player* Game::getWinningPlayer() {
 
 bool Game::handleCommand(Player* currentPlayer) {
   bool validCommand = true;
+  bool action = false;
 
   std::string userInput;
 
@@ -117,8 +118,14 @@ bool Game::handleCommand(Player* currentPlayer) {
     if (tokens.size() == PCOMMANDSIZE && !tokens[0].compare("place") &&
         !tokens[2].compare("at")) {
       if (tokens[1].length() == 2 && tokens[3].length() == 2) {
-        if (!placeTile(tokens[1], tokens[3], currentPlayer))
+        if (placeTile(tokens[1], tokens[3], currentPlayer)) {
+          action = true;
+        } else {
           validCommand = false;
+          std::cout
+              << "\nCommand not recognized. Try 'place <tile> at <location>' "
+                 "or 'replace <tile>'\n";
+        }
       } else  // if the 2nd and 4th tokens don't have a length of two
         validCommand = false;
     }
@@ -132,9 +139,9 @@ bool Game::handleCommand(Player* currentPlayer) {
 
           if (currentPlayer->getHand()->contains(toReplace)) {
             currentPlayer->getHand()->replaceTile(toReplace, drawTileFromBag());
-
-            //std::cout << "tile replaced, player hand: ";
-            //currentPlayer->getHand()->displayContents();
+            action = true;
+            // std::cout << "tile replaced, player hand: ";
+            // currentPlayer->getHand()->displayContents();
           } else {
             validCommand = false;
             std::cout << "\nThis tile is not in your hand. Please try again\n";
@@ -157,40 +164,44 @@ bool Game::handleCommand(Player* currentPlayer) {
                    "or 'replace <tile>'\n";  // todo : UPDATE ERROR MESSAGES IN
                                              // UNIT TESTS
     }
-  } while (std::cin.good() && !std::cin.eof() && !validCommand);
+  } while (std::cin.good() && !std::cin.eof() && (!validCommand || !action));
 
   return validCommand;
 }
 
 bool Game::placeTile(std::string tileInput, std::string locationInput,
-                     Player* currentPlayer) {
+                     Player* currentPlayer, int turn) {
   bool valid = true;
 
   char row = tileInput.at(0);
   int col = tileInput.at(1) - '0';
 
   if (isCodeValid(tileInput)) {
-      if (board.isValidPosition(row, col)) {
-            Tile tile(static_cast<Colour>(tileInput.at(0)),
-            static_cast<Shape>(tileInput.at(1) - '0'));
-            bool hasTile = currentPlayer->getHand()->contains(tile);
+    std::cout << "row = " << row << " col = " << col;
+    if (board.isValidPosition(row, col)) {
+      Tile tile(static_cast<Colour>(tileInput.at(0)),
+                static_cast<Shape>(tileInput.at(1) - '0'));
 
-            if (hasTile) {
-                board.addTile(tile, row, col);
-                currentPlayer->getHand()->deleteTile(tile);
-                currentPlayer->getHand()->addTile(drawTileFromBag());
-            } else {
-                valid = false;
-                std::cout << "\nThis tile is not in your hand. Please try again\n"; 
-            }
+      if (currentPlayer->getHand()->contains(tile)) {
+        if (board.addTile(tile, row, col)) {
+          currentPlayer->getHand()->deleteTile(tile);
+          currentPlayer->getHand()->addTile(drawTileFromBag());
+        } else {
+          valid = false;
+          std::cout << "\nThat tile cannot be placed there. Please try again\n";
+        }
       } else {
-            //do we need to check for out of bounds?
-            std::cout << "\nThis spot does not exist. Please try again\n";
-            // throw exception??
+        valid = false;
+        std::cout << "\nThat tile is not in your hand. Please try again\n";
       }
+    } else {
+      valid = false;
+      // do we need to check for out of bounds?
+      std::cout << "\nThat spot does not exist. Please try again\n";
+    }
   } else {
-    std::cout << "This tile does not exist. Please try again\n";
     valid = false;
+    std::cout << "That tile does not exist. Please try again\n";
   }
 
   return valid;

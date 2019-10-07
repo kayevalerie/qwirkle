@@ -10,7 +10,6 @@ void newGameMenu();
 void exitGame();
 
 int main(void) {
-
   std::cout << "Welcome to Qwirkle!\n";
   displayMenu();
   exitGame();
@@ -32,12 +31,19 @@ void displayMenu() {
               << "4. Quit\n"
               << "\n> ";
 
-    while (std::cin.peek() == "\n") {
+    std::cin >> choice;
+
+    while (!std::cin >> choice) {
       std::cin.clear();
       std::cin.ignore(100, '\n');
     }
-    
-    getline(std::cin, choice)
+
+    // while (std::cin.peek() == "\n") {
+    //   std::cin.clear();
+    //   std::cin.ignore(100, '\n');
+    // }
+
+    // getline(std::cin, choice);
 
     if (choice == 1)
       newGameMenu();
@@ -64,7 +70,7 @@ void newGameMenu() {
   while (!end1) {
     std::cout << "\nEnter a name for player 1: \n";
     std::cout << "\n> ";
-    
+
     while (std::cin.peek() == '\n') {
       std::cout << "Please input the name\n> ";
       std::cin.ignore();
@@ -74,7 +80,7 @@ void newGameMenu() {
     if (!Helper::isASCII(player1Name)) {
       std::cout << "Error: name must only contain letters. Please input your "
                    "name again\n";
-                  //needs a test case
+      // needs a test case
     } else {
       end1 = 1;
     }
@@ -82,17 +88,16 @@ void newGameMenu() {
 
   std::cout << std::endl;
 
-
   int end2 = 0;
   while (!end2) {
     std::cout << "\nEnter a name for player 2: \n";
     std::cout << "\n> ";
-    
+
     while (std::cin.peek() == '\n') {
       std::cout << "Please input the name\n> ";
       std::cin.ignore();
     }
-    
+
     getline(std::cin, player2Name);
 
     if (!Helper::isASCII(player2Name)) {
@@ -119,10 +124,10 @@ void loadGameMenu() {
       std::cin >> fileName;
     } while (std::cin.good() && !std::cin.eof());
     if (Helper::isValidFormat(fileName)) {
-        Game game("test", "test2");
-        std::cout << "Qwirkle game loaded successfully. \n";
-        valid = true;
-        game.run();
+      Game game("test", "test2");
+      std::cout << "Qwirkle game loaded successfully. \n";
+      valid = true;
+      game.run();
     } else {
       std::cout << "The format of this file is not correct. Please try again\n";
     }

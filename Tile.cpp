@@ -3,19 +3,13 @@
 
 Tile::Tile() : colour(Colour::NONE), shape(Shape::NONE) {}
 
-Tile::Tile(Colour colour, Shape shape) : colour(colour), shape(shape) {
-  // setTile(true);
-}
+Tile::Tile(Colour colour, Shape shape) : colour(colour), shape(shape) {}
 
-Tile::Tile(const Tile& toCopy) : colour(toCopy.colour), shape(toCopy.shape) {
-  // setTile(true);
-}
+Tile::Tile(const Tile& toCopy) : colour(toCopy.colour), shape(toCopy.shape) {}
 
 Colour Tile::getColour() { return colour; }
 
 Shape Tile::getShape() { return shape; }
-
-// void Tile::setTile(bool isSet) { tile = std::make_shared<bool>(isSet); }
 
 bool Tile::equals(Tile tile) {
   return colour == tile.colour && shape == tile.shape;

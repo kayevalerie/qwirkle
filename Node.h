@@ -8,7 +8,6 @@ class Node {
   Tile tile;
 
  public:
-  // Node();
   Node(Tile tile, Node* next);
   Node(const Node& other);
   Node* next;
