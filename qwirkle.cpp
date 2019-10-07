@@ -156,12 +156,26 @@ void showStudentInfo() {
 }
 
 void readFile(std::string filename) {
-  std::ifstream file(filename);
+  std::ifstream infile(filename);
   std::string line;
-  if (file.is_open())
+  std::string player1Name;
+  std::string player2Name;
+  int player1Score = 0;
+  int player2Score = 0;
+  
+  if (infile.is_open())
   {
-    while (getline(file,line) )
+    int lineNumber = 1;
+    while (getline(infile,line) )
     {
+      if (lineNumber == 1) {
+        player1Name = line;
+      }
+      if (lineNumber == 2 ) {
+        player1Score = line;
+      }
+     
+        
       std::cout << line << '\n';
     }
     file.close();
