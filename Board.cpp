@@ -42,27 +42,16 @@ bool Board::isInBounds(char row, int col) {
 
 bool Board::isValidPosition(char row,
                             int col) {  // does not accept positions like A1, B2
-  std::cout << "char row = " << row;
-
   int row_pos = row - 'A';
-  std::cout << "Row = " << row_pos;
-
-  std::cout << " Col = " << col << "\n";
-
-  std::cout << (row_pos % 2 && col % 2);
-  std::cout << !(row_pos % 2) && !(col % 2);
 
   return (row_pos % 2 && col % 2) || (!(row_pos % 2) && !(col % 2));
 }
 
 bool Board::isOccupied(int row, int col) {
-  bool occupied = false;
-  Tile* tile = nullptr;
-  *tile = grid[row][col];
+  Tile tile;
+  tile = grid[row][col];
 
-  if (tile) occupied = true;
-
-  return occupied;
+  return tile.getColour() != Colour::NONE && tile.getShape() != Shape::NONE;
 }
 
 bool Board::isOccupied(char row, int col) {
@@ -72,13 +61,12 @@ bool Board::isOccupied(char row, int col) {
 }
 
 bool Board::hasValidAdjacentTiles(Tile tile, int row, int col) {
-  bool valid = false;
+  bool valid = true;
   int match_adjacents[ADJACENT_SIZE] = {-1, -1, -1, -1};
 
   if (!row % 2) {  // if checking for odd col
     if (isInBounds(row - 1, col) &&
         isOccupied(row - 1, col)) {  // check top left
-      std::cout << "IN BOUNDS & OCCUPIED";
       if (grid[row - 1][col].getColour() == tile.getColour())
         match_adjacents[0] = 0;
       else if (grid[row - 1][col].getShape() == tile.getShape())
@@ -119,8 +107,6 @@ bool Board::hasValidAdjacentTiles(Tile tile, int row, int col) {
   } else {  // if even col
     if (isInBounds(row - 1, col - 1) &&
         isOccupied(row - 1, col - 1)) {  // check top left
-
-      std::cout << "IN BOUNDS & OCCUPIED";
       if (grid[row - 1][col - 1].getColour() == tile.getColour())
         match_adjacents[0] = 0;
       else if (grid[row - 1][col - 1].getShape() == tile.getShape())
@@ -160,19 +146,77 @@ bool Board::hasValidAdjacentTiles(Tile tile, int row, int col) {
     }
   }
 
-  // bool has_Shape =
-  //     std::any_of(std::begin(match_adjacents), std::end(match_adjacents),
-  //                 [&](int i) { return i == 1; });
-
-  // bool has_Color =
-  //     std::any_of(std::begin(match_adjacents), std::end(match_adjacents),
-  //                 [&](int i) { return i == 0; });
-
-  // if (!has_Shape)
-
+  int count = 0;
   for (int i = 0; i < ADJACENT_SIZE; i++) {
-    std::cout << "match_adjacents[" << i << "] = " << match_adjacents[i]
-              << "\n";
+    if (match_adjacents[i] == -1) count++;
+  }
+
+  if (count == 0) {
+    if (match_adjacents[0] == 2 || match_adjacents[1] == 2 ||
+        match_adjacents[2] == 2 || match_adjacents[3] == 2 ||
+        match_adjacents[0] != match_adjacents[1] ||
+        match_adjacents[2] != match_adjacents[3])
+      valid = false;
+  } else if (count == 1) {
+    if (match_adjacents[0] == -1) {  // top left cell empty
+      if (match_adjacents[2] == 2 || match_adjacents[3] == 2 ||
+          match_adjacents[1] == 2 || match_adjacents[2] != match_adjacents[3])
+        valid = false;
+    } else if (match_adjacents[1] == -1) {  // bottom right cell empty
+      if (match_adjacents[0] == 2 || match_adjacents[2] == 2 ||
+          match_adjacents[3] == 2 || match_adjacents[2] != match_adjacents[3])
+        valid = false;
+    } else if (match_adjacents[2] == -1) {  // top right cell empty
+      if (match_adjacents[0] == 2 || match_adjacents[3] == 2 ||
+          match_adjacents[1] == 2 || match_adjacents[0] != match_adjacents[1])
+        valid = false;
+    } else if (match_adjacents[3] == -1) {  // bottom left cell empty
+      if (match_adjacents[2] == 2 || match_adjacents[0] == 2 ||
+          match_adjacents[1] == 2 || match_adjacents[0] != match_adjacents[1])
+        valid = false;
+    }
+  } else if (count == 2) {
+    if (match_adjacents[0] == -1 &&
+        match_adjacents[1] == -1) {  // left diagonals empty
+      if (match_adjacents[2] == 2 || match_adjacents[3] == 2 ||
+          (match_adjacents[2] == 0 && match_adjacents[3] == 1) ||
+          (match_adjacents[2] == 1 && match_adjacents[3] == 0))
+        valid = false;
+    } else if (match_adjacents[2] == -1 &&
+               match_adjacents[3] == -1) {  // right diagonals empty
+      if (match_adjacents[0] == 2 || match_adjacents[1] == 2 ||
+          (match_adjacents[0] == 0 && match_adjacents[1] == 1) ||
+          (match_adjacents[0] == 1 && match_adjacents[1] == 0))
+        valid = false;
+    } else if (match_adjacents[0] == -1 &&
+               match_adjacents[2] == -1) {  // top cells empty
+      if (match_adjacents[1] == 2 || match_adjacents[3] == 2 ||
+          (match_adjacents[1] == 0 && match_adjacents[3] == 1) ||
+          (match_adjacents[1] == 1 && match_adjacents[3] == 0))
+        valid = false;
+    } else if (match_adjacents[1] == -1 &&
+               match_adjacents[3] == -1) {  // bottom cells empty
+      if (match_adjacents[0] == 2 || match_adjacents[2] == 2 ||
+          (match_adjacents[0] == 0 && match_adjacents[2] == 1) ||
+          (match_adjacents[0] == 1 && match_adjacents[2] == 0))
+        valid = false;
+    } else if (match_adjacents[0] == -1 &&
+               match_adjacents[3] == -1) {  // left cells empty
+      if (match_adjacents[1] == 2 || match_adjacents[2] == 2 ||
+          (match_adjacents[1] == 0 && match_adjacents[2] == 1) ||
+          (match_adjacents[1] == 1 && match_adjacents[2] == 0))
+        valid = false;
+    } else if (match_adjacents[1] == -1 &&
+               match_adjacents[2] == -1) {  // right cells empty
+      if (match_adjacents[0] == 2 || match_adjacents[3] == 2 ||
+          (match_adjacents[0] == 0 && match_adjacents[3] == 1) ||
+          (match_adjacents[0] == 1 && match_adjacents[3] == 0))
+        valid = false;
+    }
+  } else if (count == 3) {
+    if (match_adjacents[0] == 2 || match_adjacents[1] == 2 ||
+        match_adjacents[2] == 2 || match_adjacents[3] == 2)
+      valid = false;
   }
 
   return valid;
@@ -200,7 +244,10 @@ int Board::countLeftDiagonalTiles(Tile tile, int row, int col) {
   while (!hasSameTile && isInBounds(curRow, curCol)) {
     if (isOccupied(curRow, curCol)) {
       count++;
-      if (grid[curRow][curCol].equals(tile)) hasSameTile = true;
+      if (grid[curRow][curCol].equals(tile)) {
+        hasSameTile = true;
+        count = -1;
+      }
     }
 
     curRow--;
@@ -215,7 +262,10 @@ int Board::countLeftDiagonalTiles(Tile tile, int row, int col) {
   while (!hasSameTile && isInBounds(curRow, curCol)) {
     if (isOccupied(curRow, curCol)) {
       count++;
-      if (grid[curRow][curCol].equals(tile)) hasSameTile = true;
+      if (grid[curRow][curCol].equals(tile)) {
+        hasSameTile = true;
+        count = -1;
+      }
     }
 
     curRow++;
@@ -236,7 +286,10 @@ int Board::countRightDiagonalTiles(Tile tile, int row, int col) {
   while (!hasSameTile && isInBounds(curRow, curCol)) {
     if (isOccupied(curRow, curCol)) {
       count++;
-      if (grid[curRow][curCol].equals(tile)) hasSameTile = true;
+      if (grid[curRow][curCol].equals(tile)) {
+        hasSameTile = true;
+        count = -1;
+      }
     }
 
     curRow--;
@@ -251,7 +304,10 @@ int Board::countRightDiagonalTiles(Tile tile, int row, int col) {
   while (!hasSameTile && isInBounds(curRow, curCol)) {
     if (isOccupied(curRow, curCol)) {
       count++;
-      if (grid[curRow][curCol].equals(tile)) hasSameTile = true;
+      if (grid[curRow][curCol].equals(tile)) {
+        hasSameTile = true;
+        count = -1;
+      }
     }
 
     curRow++;
@@ -269,8 +325,10 @@ bool Board::addTile(Tile tile, char row, int col) {
 
   if (hasValidAdjacentTiles(tile, row_pos, col_pos))
     grid[row_pos][col_pos] = tile;
-  else
+  else {
     valid = false;
+    std::cout << "INVALID MOVE";
+  }
 
   return valid;
 }

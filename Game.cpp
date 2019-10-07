@@ -23,9 +23,7 @@ Game::Game(std::string playerOneName, std::string playerTwoName)
     }
   }
 
-  tileBag->displayContents();
-
-  tileBag->shuffle();
+  // tileBag->shuffle();
 
   LinkedList* playerOneHand = new LinkedList();
   LinkedList* playerTwoHand = new LinkedList();
@@ -75,7 +73,7 @@ void Game::run() {
 
     std::cout << "\nYour hand is\n";
     currentPlayer->getHand()->displayContents();
-    std::cout << "\n\n";
+    // std::cout << "\n";
 
     if (handleCommand(currentPlayer)) turn++;
   }
@@ -128,12 +126,17 @@ bool Game::handleCommand(Player* currentPlayer) {
           validCommand = true;
         } else {
           validCommand = false;
-          std::cout
-              << "\nCommand not recognized. Try 'place <tile> at <location>' "
-                 "or 'replace <tile>'\n";
+          // std::cout
+          //     << "\nCommand not recognized. Try 'place <tile> at <location>'
+          //     "
+          //        "or 'replace <tile>'\n";
         }
-      } else  // if the 2nd and 4th tokens don't have a length of two
+      } else {  // if the 2nd and 4th tokens don't have a length of two
         validCommand = false;
+        std::cout
+            << "\nCommand not recognized. Try 'place <tile> at <location>' "
+               "or 'replace <tile>'\n";
+      }
     }
 
     else if (tokens.size() == RCOMMANDSIZE && !tokens[0].compare("replace")) {
@@ -158,9 +161,7 @@ bool Game::handleCommand(Player* currentPlayer) {
         }
       } else {
         validCommand = false;
-        std::cout
-            << "\nCommand not recognized. Try 'place <tile> at <location>' "
-               "or 'replace <tile>'\n";
+        std::cout << "\nThis tile does not exist. Please try again\n";
       }
     }
 

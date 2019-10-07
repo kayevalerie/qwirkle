@@ -1,5 +1,5 @@
-#include <iostream>
 #include <fstream>
+#include <iostream>
 
 #include "Game.h"
 #include "Helper.h"
@@ -156,33 +156,29 @@ void showStudentInfo() {
 }
 
 void readFile(std::string filename) {
-  std::ifstream infile(filename);
-  std::string line;
-  std::string player1Name;
-  std::string player2Name;
-  int player1Score = 0;
-  int player2Score = 0;
-  
-  if (infile.is_open())
-  {
-    int lineNumber = 1;
-    while (getline(infile,line) )
-    {
-      if (lineNumber == 1) {
-        player1Name = line;
-      }
-      if (lineNumber == 2 ) {
-        player1Score = line;
-      }
-     
-        
-      std::cout << line << '\n';
-    }
-    file.close();
-  }
+  // std::ifstream infile(filename);
+  // std::string line;
+  // std::string player1Name;
+  // std::string player2Name;
+  // int player1Score = 0;
+  // int player2Score = 0;
 
-  else std::cout << "Unable to open file"; 
-  
+  // if (infile.is_open())
+  // {
+  //   int lineNumber = 1;
+  //   while (getline(infile,line) )
+  //   {
+  //     if (lineNumber == 1) {
+  //       player1Name = line;
+  //     }
+  //     if (lineNumber == 2 ) {
+  //       player1Score = line;
+  //     }
+
+  //     std::cout << line << '\n';
+  //   }
+  //   file.close();
+  // }
+
+  // else std::cout << "Unable to open file";
 }
-
-
