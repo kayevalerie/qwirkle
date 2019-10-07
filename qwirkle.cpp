@@ -116,9 +116,11 @@ void loadGameMenu() {
   bool valid = false;
   std::cout << "Enter the name of the file from which to load the game:\n";
   while (!valid) {
-    do {
-      std::cin >> fileName;
-    } while (std::cin.good() && !std::cin.eof());
+    while (std::cin.peek() == '\n') {
+      std::cout << "Please input the name of the file\n> ";
+      std::cin.ignore();
+    }
+    getline(std::cin, fileName);
     if (Helper::isValidFormat(fileName)) {
         Game game("test", "test2");
         std::cout << "Qwirkle game loaded successfully. \n";
