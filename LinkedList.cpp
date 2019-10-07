@@ -228,11 +228,18 @@ void LinkedList::displayContents() {
 }
 
 void LinkedList::shuffle() {
+    
+  int minS = 0;
+  int maxS = 200;
+  int seedS = 100;
+   
+  std::default_random_engine engineS(seedS);
+  std::uniform_int_distribution<int> uniform_distS(minS, maxS);
+  int seed = uniform_dist(engineS);
  
 
   int min = 0;
   int max = list_size;
-  int seed = 98;
   std::default_random_engine engine(seed);
 
   for (unsigned int i = 0; i < list_size; i++) {
