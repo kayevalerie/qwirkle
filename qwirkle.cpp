@@ -9,6 +9,7 @@ void showStudentInfo();
 void loadGameMenu();
 void newGameMenu();
 void exitGame();
+void readFile(std::string filename);
 
 int main(void) {
   std::cout << "Welcome to Qwirkle!\n";
