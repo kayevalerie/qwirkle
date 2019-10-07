@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 
 #include "Game.h"
 #include "Helper.h"
@@ -8,9 +9,9 @@ void showStudentInfo();
 void loadGameMenu();
 void newGameMenu();
 void exitGame();
+void readFile(std::string filename);
 
 int main(void) {
-
   std::cout << "Welcome to Qwirkle!\n";
   displayMenu();
   exitGame();
@@ -20,6 +21,7 @@ int main(void) {
 
 void displayMenu() {
   int choice = 0;
+  std::string choiceString;
   bool quit = false;
 
   do {
@@ -32,12 +34,12 @@ void displayMenu() {
               << "4. Quit\n"
               << "\n> ";
 
-    std::cin >> choice;
-
-    while (!std::cin >> choice) {
-      std::cin.clear();
-      std::cin.ignore(100, '\n');
+    while (std::cin.peek() == '\n') {
+      std::cin.ignore();
     }
+
+    getline(std::cin, choiceString);
+    choice = std::stoi(choiceString);
 
     if (choice == 1)
       newGameMenu();
@@ -64,12 +66,17 @@ void newGameMenu() {
   while (!end1) {
     std::cout << "\nEnter a name for player 1: \n";
     std::cout << "\n> ";
-    std::cin >> player1Name;
+
+    while (std::cin.peek() == '\n') {
+      std::cout << "Please input the name\n> ";
+      std::cin.ignore();
+    }
+    getline(std::cin, player1Name);
 
     if (!Helper::isASCII(player1Name)) {
       std::cout << "Error: name must only contain letters. Please input your "
                    "name again\n";
-                  //needs a test case
+      // needs a test case
     } else {
       end1 = 1;
     }
@@ -77,12 +84,17 @@ void newGameMenu() {
 
   std::cout << std::endl;
 
-
   int end2 = 0;
   while (!end2) {
     std::cout << "\nEnter a name for player 2: \n";
     std::cout << "\n> ";
-    std::cin >> player2Name;
+
+    while (std::cin.peek() == '\n') {
+      std::cout << "Please input the name\n> ";
+      std::cin.ignore();
+    }
+
+    getline(std::cin, player2Name);
 
     if (!Helper::isASCII(player2Name)) {
       std::cout << "Error: name must only contain letters. Please input your "
@@ -104,14 +116,17 @@ void loadGameMenu() {
   bool valid = false;
   std::cout << "Enter the name of the file from which to load the game:\n";
   while (!valid) {
-    do {
-      std::cin >> fileName;
-    } while (std::cin.good() && !std::cin.eof());
+    while (std::cin.peek() == '\n') {
+      std::cout << "Please input the name of the file\n> ";
+      std::cin.ignore();
+    }
+    getline(std::cin, fileName);
     if (Helper::isValidFormat(fileName)) {
-        Game game("test", "test2");
-        std::cout << "Qwirkle game loaded successfully. \n";
-        valid = true;
-        game.run();
+      readFile(fileName);
+      Game game("test", "test2");
+      std::cout << "Qwirkle game loaded successfully. \n";
+      valid = true;
+      game.run();
     } else {
       std::cout << "The format of this file is not correct. Please try again\n";
     }
@@ -139,3 +154,35 @@ void showStudentInfo() {
             << "Email: s3602478@student.rmit.edu.au\n"
             << "----------------------------------\n";
 }
+
+void readFile(std::string filename) {
+  std::ifstream infile(filename);
+  std::string line;
+  std::string player1Name;
+  std::string player2Name;
+  int player1Score = 0;
+  int player2Score = 0;
+  
+  if (infile.is_open())
+  {
+    int lineNumber = 1;
+    while (getline(infile,line) )
+    {
+      if (lineNumber == 1) {
+        player1Name = line;
+      }
+      if (lineNumber == 2 ) {
+        player1Score = line;
+      }
+     
+        
+      std::cout << line << '\n';
+    }
+    file.close();
+  }
+
+  else std::cout << "Unable to open file"; 
+  
+}
+
+

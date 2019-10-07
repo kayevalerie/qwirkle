@@ -54,12 +54,17 @@ void Game::run() {
   int turn = 0;
 
   while (!isFinished()) {
-    if (!turn % 2)
+    if (turn % 2 == 0)
       currentPlayer = &playerOne;
-    else if (turn % 2)
+    else if (turn % 2 != 0)
       currentPlayer = &playerTwo;
 
-    std::cout << '\n' << currentPlayer->getName() << ", it's your turn\n";
+    // for now
+    std::cout << "tile bag is: ";
+    tileBag->displayContents();
+    std::cout << "\n";
+
+    std::cout << '\n' << currentPlayer->getName() << ", it's your turn\n\n";
     std::cout << "Score for " << playerOne.getName() << ": "
               << playerOne.getPoints() << '\n';
     std::cout << "Score for " << playerTwo.getName() << ": "
@@ -68,7 +73,7 @@ void Game::run() {
 
     std::cout << "\nYour hand is\n";
     currentPlayer->getHand()->displayContents();
-    std::cout << "> ";
+    std::cout << "\n\n";
 
     if (handleCommand(currentPlayer)) turn++;
   }
@@ -100,9 +105,6 @@ Player* Game::getWinningPlayer() {
 bool Game::handleCommand(Player* currentPlayer) {
   bool validCommand = true;
 
-  // add tile to board(draw tile, update score)
-  // replace tile
-
   std::string userInput;
 
   do {
@@ -120,8 +122,14 @@ bool Game::handleCommand(Player* currentPlayer) {
     if (tokens.size() == PCOMMANDSIZE && !tokens[0].compare("place") &&
         !tokens[2].compare("at")) {
       if (tokens[1].length() == 2 && tokens[3].length() == 2) {
-        if (!placeTile(tokens[1], tokens[3], currentPlayer))
+        if (placeTile(tokens[1], tokens[3], currentPlayer)) {
+          validCommand = true;
+        } else {
           validCommand = false;
+          std::cout
+              << "\nCommand not recognized. Try 'place <tile> at <location>' "
+                 "or 'replace <tile>'\n";
+        }
       } else  // if the 2nd and 4th tokens don't have a length of two
         validCommand = false;
     }
@@ -135,9 +143,9 @@ bool Game::handleCommand(Player* currentPlayer) {
 
           if (currentPlayer->getHand()->contains(toReplace)) {
             currentPlayer->getHand()->replaceTile(toReplace, drawTileFromBag());
-
-            //std::cout << "tile replaced, player hand: ";
-            //currentPlayer->getHand()->displayContents();
+            validCommand = true;
+            // std::cout << "tile replaced, player hand: ";
+            // currentPlayer->getHand()->displayContents();
           } else {
             validCommand = false;
             std::cout << "\nThis tile is not in your hand. Please try again\n";
@@ -173,27 +181,31 @@ bool Game::placeTile(std::string tileInput, std::string locationInput,
   int col = tileInput.at(1) - '0';
 
   if (isCodeValid(tileInput)) {
-      if (board.isValidPosition(row, col)) {
-            Tile tile(static_cast<Colour>(tileInput.at(0)),
-            static_cast<Shape>(tileInput.at(1) - '0'));
-            bool hasTile = currentPlayer->getHand()->contains(tile);
+    std::cout << "row = " << row << " col = " << col;
+    if (board.isValidPosition(row, col)) {
+      Tile tile(static_cast<Colour>(tileInput.at(0)),
+                static_cast<Shape>(tileInput.at(1) - '0'));
 
-            if (hasTile) {
-                board.addTile(tile, row, col);
-                currentPlayer->getHand()->deleteTile(tile);
-                currentPlayer->getHand()->addTile(drawTileFromBag());
-            } else {
-                valid = false;
-                std::cout << "\nThis tile is not in your hand. Please try again\n"; 
-            }
+      if (currentPlayer->getHand()->contains(tile)) {
+        if (board.addTile(tile, row, col)) {
+          currentPlayer->getHand()->deleteTile(tile);
+          currentPlayer->getHand()->addTile(drawTileFromBag());
+        } else {
+          valid = false;
+          std::cout << "\nThat tile cannot be placed there. Please try again\n";
+        }
       } else {
-            //do we need to check for out of bounds?
-            std::cout << "\nThis spot does not exist. Please try again\n";
-            // throw exception??
+        valid = false;
+        std::cout << "\nThat tile is not in your hand. Please try again\n";
       }
+    } else {
+      valid = false;
+      // do we need to check for out of bounds?
+      std::cout << "\nThat spot does not exist. Please try again\n";
+    }
   } else {
-    std::cout << "This tile does not exist. Please try again\n";
     valid = false;
+    std::cout << "That tile does not exist. Please try again\n";
   }
 
   return valid;

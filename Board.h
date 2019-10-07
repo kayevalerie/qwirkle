@@ -21,8 +21,7 @@ class Board {
   bool isInBounds(int row, int col);
   int countLeftDiagonalTiles(Tile tile, int row, int col);
   int countRightDiagonalTiles(Tile tile, int row, int col);
-  int* hasValidAdjacentTiles(int* match_adjacents, Tile* tile, int row,
-                             int col);
+  bool hasValidAdjacentTiles(Tile tile, int row, int col);
 
  public:
   Board();
