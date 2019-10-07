@@ -10,51 +10,6 @@ void newGameMenu();
 void exitGame();
 
 int main(void) {
-  // display welcome message
-  // run 'display menu' method
-  // get user choice(get character method in the helper)
-  // run appropriate method(if choice == 1->-get user input for the name of the
-  // players
-  //                                       -create a new instance of the game
-  //                                        class(run game constructor: 1 game,
-  //                                        1 board, 1 tile bag(linked list), 2
-  //                                        new players, for each player
-  //                                        initialize a linked list with 6
-  //                                        tiles each taken from the tile bag,
-  //                                        initialize the score to 0)
-  //                                       -display 'Let's play' message
-  //                                       -run the while loop( while(!finished)
-  //                                       display 'getCurrentPlayer(), it's
-  //                                       your turn'
-  //                                                             get user
-  //                                                             scores, display
-  //                                                             scores, display
-  //                                                             board, display
-  //                                                             current user's
-  //                                                             hand, display
-  //                                                             '>' for user
-  //                                                             prompt get user
-  //                                                             prompt, check
-  //                                                             if command
-  //                                                             correct, run
-  //                                                             command, update
-  //                                                             data
-  //                                                             structures,
-  //                                                             change
-  //                                                             currentPlayer)
-  //                                       -if out of the loop (display
-  //                                       'Goodbye' and exit)
-  //                     (if choice == 2-> -get user input for the name of the
-  //                     file(check if the file exists and the format is corect)
-  //                                       -create a new instance of the game
-  //                                       class and set all the variables'
-  //                                       values to the ones in
-  //                                         the file
-  //                                       -run regular while loop
-  //                     (if choice == 3-> -display student's info
-  //                                       -display menu)
-  //                     (if choice == 4-> -display 'goodbye'
-  //                                       -exit)
 
   std::cout << "Welcome to Qwirkle!\n";
   displayMenu();
@@ -114,6 +69,7 @@ void newGameMenu() {
     if (!Helper::isASCII(player1Name)) {
       std::cout << "Error: name must only contain letters. Please input your "
                    "name again\n";
+                  //needs a test case
     } else {
       end1 = 1;
     }
@@ -121,8 +77,6 @@ void newGameMenu() {
 
   std::cout << std::endl;
 
-  // input handling works for both player 1 and player 2, however could be a
-  // better way to do it?
 
   int end2 = 0;
   while (!end2) {
@@ -147,19 +101,20 @@ void newGameMenu() {
 
 void loadGameMenu() {
   std::string fileName;
+  valid = false;
   std::cout << "Enter the name of the file from which to load the game:\n";
-  std::cin >> fileName;
-
-  if (Helper::isValidFormat(fileName)) {
-    std::cout << "Qwirkle game loaded succesfully. \n";
-    // need a method that goes through the file line by line and initializes the
-    // variables and data structures
-    // TODO
-    Game game("test", "test2");
-    game.run();
-  } else {
-    std::cout << "The format of this file is not correct. Please try again\n";
-  }
+  while (!valid) {
+    do {
+      std::cin >> fileName;
+    } while (std::cin.good() && !std::cin.eof());
+    if (Helper::isValidFormat(fileName)) {
+        Game game("test", "test2");
+        std::cout << "Qwirkle game loaded successfully. \n";
+        valid = true;
+        game.run();
+    } else {
+      std::cout << "The format of this file is not correct. Please try again\n";
+    }
 }
 
 void exitGame() { std::cout << "\n\nGoodbye! \n"; }
