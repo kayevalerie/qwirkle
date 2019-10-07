@@ -1,5 +1,5 @@
 #include <iostream>
-#include <ifstream>
+#include <fstream>
 
 #include "Game.h"
 #include "Helper.h"
