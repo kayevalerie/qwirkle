@@ -120,6 +120,7 @@ void loadGameMenu() {
     }
     getline(std::cin, fileName);
     if (Helper::isValidFormat(fileName)) {
+      readFile(fileName);
       Game game("test", "test2");
       std::cout << "Qwirkle game loaded successfully. \n";
       valid = true;
@@ -151,3 +152,20 @@ void showStudentInfo() {
             << "Email: s3602478@student.rmit.edu.au\n"
             << "----------------------------------\n";
 }
+
+void readFile(std::string filename) {
+  ifstream file(filename);
+  if (file.is_open())
+  {
+    while ( getline (myfile,line) )
+    {
+      std::cout << line << '\n';
+    }
+    myfile.close();
+  }
+
+  else std::cout << "Unable to open file"; 
+  
+}
+
+
