@@ -1,4 +1,5 @@
 #include <iostream>
+#include <
 
 #include "Game.h"
 #include "Helper.h"
@@ -154,14 +155,15 @@ void showStudentInfo() {
 }
 
 void readFile(std::string filename) {
-  ifstream file(filename);
+  std::ifstream file(filename);
+  std:string line;
   if (file.is_open())
   {
-    while ( getline (myfile,line) )
+    while (getline(file,line) )
     {
       std::cout << line << '\n';
     }
-    myfile.close();
+    file.close();
   }
 
   else std::cout << "Unable to open file"; 
