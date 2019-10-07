@@ -63,7 +63,7 @@ void Game::run() {
     std::cout << "Score for " << playerOne.getName() << ": "
               << playerOne.getPoints() << '\n';
     std::cout << "Score for " << playerTwo.getName() << ": "
-              << playerTwo.getPoints() << '\n';
+              << playerTwo.getPoints() << '\n\n';
     board.displayBoard();
 
     std::cout << "\nYour hand is\n";
