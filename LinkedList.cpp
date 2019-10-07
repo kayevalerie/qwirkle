@@ -228,7 +228,7 @@ void LinkedList::displayContents() {
 }
 
 void LinkedList::shuffle() {
-  todo
+ 
 
   int min = 0;
   int max = list_size;
