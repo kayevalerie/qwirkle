@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 
 #include "Game.h"
 #include "Helper.h"
@@ -8,6 +9,7 @@ void showStudentInfo();
 void loadGameMenu();
 void newGameMenu();
 void exitGame();
+void readFile(std::string filename);
 
 int main(void) {
   std::cout << "Welcome to Qwirkle!\n";
@@ -120,6 +122,7 @@ void loadGameMenu() {
     }
     getline(std::cin, fileName);
     if (Helper::isValidFormat(fileName)) {
+      readFile(fileName);
       Game game("test", "test2");
       std::cout << "Qwirkle game loaded successfully. \n";
       valid = true;
@@ -151,3 +154,35 @@ void showStudentInfo() {
             << "Email: s3602478@student.rmit.edu.au\n"
             << "----------------------------------\n";
 }
+
+void readFile(std::string filename) {
+  std::ifstream infile(filename);
+  std::string line;
+  std::string player1Name;
+  std::string player2Name;
+  int player1Score = 0;
+  int player2Score = 0;
+  
+  if (infile.is_open())
+  {
+    int lineNumber = 1;
+    while (getline(infile,line) )
+    {
+      if (lineNumber == 1) {
+        player1Name = line;
+      }
+      if (lineNumber == 2 ) {
+        player1Score = line;
+      }
+     
+        
+      std::cout << line << '\n';
+    }
+    file.close();
+  }
+
+  else std::cout << "Unable to open file"; 
+  
+}
+
+
