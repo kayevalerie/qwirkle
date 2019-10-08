@@ -2,3 +2,5 @@
 *.o
 qwirkle
 vgcore.*
+.Game.cpp.swp
+.DS_Store
