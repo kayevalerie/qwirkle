@@ -13,6 +13,7 @@ class Player {
 
  public:
   Player(std::string name);
+  Player(const Player& player);
   Player(std::string name, int points, LinkedList* tiles);
   ~Player();
   std::string getName();

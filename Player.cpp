@@ -5,6 +5,10 @@ Player::Player(std::string name, int points, LinkedList* tiles)
 
 Player::Player(std::string name) : name(name), points(0), hand(nullptr) {}
 
+Player::Player(const Player& player) 
+	: name(player.name), points(player.points), hand(new LinkedList(*(player.getHand()))) {}
+	
+
 Player::~Player() { clear(); }
 
 void Player::clear() { delete hand; }

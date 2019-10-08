@@ -1,6 +1,6 @@
 #include <fstream>
 #include <iostream>
-
+#include <sstream>
 #include "Game.h"
 #include "Helper.h"
 
@@ -158,10 +158,12 @@ void readFile(std::string filename) {
   std::string playerName;
   int playerScore = 0;
   std::string playerHand;
-  Player* players = new Player[2];
+  Player* players[2];;
   std::string intermediate;
   char color;
   char shape;
+  LinkedList* tileBag = new LinkedList();
+  Game game;
   
   if (infile.is_open())
   {
@@ -169,6 +171,8 @@ void readFile(std::string filename) {
     int playerNumber = 0;
     while (getline(infile,line) )
     {
+
+      std::stringstream sstream(line);
       if (lineNumber <= 6) {
         //reading in players' details
           if (lineNumber % 3 == 1) playerName = line;
@@ -177,27 +181,27 @@ void readFile(std::string filename) {
             playerHand = line;
             LinkedList* playerTiles = new LinkedList();
             
-
-            while (getline(playerHand, intermediate, ',')) {
+            while (getline(sstream, intermediate, ',')) {
               if (!intermediate.empty()) {
                 color = intermediate.at(0);
                 shape = intermediate.at(1);
-                playerTiles.addTile(Tile(static_cast<Colour>(color), static_cast<Shape>(shape - '0')));
+                playerTiles->addTile(Tile(static_cast<Colour>(color), static_cast<Shape>(shape - '0')));
               }
             }
-            players[playerNumber] = new Player(playerName, playerScore, playerTiles);
+            players[playerNumber] = Player(playerName, playerScore, playerTiles);
             playerNumber++;
           }
       }
-     //creating the game object
+     //adding the players
      if (lineNumber == 8) {
-       Game game(players[0], players[1]);
+       game.setPlayer1(players[0]);
+       game.setPlayer2(players[1]);
      }
       //reading in the board
      if (lineNumber >= 9 && lineNumber <= 14) {
         int row = 'A';
         std::vector<std::string> tokens;
-        while (getline(line, intermediate, '|')) {
+        while (getline(sstream, intermediate, '|')) {
               if (!intermediate.empty()) tokens.push_back(intermediate);
         }
         for (int i = 1; i < tokens.size(); i++) {
@@ -214,19 +218,22 @@ void readFile(std::string filename) {
      }
      //reading in the tile bag
      if (lineNumber == 15) {
-       LinkedList* tileBag = new LinkedList();
-       while (getline(line, intermediate, ',')) {
+       while (getline(sstream, intermediate, ',')) {
          if (!intermediate.empty()) {
            color = intermediate.at(0);
            shape = intermediate.at(1);
-           tileBag.addTile(Tile(static_cast<Colour>(color), static_cast<Shape>(shape - '0')));
+           tileBag->addTile(Tile(static_cast<Colour>(color), static_cast<Shape>(shape - '0')));
          }
        }
     lineNumber++;                               
-  }
+    }
+ }
   game.setTileBag(tileBag);
   std::cout << "Qwirkle game loaded successfully. \n";
   game.run();
-  file.close();
-  else std::cout << "Cannot read in the file";
-}
+  infile.close();
+ }
+ else {
+	  std::cout << "Cannot read in the file";
+    }
+  }
