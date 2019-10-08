@@ -224,9 +224,9 @@ void readFile(std::string filename) {
            shape = intermediate.at(1);
            tileBag->addTile(Tile(static_cast<Colour>(color), static_cast<Shape>(shape - '0')));
          }
-       }
-    lineNumber++;                               
+       }                               
     }
+lineNumber++;
  }
   game.setTileBag(tileBag);
   std::cout << "Qwirkle game loaded successfully. \n";
