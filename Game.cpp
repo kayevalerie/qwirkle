@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include "Helper.h"
 
 #define PCOMMANDSIZE 4
 #define RCOMMANDSIZE 2
@@ -175,11 +176,12 @@ bool Game::handleCommand(Player* currentPlayer, int turn) {
 
     else if (tokens.size() == PCOMMANDSIZE && !tokens[0].compare("place") &&
              !tokens[2].compare("at")) {
-      if (tokens[1].length() == 2 && tokens[3].length() == 2) {
+      if (tokens[1].length() == 2 && Helper::isASCII(tokens[3].substr(0, 1)) &&
+          Helper::isNumber(tokens[3].substr(1, tokens[3].length()))) {
         if (!placeTile(tokens[1], tokens[3], currentPlayer, turn)) {
           validCommand = false;
         }
-      } else {  // if the 2nd and 4th tokens don't have a length of two
+      } else {
         validCommand = false;
         std::cout
             << "\nCommand not recognized. Try 'place <tile> at <location>' "
