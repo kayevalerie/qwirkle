@@ -14,6 +14,7 @@ class Player {
  public:
   Player(std::string name);
   Player(std::string name, int points, LinkedList* tiles);
+  Player(const Player& toCopy);
   ~Player();
   std::string getName();
   void setPoints(int points);

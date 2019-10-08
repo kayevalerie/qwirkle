@@ -15,19 +15,21 @@ class Game {
   LinkedList* tileBag;
 
   void clear();
-  void addPlayer(Player player);
-  bool handleCommand(Player* currentPlayer);
+  bool handleCommand(Player* currentPlayer, int turn);
   bool placeTile(std::string tileInput, std::string locationInput,
-                 Player* currentPlayer);
+                 Player* currentPlayer, int turn);
   Tile drawTileFromBag();
-  void computePoints(Player player);  // todo
   bool isFinished();
+  void computePoints(Player* currentPlayer, Tile tile, char row, int col);
   Player* getWinningPlayer();
 
  public:
   Game(std::string playerOneName, std::string playerTwoName);
+  Game(Player playerOne, Player playerTwo);
   ~Game();
   void run();
+  void setTileBag(LinkedList* tileBag);
+  Board getBoard();
 };
 
 #endif  // ASSIGN2_GAME_H

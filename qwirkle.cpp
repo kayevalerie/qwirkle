@@ -23,6 +23,7 @@ void displayMenu() {
   int choice = 0;
   std::string choiceString;
   bool quit = false;
+  bool valid = true;
 
   do {
     std::cout << "\n"
@@ -39,7 +40,11 @@ void displayMenu() {
     }
 
     getline(std::cin, choiceString);
-    choice = std::stoi(choiceString);
+    try {
+      choice = std::stoi(choiceString);
+    } catch (std::invalid_argument& e) {
+      valid = false;
+    }
 
     if (choice == 1)
       newGameMenu();
@@ -52,7 +57,9 @@ void displayMenu() {
     else if (std::cin.eof())
       quit = true;
     else
-      std::cout << "This option does not exist, please try again\n";
+      valid = false;
+
+    if (!valid) std::cout << "This option does not exist, please try again\n";
 
   } while (!quit && choice != 4);
 }

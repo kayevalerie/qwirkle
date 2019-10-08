@@ -24,21 +24,19 @@ void Board::clear() {
   cols = 0;
 }
 
-int Board::getRows() { return rows; }
+size_t Board::getRows() { return rows; }
 
-int Board::getCols() { return cols; }
+size_t Board::getCols() { return cols; }
 
 Tile Board::getTile(int row, int col) { return grid[row][col]; }
 
 bool Board::isInBounds(int row, int col) {
-  return row >= 0 && row < rows && col >= 0 && col < cols;
+  unsigned int i = row, j = col;
+  return i >= 0 && i < rows && j >= 0 && j < cols;
 }
 
 bool Board::isInBounds(char row, int col) {
-  int row_pos = row - 'A';
-  int col_pos = translateCol(col);
-
-  return isInBounds(row_pos, col_pos);
+  return isInBounds(row - 'A', translateCol(col));
 }
 
 bool Board::isValidPosition(char row,
@@ -49,26 +47,20 @@ bool Board::isValidPosition(char row,
 }
 
 bool Board::isOccupied(int row, int col) {
-  Tile tile;
-  tile = grid[row][col];
-
-  std::cout << "in isOccupied, row = " << row << " col = " << col << "\n";
+  Tile tile = grid[row][col];
 
   return tile.getColour() != Colour::NONE && tile.getShape() != Shape::NONE;
 }
 
-// bool Board::isOccupied(char row, int col) {
-//   int row_pos = row - 'A';
-//   int col_pos = translateCol(col);
+bool Board::isOccupied(char row, int col) {
+  return isOccupied(row - 'A', translateCol(col));
+}
 
-//   return isOccupied(row_pos, col_pos);
-// }
-
-bool Board::hasValidAdjacentTiles(Tile tile, int row, int col) {
+bool Board::hasValidAdjacentTiles(Tile tile, int row, int col, int turn) {
   bool valid = true;
   int match_adjacents[ADJACENT_SIZE] = {-1, -1, -1, -1};
 
-  if (!row % 2) {  // if checking for odd col
+  if (row % 2 == 1) {  // if checking for odd col
     if (isInBounds(row - 1, col) &&
         isOccupied(row - 1, col)) {  // check top left
       if (grid[row - 1][col].getColour() == tile.getColour())
@@ -218,12 +210,13 @@ bool Board::hasValidAdjacentTiles(Tile tile, int row, int col) {
         valid = false;
     }
   } else if (count == 3) {
+    std::cout << "COUNT = 3\n";
     if (match_adjacents[0] == 2 || match_adjacents[1] == 2 ||
         match_adjacents[2] == 2 || match_adjacents[3] == 2)
       valid = false;
+  } else if (count == 4 && turn != 0) {
+    valid = false;
   }
-
-  std::cout << "in hasValidAdjacentTiles(), VALID = " << valid << '\n';
 
   return valid;
 }
@@ -232,115 +225,171 @@ int Board::translateCol(int col) {
   int curCol = -1;
 
   if (col % 2 == 0) {  // even column
-    if (col == 0)
-      curCol = 0;
-    else
-      curCol = (col / 2);
-  } else {  // odd column
+    curCol = (col / 2);
+  } else  // odd column
     curCol = (col - 1) / 2;
-  }
-
-  // std::cout << "in translatecol, col = " << col << " curCol = " << curCol;
 
   return curCol;
 }
 
-int Board::countLeftDiagonalTiles(Tile tile, int row, int col) {
+bool Board::hasSameTileInLines(Tile tile, char row, int col) {
+  return countLeftDiagonalTiles(tile, row, col, true) == -1 ||
+         countRightDiagonalTiles(tile, row, col, true) == -1;
+}
+
+int Board::countLeftDiagonalTiles(Tile tile, char row, int col, bool check) {
   int count = 1;  // count current tile
+  bool hasSameTile = false;
 
   // validate top left
-  int curRow = row;
-  int curCol = col;
-  bool hasSameTile = false;
+  int curRow = row - 'A';
+  int curCol = translateCol(col);
+  bool oddCol;
+
+  if (col % 2 == 0) {  // if currently in even position
+    oddCol = false;
+  } else
+    oddCol = true;
 
   while (!hasSameTile && isInBounds(curRow, curCol)) {
     if (isOccupied(curRow, curCol)) {
-      count++;
-      if (grid[curRow][curCol].equals(tile)) {
-        hasSameTile = true;
-        count = -1;
+      std::cout << "curRow = " << curRow << "\tcurCol = " << curCol << "\n";
+
+      if (curRow != row - 'A' && curCol != translateCol(col)) {
+        if (grid[curRow][curCol].equals(tile)) {
+          hasSameTile = true;
+          count = -1;
+        } else
+          count++;
       }
     }
 
     curRow--;
 
-    if (curRow % 2) curCol--;  // if currently in even position
-  }                            // while
+    if (!oddCol) {  // if currently in even position
+      curCol--;
+      oddCol = true;
+    } else
+      oddCol = false;
+
+  }  // while
 
   // validate bottom right
-  curRow = row;
-  curCol = col;
+  curRow = row - 'A';
+  curCol = translateCol(col);
+
+  if (col % 2 != 0) {
+    oddCol = true;
+  } else
+    oddCol = false;
 
   while (!hasSameTile && isInBounds(curRow, curCol)) {
     if (isOccupied(curRow, curCol)) {
-      count++;
-      if (grid[curRow][curCol].equals(tile)) {
-        hasSameTile = true;
-        count = -1;
+      std::cout << "curRow = " << curRow << "\tcurCol = " << curCol << "\n";
+
+      if (curRow != row - 'A' && curCol != translateCol(col)) {
+        if (grid[curRow][curCol].equals(tile)) {
+          hasSameTile = true;
+          count = -1;
+        } else
+          count++;
       }
     }
 
     curRow++;
 
-    if (!curRow % 2) curCol++;  // if currently in odd position
-  }                             // while
+    if (oddCol) {  // if currently in odd position
+      curCol++;
+      oddCol = false;
+    } else
+      oddCol = true;
+
+  }  // while
 
   return count;
 }
 
-int Board::countRightDiagonalTiles(Tile tile, int row, int col) {
-  // validate top right
-  int curRow = row;
-  int curCol = col;
+// PROBLEM WITH COUNT: MUST BE COUNTED TWICE IF EXISTS IN TWO LINES
+
+int Board::countRightDiagonalTiles(Tile tile, char row, int col, bool check) {
   bool hasSameTile = false;
-  int count = 1;
+  int count = 0;
+
+  // validate top right
+  int curRow = row - 'A';
+  int curCol = translateCol(col);
+  bool oddCol;
+
+  if (col % 2 != 0) {
+    oddCol = true;
+  } else
+    oddCol = false;
 
   while (!hasSameTile && isInBounds(curRow, curCol)) {
     if (isOccupied(curRow, curCol)) {
-      count++;
-      if (grid[curRow][curCol].equals(tile)) {
-        hasSameTile = true;
-        count = -1;
+      std::cout << "curRow = " << curRow << "\tcurCol = " << curCol << "\n";
+
+      if (curRow != row - 'A' && curCol != translateCol(col)) {
+        if (grid[curRow][curCol].equals(tile)) {
+          hasSameTile = true;
+          count = -1;
+        } else
+          count++;
       }
     }
 
     curRow--;
 
-    if (!curRow % 2) curCol++;  // if currently in odd position
-  }                             // while
+    if (oddCol) {
+      curCol++;        // if currently in odd position
+      oddCol = false;  // next position is an even position
+    } else
+      oddCol = true;
+
+  }  // while
 
   // validate bottom left
-  curRow = row;
-  curCol = col;
+  curRow = row - 'A';
+  curCol = translateCol(col);
+
+  if (col % 2 == 0) {
+    oddCol = false;
+  } else
+    oddCol = true;
 
   while (!hasSameTile && isInBounds(curRow, curCol)) {
     if (isOccupied(curRow, curCol)) {
-      count++;
-      if (grid[curRow][curCol].equals(tile)) {
-        hasSameTile = true;
-        count = -1;
+      std::cout << "curRow = " << curRow << "\tcurCol = " << curCol << "\n";
+
+      if (curRow != row - 'A' && curCol != translateCol(col)) {
+        if (grid[curRow][curCol].equals(tile)) {
+          hasSameTile = true;
+          count = -1;
+        } else
+          count++;
       }
     }
 
     curRow++;
 
-    if (curRow % 2) curCol--;  // if currently in even position
-  }                            // while
+    if (!oddCol) {  // if currently in even position
+      curCol--;
+      oddCol = true;
+    } else  // next position is an odd position
+      oddCol = false;
+
+  }  // while
 
   return count;
 }
 
-bool Board::addTile(Tile tile, char row, int col) {
+bool Board::addTile(Tile tile, char row, int col, int turn) {
   bool valid = true;
   int row_pos = row - 'A';
   int col_pos = translateCol(col);
 
-  // std::cout << "\nIN ADDTILE(), COL_POS = " << col_pos;
-
-  if (hasValidAdjacentTiles(tile, row_pos, col_pos)) {
-    // std::cout << "row = " << row_pos << " col = " << col_pos << '\n';
+  if (hasValidAdjacentTiles(tile, row_pos, col_pos, turn)) {
     grid.at(row_pos).at(col_pos) = tile;
-    std::cout << " valid adjacent tiles\n";
   } else
     valid = false;
 

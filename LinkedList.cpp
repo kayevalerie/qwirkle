@@ -6,9 +6,9 @@
 
 LinkedList::LinkedList() : head(nullptr), tail(nullptr), list_size(0) {}
 
-LinkedList::LinkedList(const LinkedList& src)
+LinkedList::LinkedList(const LinkedList& toCopy)
     : head(nullptr), tail(nullptr), list_size(0) {
-  Node* current = src.head;
+  Node* current = toCopy.head;
 
   while (current) {
     addTile(current->getTile());

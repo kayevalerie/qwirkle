@@ -7,6 +7,7 @@
 #define PCOMMANDSIZE 4
 #define RCOMMANDSIZE 2
 #define PLAYER_HAND_SIZE 6
+#define QWIRKLE_COUNT 6
 
 Game::Game(std::string playerOneName, std::string playerTwoName)
     : playerOne(Player(playerOneName)),
@@ -38,16 +39,13 @@ Game::Game(std::string playerOneName, std::string playerTwoName)
   playerOne.setHand(playerOneHand);
   playerTwo.setHand(playerTwoHand);
 
-  // tentative
   delete playerOneHand;
   delete playerTwoHand;
 }
 
 Game::~Game() { clear(); }
 
-void Game::clear() {
-  // todo
-}
+void Game::clear() { delete tileBag; }
 
 void Game::run() {
   Player* currentPlayer = &playerOne;
@@ -60,22 +58,22 @@ void Game::run() {
       currentPlayer = &playerTwo;
 
     // for now
-    std::cout << "tile bag is: ";
-    tileBag->displayContents();
-    std::cout << "\n";
+    // std::cout << "tile bag is: ";
+    // tileBag->displayContents();
+    // std::cout << "\n";
 
     std::cout << '\n' << currentPlayer->getName() << ", it's your turn\n\n";
     std::cout << "Score for " << playerOne.getName() << ": "
               << playerOne.getPoints() << '\n';
     std::cout << "Score for " << playerTwo.getName() << ": "
               << playerTwo.getPoints() << '\n';
+
     board.displayBoard();
 
     std::cout << "\nYour hand is\n";
     currentPlayer->getHand()->displayContents();
-    // std::cout << "\n";
 
-    if (handleCommand(currentPlayer)) turn++;
+    if (handleCommand(currentPlayer, turn)) turn++;
   }
 
   std::cout << "Game over\n"
@@ -84,11 +82,13 @@ void Game::run() {
             << "Score for " << playerTwo.getName() << ": "
             << playerTwo.getPoints() << "\n"
             << "Player " << getWinningPlayer()->getName() << " won!\n";
+
+  // quit & print goodbye if user types ctrl+d
 }
 
 bool Game::isFinished() {
-  return ((tileBag->getSize() == 0) && ((playerOne.getHand()->getSize() == 0) ||
-                                        (playerTwo.getHand()->getSize() == 0)));
+  return (tileBag->getSize() == 0) && (playerOne.getHand()->getSize() == 0 ||
+                                       playerTwo.getHand()->getSize() == 0);
 }
 
 Player* Game::getWinningPlayer() {
@@ -102,13 +102,14 @@ Player* Game::getWinningPlayer() {
   return winningPlayer;
 }
 
-bool Game::handleCommand(Player* currentPlayer) {
-  bool validCommand = true;
-
+bool Game::handleCommand(Player* currentPlayer, int turn) {
+  bool validCommand;
   std::string userInput;
 
   do {
+    validCommand = true;
     std::cout << "> ";
+
     std::getline(std::cin, userInput);
 
     std::stringstream ss(userInput);
@@ -122,14 +123,8 @@ bool Game::handleCommand(Player* currentPlayer) {
     if (tokens.size() == PCOMMANDSIZE && !tokens[0].compare("place") &&
         !tokens[2].compare("at")) {
       if (tokens[1].length() == 2 && tokens[3].length() == 2) {
-        if (placeTile(tokens[1], tokens[3], currentPlayer)) {
-          validCommand = true;
-        } else {
+        if (!placeTile(tokens[1], tokens[3], currentPlayer, turn)) {
           validCommand = false;
-          // std::cout
-          //     << "\nCommand not recognized. Try 'place <tile> at <location>'
-          //     "
-          //        "or 'replace <tile>'\n";
         }
       } else {  // if the 2nd and 4th tokens don't have a length of two
         validCommand = false;
@@ -148,9 +143,6 @@ bool Game::handleCommand(Player* currentPlayer) {
 
           if (currentPlayer->getHand()->contains(toReplace)) {
             currentPlayer->getHand()->replaceTile(toReplace, drawTileFromBag());
-            validCommand = true;
-            // std::cout << "tile replaced, player hand: ";
-            // currentPlayer->getHand()->displayContents();
           } else {
             validCommand = false;
             std::cout << "\nThis tile is not in your hand. Please try again\n";
@@ -177,41 +169,76 @@ bool Game::handleCommand(Player* currentPlayer) {
 }
 
 bool Game::placeTile(std::string tileInput, std::string locationInput,
-                     Player* currentPlayer) {
+                     Player* currentPlayer, int turn) {
   bool valid = true;
   char row = locationInput.at(0);
   int col = locationInput.at(1) - '0';
 
-  // std::cout << "in PlaceTile(), COL = " << col << '\n';
-
   if (isCodeValid(tileInput)) {
-    if (board.isValidPosition(row, col)) {
-      Tile tile(static_cast<Colour>(tileInput.at(0)),
-                static_cast<Shape>(tileInput.at(1) - '0'));
+    if (board.isValidPosition(row, col) && board.isInBounds(row, col)) {
+      if (!board.isOccupied(row, col)) {
+        Tile tile(static_cast<Colour>(tileInput.at(0)),
+                  static_cast<Shape>(tileInput.at(1) - '0'));
 
-      if (currentPlayer->getHand()->contains(tile)) {
-        if (board.addTile(tile, row, col)) {
-          currentPlayer->getHand()->deleteTile(tile);
-          currentPlayer->getHand()->addTile(drawTileFromBag());
-        } else {
+        if (currentPlayer->getHand()->contains(tile)) {
+          if (!board.hasSameTileInLines(tile, row, col)) {
+            if (board.addTile(tile, row, col, turn)) {
+              computePoints(currentPlayer, tile, row, col);
+              currentPlayer->getHand()->deleteTile(tile);
+              currentPlayer->getHand()->addTile(drawTileFromBag());
+            } else {
+              valid = false;
+              std::cout
+                  << "\nThat tile cannot be placed there. Please try again\n";
+            }
+          }  // hasSameTileInLines
+          else {
+            valid = false;
+            std::cout << "\nThe same tile already exists in the line. Please "
+                         "try again\n";
+          }
+        }  // contains
+        else {
           valid = false;
-          std::cout << "\nThat tile cannot be placed there. Please try again\n";
+          std::cout << "\nThat tile is not in your hand. Please try again\n";
         }
-      } else {
+      }  // isOccupied
+      else {
         valid = false;
-        std::cout << "\nThat tile is not in your hand. Please try again\n";
+        std::cout << "\nThat spot is already taken. Please try again\n";
       }
-    } else {
+    }  // isValidPosition
+    else {
       valid = false;
-      // do we need to check for out of bounds?
       std::cout << "\nThat spot does not exist. Please try again\n";
     }
-  } else {
+  }  // isCodeValid
+  else {
     valid = false;
     std::cout << "That tile does not exist. Please try again\n";
   }
 
   return valid;
+}
+
+void Game::computePoints(Player* currentPlayer, Tile tile, char row, int col) {
+  int left = board.countLeftDiagonalTiles(tile, row, col, false);
+  int right = board.countRightDiagonalTiles(tile, row, col, false);
+  bool qwirkle = false;
+
+  if (left == QWIRKLE_COUNT) {
+    left += QWIRKLE_COUNT;
+    qwirkle = true;
+  }
+
+  if (right == QWIRKLE_COUNT) {
+    right += QWIRKLE_COUNT;
+    qwirkle = true;
+  }
+
+  if (qwirkle) std::cout << "\nQWIRKLE!!!\n";
+
+  currentPlayer->setPoints(currentPlayer->getPoints() + left + right);
 }
 
 Tile Game::drawTileFromBag() {
@@ -221,4 +248,10 @@ Tile Game::drawTileFromBag() {
   tileBag->deleteFront();
 
   return tile;
+}
+
+Board Game::getBoard() { return board; }
+
+void Game::setTileBag(LinkedList* tileBag) {
+  this->tileBag = new LinkedList(*tileBag);
 }

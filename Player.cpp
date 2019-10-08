@@ -5,6 +5,11 @@ Player::Player(std::string name, int points, LinkedList* tiles)
 
 Player::Player(std::string name) : name(name), points(0), hand(nullptr) {}
 
+Player::Player(const Player& toCopy)
+    : name(toCopy.name),
+      points(toCopy.points),
+      hand(new LinkedList(*toCopy.hand)) {}
+
 Player::~Player() { clear(); }
 
 void Player::clear() { delete hand; }

@@ -15,7 +15,7 @@ class LinkedList {
 
  public:
   LinkedList();
-  LinkedList(const LinkedList& src);
+  LinkedList(const LinkedList& toCopy);
   ~LinkedList();
   int getSize();
   Tile getFront();  // return tile at the head

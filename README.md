@@ -2,10 +2,9 @@
 
 
 ### Major Enhancements
-
+- Place Multiple Tiles?
 
 ### Minor Enhancements
-- Help
 - Better Invalid Input
 - Colour
 - Expandable Board?
