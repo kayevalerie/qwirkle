@@ -29,9 +29,10 @@ class Game {
   Game();	
   ~Game();
   void run();
-  setPlayerOne(Player& newPlayerOne);
-  setPlayerTwo(Player& newPlayerTwo);
-  setTileBag(LinkedList* newTileBag);
+  void setPlayerOne(Player& newPlayerOne);
+  void setPlayerTwo(Player& newPlayerTwo);
+  void setTileBag(LinkedList* newTileBag);
+  Board getBoard();	
 };
 
 #endif  // ASSIGN2_GAME_H

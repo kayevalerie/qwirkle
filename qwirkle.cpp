@@ -188,14 +188,14 @@ void readFile(std::string filename) {
                 playerTiles->addTile(Tile(static_cast<Colour>(color), static_cast<Shape>(shape - '0')));
               }
             }
-            players[playerNumber] = Player(playerName, playerScore, playerTiles);
+            players[playerNumber] = new Player(playerName, playerScore, playerTiles);
             playerNumber++;
           }
       }
      //adding the players
      if (lineNumber == 8) {
-       game.setPlayer1(players[0]);
-       game.setPlayer2(players[1]);
+       game.setPlayerOne(*players[0]);
+       game.setPlayerTwo(*players[1]);
      }
       //reading in the board
      if (lineNumber >= 9 && lineNumber <= 14) {
@@ -208,7 +208,7 @@ void readFile(std::string filename) {
           //checking individual cells for tiles
           int col = 0;
           if ((tokens[i].at(1) != ' ') && (tokens[i].at(2) != ' ')) {
-             if (!game.getBoard.addTile(Tile(static_cast<Colour>(tokens[i].at(1)), static_cast<Shape>(tokens[i].at(2) - '0')), row, col)) {
+             if (!game.getBoard().addTile(Tile(static_cast<Colour>(tokens[i].at(1)), static_cast<Shape>(tokens[i].at(2) - '0')), row, col)) {
                std::cout << "Cannot read in the file\n";
              }
           }
