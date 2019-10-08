@@ -104,7 +104,7 @@ void Game::run() {
 bool Game::isFinished() {
   return ((tileBag->getSize() == 0) && (playerOne.getHand()->getSize() == 0 ||
                                         playerTwo.getHand()->getSize() == 0)) ||
-         (board.getFilledTiles == board.getCols() * board.getRows());
+         (board.getFilledTiles() == board.getCols() * board.getRows());
 }
 
 Player* Game::getWinningPlayer() {
@@ -267,7 +267,3 @@ Tile Game::drawTileFromBag() {
 }
 
 Board Game::getBoard() { return board; }
-
-void Game::setTileBag(LinkedList* tileBag) {
-  this->tileBag = new LinkedList(*tileBag);
-}

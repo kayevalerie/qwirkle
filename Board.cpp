@@ -402,6 +402,10 @@ bool Board::addTile(Tile tile, char row, int col, int turn) {
 
   if (hasValidAdjacentTiles(tile, row_pos, col_pos, turn)) {
     grid.at(row_pos).at(col_pos) = tile;
+
+    // expand?
+    //    if (getFilledTiles() == )
+
   } else
     valid = false;
 
