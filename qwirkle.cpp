@@ -123,10 +123,6 @@ void loadGameMenu() {
     getline(std::cin, fileName);
     if (Helper::isValidFormat(fileName)) {
       readFile(fileName);
-      Game game("test", "test2");
-      std::cout << "Qwirkle game loaded successfully. \n";
-      valid = true;
-      game.run();
     } else {
       std::cout << "The format of this file is not correct. Please try again\n";
     }
@@ -156,29 +152,81 @@ void showStudentInfo() {
 }
 
 void readFile(std::string filename) {
-  // std::ifstream infile(filename);
-  // std::string line;
-  // std::string player1Name;
-  // std::string player2Name;
-  // int player1Score = 0;
-  // int player2Score = 0;
+  std::ifstream infile(filename);
+  std::string line;
+  
+  std::string playerName;
+  int playerScore = 0;
+  std::string playerHand;
+  Player* players = new Player[2];
+  std::string intermediate;
+  char color;
+  char shape;
+  
+  if (infile.is_open())
+  {
+    int lineNumber = 1;
+    int playerNumber = 0;
+    while (getline(infile,line) )
+    {
+      if (lineNumber <= 6) {
+        //reading in players' details
+          if (lineNumber % 3 == 1) playerName = line;
+          else if (lineNumber % 3 == 2) playerScore = std::stoi(line);
+          else if (lineNumber % 3 == 0) {
+            playerHand = line;
+            LinkedList* playerTiles = new LinkedList();
+            
 
-  // if (infile.is_open())
-  // {
-  //   int lineNumber = 1;
-  //   while (getline(infile,line) )
-  //   {
-  //     if (lineNumber == 1) {
-  //       player1Name = line;
-  //     }
-  //     if (lineNumber == 2 ) {
-  //       player1Score = line;
-  //     }
-
-  //     std::cout << line << '\n';
-  //   }
-  //   file.close();
-  // }
-
-  // else std::cout << "Unable to open file";
+            while (getline(playerHand, intermediate, ',')) {
+              if (!intermediate.empty()) {
+                color = intermediate.at(0);
+                shape = intermediate.at(1);
+                playerTiles.addTile(Tile(static_cast<Colour>(color), static_cast<Shape>(shape - '0')));
+              }
+            }
+            players[playerNumber] = new Player(playerName, playerScore, playerTiles);
+            playerNumber++;
+          }
+      }
+     //creating the game object
+     if (lineNumber == 8) {
+       Game game(players[0], players[1]);
+     }
+      //reading in the board
+     if (lineNumber >= 9 && lineNumber <= 14) {
+        int row = 'A';
+        std::vector<std::string> tokens;
+        while (getline(line, intermediate, '|')) {
+              if (!intermediate.empty()) tokens.push_back(intermediate);
+        }
+        for (int i = 1; i < tokens.size(); i++) {
+          //checking individual cells for tiles
+          int col = 0;
+          if ((tokens[i].at(1) != ' ') && (tokens[i].at(2) != ' ')) {
+             if (!game.getBoard.addTile(Tile(static_cast<Colour>(tokens[i].at(1)), static_cast<Shape>(tokens[i].at(2) - '0')), row, col)) {
+               std::cout << "Cannot read in the file\n";
+             }
+          }
+          col = col + 2;
+        }
+        row++;                              
+     }
+     //reading in the tile bag
+     if (lineNumber == 15) {
+       LinkedList* tileBag = new LinkedList();
+       while (getline(line, intermediate, ',')) {
+         if (!intermediate.empty()) {
+           color = intermediate.at(0);
+           shape = intermediate.at(1);
+           tileBag.addTile(Tile(static_cast<Colour>(color), static_cast<Shape>(shape - '0')));
+         }
+       }
+    lineNumber++;                               
+  }
+  game.setTileBag(tileBag);
+  std::cout << "Qwirkle game loaded successfully. \n";
+  game.run();
+  file.close();
+  else std::cout << "Cannot read in the file";
 }
