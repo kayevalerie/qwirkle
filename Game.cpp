@@ -9,9 +9,7 @@
 #define PLAYER_HAND_SIZE 6
 #define QWIRKLE_COUNT 6
 
-Game::Game() 
-	: board(Board())
-	{}
+Game::Game() : board(Board()) {}
 
 Game::Game(std::string playerOneName, std::string playerTwoName)
     : playerOne(Player(playerOneName)),
@@ -52,20 +50,18 @@ Game::~Game() { clear(); }
 void Game::clear() { delete tileBag; }
 
 void Game::setPlayerOne(Player& newPlayerOne) {
-	playerOne = Player(newPlayerOne);
+  playerOne = Player(newPlayerOne);
 }
 
 void Game::setPlayerTwo(Player& newPlayerTwo) {
-	playerTwo = Player(newPlayerTwo);
+  playerTwo = Player(newPlayerTwo);
 }
 
 void Game::setTileBag(LinkedList* newTileBag) {
-	tileBag = new LinkedList(*newTileBag);
+  tileBag = new LinkedList(*newTileBag);
 }
 
-Board Game::getBoard() {
-	return board;
-}
+Board Game::getBoard() { return board; }
 void Game::run() {
   Player* currentPlayer = &playerOne;
   int turn = 0;
@@ -106,8 +102,9 @@ void Game::run() {
 }
 
 bool Game::isFinished() {
-  return (tileBag->getSize() == 0) && (playerOne.getHand()->getSize() == 0 ||
-                                       playerTwo.getHand()->getSize() == 0);
+  return ((tileBag->getSize() == 0) && (playerOne.getHand()->getSize() == 0 ||
+                                        playerTwo.getHand()->getSize() == 0)) ||
+         (board.getFilledTiles == board.getCols() * board.getRows());
 }
 
 Player* Game::getWinningPlayer() {

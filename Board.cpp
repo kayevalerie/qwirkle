@@ -383,6 +383,18 @@ int Board::countRightDiagonalTiles(Tile tile, char row, int col, bool check) {
   return count;
 }
 
+int Board::getFilledTiles() {
+  int count = 0;
+
+  for (unsigned int i = 0; i < rows; i++)
+    for (unsigned int j = 0; j < cols; j++)
+      if (grid[i][j].getColour() != Colour::NONE &&
+          grid[i][j].getShape() != Shape::NONE)
+        count++;
+
+  return count;
+}
+
 bool Board::addTile(Tile tile, char row, int col, int turn) {
   bool valid = true;
   int row_pos = row - 'A';

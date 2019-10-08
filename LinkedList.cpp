@@ -244,7 +244,7 @@ void LinkedList::shuffle() {
     std::uniform_int_distribution<int> uniform_dist(min, max);
     int randomIndex = uniform_dist(engine);
     Node* toBeShuffled = get(randomIndex);
-    std::cout << "tile is: " << toBeShuffled->getTile().toString() << '\n';
+    // std::cout << "tile is: " << toBeShuffled->getTile().toString() << '\n';
     deleteAt(randomIndex);
     addTile(toBeShuffled->getTile());
     max--;

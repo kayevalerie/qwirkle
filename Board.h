@@ -34,6 +34,7 @@ class Board {
   int countLeftDiagonalTiles(Tile tile, char row, int col, bool check);
   int countRightDiagonalTiles(Tile tile, char row, int col, bool check);
   void displayBoard();
+  int getFilledTiles();
 };
 
 #endif  // ASSIGN2_BOARD_H
