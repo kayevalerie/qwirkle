@@ -167,11 +167,13 @@ void readFile(std::string filename) {
   
   if (infile.is_open())
   {
+    char row = 'A';
     int lineNumber = 1;
     int playerNumber = 0;
+    std::cout << "im in the infile is open\n";
     while (getline(infile,line) )
     {
-
+	std::cout << "in the while loop\n";
       std::stringstream sstream(line);
       if (lineNumber <= 6) {
         //reading in players' details
@@ -189,44 +191,61 @@ void readFile(std::string filename) {
               }
             }
             players[playerNumber] = new Player(playerName, playerScore, playerTiles);
-            playerNumber++;
+ 	    playerNumber++;
+	    std::cout << "created players successfully\n";
           }
       }
      //adding the players
      if (lineNumber == 8) {
        game.setPlayerOne(*players[0]);
        game.setPlayerTwo(*players[1]);
+       std::cout << "added players to the game\n";
      }
       //reading in the board
-     if (lineNumber >= 9 && lineNumber <= 14) {
-        int row = 'A';
+    
+     if (lineNumber >= 9 && lineNumber <= 14) {       
         std::vector<std::string> tokens;
         while (getline(sstream, intermediate, '|')) {
               if (!intermediate.empty()) tokens.push_back(intermediate);
         }
-        for (int i = 1; i < tokens.size(); i++) {
+	int col = 0;
+	for (int i = 1; i < tokens.size(); i++) {
           //checking individual cells for tiles
-          int col = 0;
-          if ((tokens[i].at(1) != ' ') && (tokens[i].at(2) != ' ')) {
+	  std::cout << "token[" << i << "] is "<< tokens[i] << '\n';
+	  if (tokens[i].length() > 2) {
+	  if ((tokens[i].at(1) != ' ') && (tokens[i].at(2) != ' ')) {
              if (!game.getBoard().addTile(Tile(static_cast<Colour>(tokens[i].at(1)), static_cast<Shape>(tokens[i].at(2) - '0')), row, col)) {
                std::cout << "Cannot read in the file\n";
              }
+	     else {
+		     std::cout << "added a tile to the board\n";
+   	     }
           }
           col = col + 2;
+	  std::cout << "col is: " << col << '\n';
         }
-        row++;                              
-     }
+       }
+	 row = row + 1; 
+	std::cout << "increased the row. row is :" << row << '\n';
+      }
      //reading in the tile bag
      if (lineNumber == 17) {
-       while (getline(sstream, intermediate, ',')) {
+      std::cout << "in line 17\n";
+      while (getline(sstream, intermediate, ',')) {
          if (!intermediate.empty()) {
-           color = intermediate.at(0);
+           std::cout << "intermediate size here is :" << intermediate.length() << '\n';
+	   color = intermediate.at(0);
            shape = intermediate.at(1);
+	   std::cout << "creating and adding to the tile bag\n";
            tileBag->addTile(Tile(static_cast<Colour>(color), static_cast<Shape>(shape - '0')));
-         }
+           std::cout << "added tile " << Tile(static_cast<Colour>(color), static_cast<Shape>(shape - '0')).toString() << "to the tile bag\n";
+	}
        }                               
     }
-lineNumber++;
+    if (lineNumber == 18) {
+	  //todo
+    }
+    lineNumber++;
  }
   game.setTileBag(tileBag);
   std::cout << "Qwirkle game loaded successfully. \n";
