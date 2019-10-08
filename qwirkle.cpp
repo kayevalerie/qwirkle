@@ -217,7 +217,7 @@ void readFile(std::string filename) {
         row++;                              
      }
      //reading in the tile bag
-     if (lineNumber == 15) {
+     if (lineNumber == 17) {
        while (getline(sstream, intermediate, ',')) {
          if (!intermediate.empty()) {
            color = intermediate.at(0);
