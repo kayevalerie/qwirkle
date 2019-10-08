@@ -9,30 +9,29 @@
 #define COLS 8
 
 class Board {
-  size_t rows;
-  size_t cols;
   std::vector<std::vector<Tile>> grid;
 
   int getPrintedBoardWidth(int regularWidth);
   void clear();
-  Tile getTile(int row, int col);
   int translateCol(int row);
   bool isOccupied(int row, int col);
   bool isInBounds(int row, int col);
   bool hasValidAdjacentTiles(Tile tile, int row, int col, int turn);
+  void resize();
+  void adjustCols(int cols);
 
  public:
   Board();
   ~Board();
-  size_t getRows();
-  size_t getCols();
+  int getRows();
+  int getCols(int row);
   bool addTile(Tile tile, char row, int col, int turn);
   bool isValidPosition(char row, int col);
   bool isInBounds(char row, int col);
   bool isOccupied(char row, int col);
   bool hasSameTileInLines(Tile tile, char row, int col);
-  int countLeftDiagonalTiles(Tile tile, char row, int col, bool check);
-  int countRightDiagonalTiles(Tile tile, char row, int col, bool check);
+  int countLeftDiagonalTiles(Tile tile, char row, int col);
+  int countRightDiagonalTiles(Tile tile, char row, int col);
   void displayBoard();
   int getFilledTiles();
 };

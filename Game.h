@@ -7,8 +7,10 @@
 #include "Player.h"
 
 #include <string>
+#define NUM_PLAYERS 4
 
 class Game {
+  // std::array<Player, NUM_PLAYERS> players;
   Player playerOne;
   Player playerTwo;
   Board board;
@@ -18,13 +20,16 @@ class Game {
   bool handleCommand(Player* currentPlayer, int turn);
   bool placeTile(std::string tileInput, std::string locationInput,
                  Player* currentPlayer, int turn);
+  void computePoints(Player* currentPlayer, Tile tile, char row, int col);
   Tile drawTileFromBag();
   bool isFinished();
-  void computePoints(Player* currentPlayer, Tile tile, char row, int col);
   Player* getWinningPlayer();
+  void saveGame(std::string filename, Player* currentPlayer);
 
  public:
   Game(std::string playerOneName, std::string playerTwoName);
+  // Game(std::string playerOneName, std::string playerTwoName, std::string
+  // playerThreeName, std::string playerFourName);
   Game();
   ~Game();
   void run();

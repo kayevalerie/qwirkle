@@ -1,6 +1,7 @@
 #include "Game.h"
 #include <stdio.h>
 #include <cstring>
+#include <fstream>
 #include <iostream>
 #include <sstream>
 
@@ -61,15 +62,14 @@ void Game::setTileBag(LinkedList* newTileBag) {
   tileBag = new LinkedList(*newTileBag);
 }
 
-Board Game::getBoard() { return board; }
 void Game::run() {
   Player* currentPlayer = &playerOne;
   int turn = 0;
 
-  while (!isFinished()) {
+  do {
     if (turn % 2 == 0)
       currentPlayer = &playerOne;
-    else if (turn % 2 != 0)
+    else
       currentPlayer = &playerTwo;
 
     // for now
@@ -87,24 +87,29 @@ void Game::run() {
 
     std::cout << "\nYour hand is\n";
     currentPlayer->getHand()->displayContents();
-
     if (handleCommand(currentPlayer, turn)) turn++;
-  }
+
+  } while (!isFinished());
 
   std::cout << "Game over\n"
             << "Score for " << playerOne.getName() << ": "
             << playerOne.getPoints() << "\n"
             << "Score for " << playerTwo.getName() << ": "
-            << playerTwo.getPoints() << "\n"
-            << "Player " << getWinningPlayer()->getName() << " won!\n";
+            << playerTwo.getPoints() << "\n";
 
-  // quit & print goodbye if user types ctrl+d
+  if (getWinningPlayer())
+    std::cout << "Player " << getWinningPlayer()->getName() << " won!\n";
+  else
+    std::cout << "It's a draw!\n";
+
+  // goodbye message here
 }
 
 bool Game::isFinished() {
-  return ((tileBag->getSize() == 0) && (playerOne.getHand()->getSize() == 0 ||
-                                        playerTwo.getHand()->getSize() == 0)) ||
-         (board.getFilledTiles() == board.getCols() * board.getRows());
+  return (tileBag->getSize() == 0 && (playerOne.getHand()->getSize() == 0 ||
+                                      playerTwo.getHand()->getSize() == 0));
+  //                               ||
+  //  board.getFilledTiles() == board.getCols() * board.getRows();
 }
 
 Player* Game::getWinningPlayer() {
@@ -115,11 +120,12 @@ Player* Game::getWinningPlayer() {
   } else if (playerOne.getPoints() < playerTwo.getPoints()) {
     winningPlayer = &playerTwo;
   }
+
   return winningPlayer;
 }
 
 bool Game::handleCommand(Player* currentPlayer, int turn) {
-  bool validCommand;
+  bool validCommand, quit = false;
   std::string userInput;
 
   do {
@@ -136,8 +142,39 @@ bool Game::handleCommand(Player* currentPlayer, int turn) {
       if (!intermediate.empty()) tokens.push_back(intermediate);
     }
 
-    if (tokens.size() == PCOMMANDSIZE && !tokens[0].compare("place") &&
-        !tokens[2].compare("at")) {
+    if (std::cin.eof() || (tokens.size() == 1 && tokens[0] == "q")) {
+      quit = true;
+      std::cout << "QUIT\n";
+    }
+
+    else if (tokens.size() == 1 && tokens[0] == "s") {
+      std::string filename;
+      bool validFilename = true;
+
+      do {
+        std::cout << "\nInput filename of savefile\n> ";
+
+        std::getline(std::cin, filename);
+
+        std::ofstream fw;
+        fw.exceptions(std::ofstream::badbit);
+
+        try {
+          fw.open(filename);
+        } catch (const std::ofstream::failure& e) {
+          validFilename = false;
+          std::cout << "\nInvalid filename";
+        }
+
+        fw.close();
+
+      } while (!validFilename);
+
+      saveGame(filename, currentPlayer);
+    }
+
+    else if (tokens.size() == PCOMMANDSIZE && !tokens[0].compare("place") &&
+             !tokens[2].compare("at")) {
       if (tokens[1].length() == 2 && tokens[3].length() == 2) {
         if (!placeTile(tokens[1], tokens[3], currentPlayer, turn)) {
           validCommand = false;
@@ -179,9 +216,9 @@ bool Game::handleCommand(Player* currentPlayer, int turn) {
                    "or 'replace <tile>'\n";  // todo : UPDATE ERROR MESSAGES IN
                                              // UNIT TESTS
     }
-  } while (std::cin.good() && !std::cin.eof() && !validCommand);
+  } while (!quit && !validCommand);
 
-  return validCommand;
+  return !quit;
 }
 
 bool Game::placeTile(std::string tileInput, std::string locationInput,
@@ -238,8 +275,12 @@ bool Game::placeTile(std::string tileInput, std::string locationInput,
 }
 
 void Game::computePoints(Player* currentPlayer, Tile tile, char row, int col) {
-  int left = board.countLeftDiagonalTiles(tile, row, col, false);
-  int right = board.countRightDiagonalTiles(tile, row, col, false);
+  int left = board.countLeftDiagonalTiles(tile, row, col);
+  int right = board.countRightDiagonalTiles(tile, row, col);
+
+  std::cout << "LEFT  = " << left;
+  std::cout << "\tRIGHT  = " << right << "\n";
+
   bool qwirkle = false;
 
   if (left == QWIRKLE_COUNT) {
@@ -264,6 +305,39 @@ Tile Game::drawTileFromBag() {
   tileBag->deleteFront();
 
   return tile;
+}
+
+// problem: saves escape codes into file
+void Game::saveGame(std::string filename, Player* currentPlayer) {
+  std::ofstream fw;
+  fw.open(filename);
+
+  fw << playerOne.getName() << "\n";
+  fw << playerOne.getPoints() << "\n";
+  std::streambuf* oldbuf = std::cout.rdbuf();
+  std::cout.rdbuf(fw.rdbuf());
+  playerOne.getHand()
+      ->displayContents();  // contents to cout will be written to file
+  std::cout.rdbuf(oldbuf);  // reset back to standard input
+  // SOURCE https://stackoverflow.com/a/10151286  (to include as reference)
+
+  fw << playerTwo.getName() << "\n";
+  fw << playerTwo.getPoints() << "\n";
+  oldbuf = std::cout.rdbuf();
+  std::cout.rdbuf(fw.rdbuf());
+  playerTwo.getHand()->displayContents();
+
+  board.displayBoard();
+
+  tileBag->displayContents();
+
+  std::cout.rdbuf(oldbuf);
+
+  fw << currentPlayer->getName();
+
+  fw.close();
+
+  std::cout << "\nGame successfully saved\n";
 }
 
 Board Game::getBoard() { return board; }

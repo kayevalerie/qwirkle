@@ -12,7 +12,7 @@ LinkedList::LinkedList(const LinkedList& toCopy)
 
   while (current) {
     addTile(current->getTile());
-    current = current->next;
+    current = current->getNext();
   }
 }
 
@@ -23,7 +23,7 @@ void LinkedList::clear() {
   Node* next = nullptr;
 
   while (current) {
-    next = current->next;
+    next = current->getNext();
     delete current;
     current = next;
   }
@@ -43,11 +43,11 @@ Node* LinkedList::get(unsigned int i) {
   } else if (i == list_size - 1) {
     node = tail;
   } else if (i < list_size) {
-    Node* current = head->next;
+    Node* current = head->getNext();
     unsigned int index = 1;
 
     while (index < i) {
-      current = current->next;
+      current = current->getNext();
       index++;
     }
     node = current;
@@ -66,7 +66,7 @@ bool LinkedList::contains(Tile tile) {
     if (current->getTile().equals(tile)) {
       found = true;
     }
-    current = current->next;
+    current = current->getNext();
   }
 
   return found;
@@ -79,7 +79,7 @@ void LinkedList::addTile(Tile tile) {
     tail = temp;
     head = tail;
   } else {
-    tail->next = temp;
+    tail->setNext(temp);
     tail = temp;  // set new tail pointer
   }
 
@@ -94,7 +94,7 @@ void LinkedList::deleteFront() {
       tail = nullptr;
     } else {
       Node* prevHead = head;
-      head = head->next;
+      head = head->getNext();
       delete prevHead;
       list_size--;
     }
@@ -107,21 +107,21 @@ void LinkedList::deleteAt(unsigned int i) {
   if (i == 0) {
     deleteFront();
   } else if (i < list_size) {  // delete at the end or in the middle
-    Node* current = head->next;
+    Node* current = head->getNext();
     Node* prev = head;
     unsigned int index = 1;
 
     while (index < i) {
       prev = current;
-      current = current->next;
+      current = current->getNext();
       index++;
     }
 
-    if (!current->next) {  // deleting the last node in the list
-      prev->next = nullptr;
+    if (!current->getNext()) {  // deleting the last node in the list
+      prev->setNext(nullptr);
       tail = prev;
     } else {
-      prev->next = current->next;
+      prev->setNext(current->getNext());
     }
 
     delete current;
@@ -140,7 +140,7 @@ void LinkedList::replaceTile(Tile tile, Tile newTile) {
     Node* newNode = new Node(newTile, nullptr);
 
     if (tile.equals(head->getTile())) {  // if tile to delete is at head
-      newNode->next = head->next;
+      newNode->setNext(head->getNext());
       delete head;
       head = newNode;
     } else {  // if tile to delete is at the end or in the middle
@@ -152,19 +152,19 @@ void LinkedList::replaceTile(Tile tile, Tile newTile) {
           found = true;
         } else {
           prev = current;
-          current = current->next;
+          current = current->getNext();
         }
       }
 
       if (found) {
-        prev->next = newNode;
+        prev->setNext(newNode);
 
         // if the element to replace is the last element in the list
-        if (!current->next) {
+        if (!current->getNext()) {
           // set it as the new tail
           tail = newNode;
         } else {
-          newNode->next = current->next;
+          newNode->setNext(current->getNext());
         }
 
         delete current;
@@ -190,16 +190,16 @@ void LinkedList::deleteTile(Tile tile) {
           found = true;
         } else {
           prev = current;
-          current = current->next;
+          current = current->getNext();
         }
       }
 
       if (found) {
         // if the element to delete is the last element in the list
-        if (!current->next)
+        if (!current->getNext())
           tail = prev;  // set the previous node as the new tail
 
-        prev->next = current->next;
+        prev->setNext(current->getNext());
         delete current;
         list_size--;
       }
@@ -219,11 +219,11 @@ void LinkedList::displayContents() {
 
       if (i != list_size - 1) std::cout << ",";
 
-      current = current->next;
+      current = current->getNext();
       i++;
     }
 
-    std::cout << "\n\n";
+    std::cout << "\n";
   }
 }
 
@@ -245,8 +245,8 @@ void LinkedList::shuffle() {
     int randomIndex = uniform_dist(engine);
     Node* toBeShuffled = get(randomIndex);
     // std::cout << "tile is: " << toBeShuffled->getTile().toString() << '\n';
-    deleteAt(randomIndex);
     addTile(toBeShuffled->getTile());
+    deleteAt(randomIndex);
     max--;
   }
 }

@@ -40,9 +40,12 @@ void displayMenu() {
     }
 
     getline(std::cin, choiceString);
+
     try {
       choice = std::stoi(choiceString);
-    } catch (std::invalid_argument& e) {
+    } catch (std::invalid_argument& ia) {
+      valid = false;
+    } catch (const std::out_of_range& oor) {
       valid = false;
     }
 
@@ -53,8 +56,6 @@ void displayMenu() {
     else if (choice == 3)
       showStudentInfo();
     else if (choice == 4)
-      exitGame();
-    else if (std::cin.eof())
       quit = true;
     else
       valid = false;
@@ -136,7 +137,7 @@ void loadGameMenu() {
   }
 }
 
-void exitGame() { std::cout << "\n\nGoodbye! \n"; }
+void exitGame() { std::cout << "\nGoodbye! \n"; }
 
 void showStudentInfo() {
   std::cout << "----------------------------------\n"
@@ -166,7 +167,7 @@ void readFile(std::string filename) {
   int playerScore = 0;
   std::string playerHand;
   Player* players[2];
-  ;
+
   std::string intermediate;
   char color;
   char shape;
@@ -219,7 +220,7 @@ void readFile(std::string filename) {
           if (!intermediate.empty()) tokens.push_back(intermediate);
         }
         int col = 0;
-        for (int i = 1; i < tokens.size(); i++) {
+        for (unsigned int i = 1; i < tokens.size(); i++) {
           // checking individual cells for tiles
           std::cout << "token[" << i << "] is " << tokens[i] << '\n';
           if (tokens[i].length() > 2) {

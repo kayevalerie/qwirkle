@@ -6,12 +6,14 @@
 
 class Node {
   Tile tile;
+  Node* next;
 
  public:
   Node(Tile tile, Node* next);
   Node(const Node& other);
-  Node* next;
+  void setNext(Node* next);
   Tile getTile();
+  Node* getNext();
 };
 
 #endif  // ASSIGN2_NODE_H
