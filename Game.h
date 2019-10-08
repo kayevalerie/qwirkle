@@ -25,10 +25,12 @@ class Game {
 
  public:
   Game(std::string playerOneName, std::string playerTwoName);
-  Game(Player playerOne, Player playerTwo);
+  Game();
   ~Game();
   void run();
-  void setTileBag(LinkedList* tileBag);
+  void setPlayerOne(Player& newPlayerOne);
+  void setPlayerTwo(Player& newPlayerTwo);
+  void setTileBag(LinkedList* newTileBag);
   Board getBoard();
 };
 

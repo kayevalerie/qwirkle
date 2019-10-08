@@ -9,6 +9,10 @@
 #define PLAYER_HAND_SIZE 6
 #define QWIRKLE_COUNT 6
 
+Game::Game() 
+	: board(Board())
+	{}
+
 Game::Game(std::string playerOneName, std::string playerTwoName)
     : playerOne(Player(playerOneName)),
       playerTwo(Player(playerTwoName)),
@@ -24,7 +28,7 @@ Game::Game(std::string playerOneName, std::string playerTwoName)
     }
   }
 
-  // tileBag->shuffle();
+  tileBag->shuffle();
 
   LinkedList* playerOneHand = new LinkedList();
   LinkedList* playerTwoHand = new LinkedList();
@@ -47,6 +51,21 @@ Game::~Game() { clear(); }
 
 void Game::clear() { delete tileBag; }
 
+void Game::setPlayerOne(Player& newPlayerOne) {
+	playerOne = Player(newPlayerOne);
+}
+
+void Game::setPlayerTwo(Player& newPlayerTwo) {
+	playerTwo = Player(newPlayerTwo);
+}
+
+void Game::setTileBag(LinkedList* newTileBag) {
+	tileBag = new LinkedList(*newTileBag);
+}
+
+Board Game::getBoard() {
+	return board;
+}
 void Game::run() {
   Player* currentPlayer = &playerOne;
   int turn = 0;
