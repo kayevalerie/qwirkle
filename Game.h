@@ -26,8 +26,13 @@ class Game {
 
  public:
   Game(std::string playerOneName, std::string playerTwoName);
+  Game();	
   ~Game();
   void run();
+  void setPlayerOne(Player& newPlayerOne);
+  void setPlayerTwo(Player& newPlayerTwo);
+  void setTileBag(LinkedList* newTileBag);
+  Board getBoard();	
 };
 
 #endif  // ASSIGN2_GAME_H

@@ -1,40 +1,35 @@
+
+#include "Helper.h"
 #include <cstring>
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include <string>
 #include <vector>
-#include "Helper.h"
+
 // input validation methods
 
 namespace Helper
 {
 
-bool isASCII(std::string n)
-{
-    unsigned int i;
-    for (i = 0; i < n.size(); i++)
-    {
-        if (isalpha(n[i]) == 0)
-        {
-            return false;
-        }
-    }
-    return true;
+bool isASCII(std::string n) {
+  //   unsigned int i;
+  //   for (i = 0; i < n.size(); i++) {
+  //     if (isalpha(n[i]) == 0) {
+  //       return false;
+  //     }
+  //   }
+  return true;
 }
 
-bool isNumber(std::string h)
-{
-    unsigned int i;
-
-    for (i = 0; i < h.size(); i++)
-    {
-        if (isdigit(h[i]) == 0)
-        {
-            return false;
-        }
-    }
-    return true;
+bool isNumber(std::string h) {
+  //   bool valid = true;
+  //   for (unsigned int i = 0; i < h.size(); i++) {
+  //     if (isdigit(h[i]) == 0) {
+  //       valid = false;
+  //     }
+  //   }
+  //   return valid;
+  return true;
 }
 
 bool isTilesListValid(std::string a)

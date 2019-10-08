@@ -8,6 +8,10 @@
 #define RCOMMANDSIZE 2
 #define PLAYER_HAND_SIZE 6
 
+Game::Game() 
+	: board(Board())
+	{}
+
 Game::Game(std::string playerOneName, std::string playerTwoName)
     : playerOne(Player(playerOneName)),
       playerTwo(Player(playerTwoName)),
@@ -39,8 +43,8 @@ Game::Game(std::string playerOneName, std::string playerTwoName)
   playerTwo.setHand(playerTwoHand);
 
   // tentative
-  // delete[] playerOneHand;
-  // delete[] playerTwoHand;
+  delete playerOneHand;
+  delete playerTwoHand;
 }
 
 Game::~Game() { clear(); }
@@ -49,6 +53,21 @@ void Game::clear() {
   // todo
 }
 
+void Game::setPlayerOne(Player& newPlayerOne) {
+	playerOne = Player(newPlayerOne);
+}
+
+void Game::setPlayerTwo(Player& newPlayerTwo) {
+	playerTwo = Player(newPlayerTwo);
+}
+
+void Game::setTileBag(LinkedList* newTileBag) {
+	tileBag = new LinkedList(*newTileBag);
+}
+
+Board Game::getBoard() {
+	return board;
+}
 void Game::run() {
   Player* currentPlayer = &playerOne;
   int turn = 0;
@@ -73,7 +92,7 @@ void Game::run() {
 
     std::cout << "\nYour hand is\n";
     currentPlayer->getHand()->displayContents();
-    std::cout << "\n\n";
+    // std::cout << "\n";
 
     if (handleCommand(currentPlayer)) turn++;
   }
@@ -126,12 +145,17 @@ bool Game::handleCommand(Player* currentPlayer) {
           validCommand = true;
         } else {
           validCommand = false;
-          std::cout
-              << "\nCommand not recognized. Try 'place <tile> at <location>' "
-                 "or 'replace <tile>'\n";
+          // std::cout
+          //     << "\nCommand not recognized. Try 'place <tile> at <location>'
+          //     "
+          //        "or 'replace <tile>'\n";
         }
-      } else  // if the 2nd and 4th tokens don't have a length of two
+      } else {  // if the 2nd and 4th tokens don't have a length of two
         validCommand = false;
+        std::cout
+            << "\nCommand not recognized. Try 'place <tile> at <location>' "
+               "or 'replace <tile>'\n";
+      }
     }
 
     else if (tokens.size() == RCOMMANDSIZE && !tokens[0].compare("replace")) {
@@ -156,9 +180,7 @@ bool Game::handleCommand(Player* currentPlayer) {
         }
       } else {
         validCommand = false;
-        std::cout
-            << "\nCommand not recognized. Try 'place <tile> at <location>' "
-               "or 'replace <tile>'\n";
+        std::cout << "\nThis tile does not exist. Please try again\n";
       }
     }
 
@@ -176,12 +198,12 @@ bool Game::handleCommand(Player* currentPlayer) {
 bool Game::placeTile(std::string tileInput, std::string locationInput,
                      Player* currentPlayer) {
   bool valid = true;
+  char row = locationInput.at(0);
+  int col = locationInput.at(1) - '0';
 
-  char row = tileInput.at(0);
-  int col = tileInput.at(1) - '0';
+  // std::cout << "in PlaceTile(), COL = " << col << '\n';
 
   if (isCodeValid(tileInput)) {
-    std::cout << "row = " << row << " col = " << col;
     if (board.isValidPosition(row, col)) {
       Tile tile(static_cast<Colour>(tileInput.at(0)),
                 static_cast<Shape>(tileInput.at(1) - '0'));

@@ -1,9 +1,15 @@
 #include "Player.h"
 
+Player::Player() {}
+
 Player::Player(std::string name, int points, LinkedList* tiles)
     : name(name), points(points), hand(new LinkedList(*tiles)) {}
 
 Player::Player(std::string name) : name(name), points(0), hand(nullptr) {}
+
+Player::Player(const Player& player) 
+	: name(player.name), points(player.points), hand(new LinkedList(*(player.hand))) {}
+	
 
 Player::~Player() { clear(); }
 

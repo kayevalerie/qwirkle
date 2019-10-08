@@ -16,7 +16,7 @@ class Board {
   int getPrintedBoardWidth(int regularWidth);
   void clear();
   Tile getTile(int row, int col);
-  int translateCol(int col);
+  int translateCol(int row);
   bool isOccupied(int row, int col);
   bool isInBounds(int row, int col);
   int countLeftDiagonalTiles(Tile tile, int row, int col);
@@ -31,7 +31,7 @@ class Board {
   bool addTile(Tile tile, char row, int col);
   bool isValidPosition(char row, int col);
   bool isInBounds(char row, int col);
-  bool isOccupied(char row, int col);
+  // bool isOccupied(char row, int col);
   void displayBoard();
 };
 
