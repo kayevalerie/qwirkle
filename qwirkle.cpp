@@ -122,22 +122,22 @@ void newGameMenu() {
 void loadGameMenu() {
   std::string fileName;
   bool valid = false;
+
   do {
-  std::cout << "Enter the name of the file from which to load the game:\n>";
+    std::cout << "Enter the name of the file from which to load the game:\n> ";
     while (std::cin.peek() == '\n') {
       std::cout << "Please input the name of the file\n> ";
       std::cin.ignore();
     }
     getline(std::cin, fileName);
-    if(Helper::fileExist(fileName) == true){
-
-    
-    if (Helper::isValidFormat(fileName)) {
-       readFile(fileName) ;
+    if (Helper::fileExist(fileName) == true) {
+      if (Helper::isValidFormat(fileName)) {
+        readFile(fileName);
+      } else {
+        std::cout
+            << "The format of this file is not correct. Please try again\n";
+      }
     } else {
-      std::cout << "The format of this file is not correct. Please try again\n";
-    }
-    }else{
       std::cout << "This file does not exist. Please try again\n";
     }
   } while (!valid);
@@ -251,24 +251,21 @@ bool readFile(std::string filename) {
       }
       // reading in the tile bag
       if (lineNumber == 17) {
-        std::cout << "in line 17\n";
         while (getline(sstream, intermediate, ',')) {
           if (!intermediate.empty()) {
             color = intermediate.at(0);
             shape = intermediate.at(1);
             tileBag->addTile(Tile(static_cast<Colour>(color),
                                   static_cast<Shape>(shape - '0')));
-            
           }
         }
       }
       if (lineNumber == 18) {
         if (line.compare(players[0]->getName()) == 0) {
-                    game.setCurrentPlayer(*players[0]);
+          game.setCurrentPlayer(*players[0]);
+        } else if (line.compare(players[1]->getName()) == 0) {
+          game.setCurrentPlayer(*players[1]);
         }
-        else if (line.compare(players[1]->getName()) == 0) {
-                      game.setCurrentPlayer(*players[1]);
-              }
       }
       lineNumber++;
     }
