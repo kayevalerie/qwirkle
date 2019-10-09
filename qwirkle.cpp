@@ -138,7 +138,7 @@ void loadGameMenu() {
       std::cout << "The format of this file is not correct. Please try again\n";
     }
     }else{
-      std::cout << "File does not exist.\n";
+      std::cout << "This file does not exist. Please try again\n";
     }
   }
 }
