@@ -27,6 +27,7 @@ void displayMenu() {
   bool valid = true;
 
   do {
+      std::cin.clear();
     std::cout << "\n"
               << "Menu\n"
               << "-------\n"
@@ -124,6 +125,7 @@ void loadGameMenu() {
   bool valid = false;
 
   do {
+      std::cin.clear();
     std::cout << "Enter the name of the file from which to load the game:\n> ";
     while (std::cin.peek() == '\n') {
       std::cout << "Please input the name of the file\n> ";
