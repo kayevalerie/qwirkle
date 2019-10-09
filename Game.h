@@ -36,7 +36,7 @@ class Game {
   void setPlayerOne(Player& newPlayerOne);
   void setPlayerTwo(Player& newPlayerTwo);
   void setTileBag(LinkedList* newTileBag);
-  Board getBoard();
+  Board* getBoard();
 };
 
 #endif  // ASSIGN2_GAME_H
