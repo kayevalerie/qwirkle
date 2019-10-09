@@ -237,6 +237,19 @@ bool isRowsValid(std::string b)
     return valid;
 }
 
+bool fileExist (std::string fileName){
+  std::fstream infile;
+  infile.open(fileName);
+  bool fileopen = true;
+
+    if (infile.fail())
+    {
+        fileopen = false;
+    }
+    infile.close();
+    return fileopen;
+}
+
 bool isValidFormat(std::string fileName)
 {
     bool fileVal = true;
@@ -254,6 +267,8 @@ bool isValidFormat(std::string fileName)
     {
         fileVal = false;
     }
+    
+    else{
 
     std::string hold[50];
     std::string line;
@@ -311,7 +326,9 @@ bool isValidFormat(std::string fileName)
 
     
 
-    return (fileVal && nameVal && scoreVal && handVal && boardVal && gridVal);
+    
+}
+return (fileVal && nameVal && scoreVal && handVal && boardVal && gridVal);
 }
 
 } // namespace Helper

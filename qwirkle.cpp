@@ -122,19 +122,25 @@ void newGameMenu() {
 void loadGameMenu() {
   std::string fileName;
   bool valid = false;
-  std::cout << "Enter the name of the file from which to load the game:\n";
-  while (!valid) {
+  do {
+  std::cout << "Enter the name of the file from which to load the game:\n>";
     while (std::cin.peek() == '\n') {
       std::cout << "Please input the name of the file\n> ";
       std::cin.ignore();
     }
     getline(std::cin, fileName);
+    if(Helper::fileExist(fileName) == true){
+
+    
     if (Helper::isValidFormat(fileName)) {
        readFile(fileName) ;
     } else {
       std::cout << "The format of this file is not correct. Please try again\n";
     }
-  }
+    }else{
+      std::cout << "This file does not exist. Please try again\n";
+    }
+  } while (!valid);
 }
 
 void exitGame() { std::cout << "\nGoodbye!\n"; }
@@ -158,7 +164,7 @@ void showStudentInfo() {
             << "Email: s3602478@student.rmit.edu.au\n"
             << "----------------------------------\n";
   if (std::cin.peek() == 'q') {
-    std::cout << "Good Bye\n";
+    std::cout << "Goodbye\n";
     std::exit(EXIT_FAILURE);
   }
 }
@@ -184,9 +190,7 @@ bool readFile(std::string filename) {
     int lineNumber = 1;
     int playerNumber = 0;
     int turn = 0;
-    std::cout << "im in the infile is open\n";
     while (getline(infile, line)) {
-      std::cout << "in the while loop\n";
       std::stringstream sstream(line);
       if (lineNumber <= 6) {
         // reading in players' details
@@ -209,14 +213,12 @@ bool readFile(std::string filename) {
           players[playerNumber] =
               new Player(playerName, playerScore, playerTiles);
           playerNumber++;
-          std::cout << "created players successfully\n";
         }
       }
       // adding the players
       if (lineNumber == 8) {
         game.setPlayerOne(*players[0]);
         game.setPlayerTwo(*players[1]);
-        std::cout << "added players to the game\n";
       }
       // reading in the board
 
@@ -231,7 +233,6 @@ bool readFile(std::string filename) {
         }
         for (unsigned int i = 1; i < tokens.size(); i++) {
           // checking individual cells for tiles
-          std::cout << "token[" << i << "] is " << tokens[i] << '\n';
           if (tokens[i].length() > 2) {
             if ((tokens[i].at(1) != ' ') && (tokens[i].at(2) != ' ')) {
               if (!game.getBoard()->addTileFromSave(
@@ -241,33 +242,23 @@ bool readFile(std::string filename) {
                 std::cout << "Cannot read in the file\n";
               } else {
                 turn++;
-                std::cout << "added a tile to the board\n";
               }
             }
             col = col + 2;
-            std::cout << "col is: " << col << '\n';
           }
         }
         row = row + 1;
-        std::cout << "increased the row. row is :" << row << '\n';
       }
       // reading in the tile bag
       if (lineNumber == 17) {
         std::cout << "in line 17\n";
         while (getline(sstream, intermediate, ',')) {
           if (!intermediate.empty()) {
-            std::cout << "intermediate size here is :" << intermediate.length()
-                      << '\n';
             color = intermediate.at(0);
             shape = intermediate.at(1);
-            std::cout << "creating and adding to the tile bag\n";
             tileBag->addTile(Tile(static_cast<Colour>(color),
                                   static_cast<Shape>(shape - '0')));
-            std::cout << "added tile "
-                      << Tile(static_cast<Colour>(color),
-                              static_cast<Shape>(shape - '0'))
-                             .toString()
-                      << "to the tile bag\n";
+            
           }
         }
       }
