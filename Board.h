@@ -37,6 +37,7 @@ class Board {
   int getRows();
   int getCols(int row);
   bool addTile(Tile tile, char row, int col, int turn);
+  bool addTileFromSave(Tile tile, char row, int col);
   bool isValidPosition(char row, int col);
   bool isInBounds(char row, int col);
   bool isOccupied(char row, int col);

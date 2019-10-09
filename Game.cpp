@@ -63,9 +63,8 @@ void Game::setTileBag(LinkedList* newTileBag) {
   tileBag = new LinkedList(*newTileBag);
 }
 
-void Game::run() {
-  Player* currentPlayer = &playerOne;
-  int turn = 0;
+void Game::run(int turn) {
+  Player* currentPlayer;
 
   do {
     if (turn % 2 == 0)
@@ -145,7 +144,8 @@ bool Game::handleCommand(Player* currentPlayer, int turn) {
 
     if (std::cin.eof() || (tokens.size() == 1 && tokens[0] == "q")) {
       quit = true;
-      std::cout << "QUIT\n";
+      std::cout << "Good Bye\n";
+      std::exit(EXIT_FAILURE);
     }
 
     else if (tokens.size() == 1 && tokens[0] == "s") {
@@ -240,8 +240,7 @@ bool Game::placeTile(std::string tileInput, std::string locationInput,
             updatePoints(currentPlayer);
             currentPlayer->getHand()->deleteTile(tile);
             currentPlayer->getHand()->addTile(drawTileFromBag());
-          }  // addTile
-          else {
+          } else {
             valid = false;
             std::cout
                 << "\nThat tile cannot be placed there. Please try again\n";
@@ -271,27 +270,22 @@ bool Game::placeTile(std::string tileInput, std::string locationInput,
 }
 
 void Game::updatePoints(Player* currentPlayer) {
-  int left = board.getRightDiagonalTiles();
-  int right = board.getLeftDiagonalTiles();
-
-  std::cout << "LEFT  = " << left;
-  std::cout << "\tRIGHT  = " << right << "\n";
-
+  int points = board.getLeftDiagonalTiles() + board.getRightDiagonalTiles();
   bool qwirkle = false;
 
-  if (left == QWIRKLE_COUNT) {
-    left += QWIRKLE_COUNT;
+  if (board.getLeftDiagonalTiles() == QWIRKLE_COUNT) {
+    points += QWIRKLE_COUNT;
     qwirkle = true;
   }
 
-  if (right == QWIRKLE_COUNT) {
-    right += QWIRKLE_COUNT;
+  if (board.getRightDiagonalTiles() == QWIRKLE_COUNT) {
+    points += QWIRKLE_COUNT;
     qwirkle = true;
   }
 
   if (qwirkle) std::cout << "\nQWIRKLE!!!\n";
 
-  currentPlayer->setPoints(currentPlayer->getPoints() + left + right);
+  currentPlayer->setPoints(currentPlayer->getPoints() + points);
 }
 
 Tile Game::drawTileFromBag() {
@@ -336,4 +330,4 @@ void Game::saveGame(std::string filename, Player* currentPlayer) {
   std::cout << "\nGame successfully saved\n";
 }
 
-Board Game::getBoard() { return board; }
+Board* Game::getBoard() { return &board; }

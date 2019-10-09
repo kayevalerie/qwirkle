@@ -640,6 +640,14 @@ int Board::getRightDiagonalTiles() { return rightDiagonals; }
 
 Tile Board::getTile(int row, int col) { return grid[row][col]; }
 
+bool Board::addTileFromSave(Tile tile, char row, int col) {
+  bool valid = true;
+  int row_pos = row - 'A';
+  int col_pos = translateCol(col);
+  grid.at(row_pos).at(col_pos) = tile;
+  return valid;
+}
+
 void Board::displayBoard() {
   char rowLetter = 'A';
 
