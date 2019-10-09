@@ -9,7 +9,7 @@ void showStudentInfo();
 void loadGameMenu();
 void newGameMenu();
 void exitGame();
-void readFile(std::string filename);
+bool readFile(std::string filename);
 
 int main(void) {
   std::cout << "Welcome to Qwirkle!\n";
@@ -130,7 +130,7 @@ void loadGameMenu() {
     }
     getline(std::cin, fileName);
     if (Helper::isValidFormat(fileName)) {
-      readFile(fileName);
+       readFile(fileName) ;
     } else {
       std::cout << "The format of this file is not correct. Please try again\n";
     }
@@ -163,7 +163,8 @@ void showStudentInfo() {
   }
 }
 
-void readFile(std::string filename) {
+bool readFile(std::string filename) {
+  bool success = false;
   std::ifstream infile(filename);
   std::string line;
 
@@ -283,8 +284,11 @@ void readFile(std::string filename) {
     game.setTileBag(tileBag);
     std::cout << "Qwirkle game loaded successfully. \n";
     game.run(turn);
+    success = true;
     infile.close();
   } else {
-    std::cout << "Cannot read in the file";
+    success = false;
+    std::cout << "Cannot read in the file\n";
   }
+  return success;
 }
