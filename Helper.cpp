@@ -164,8 +164,8 @@ bool isValidFormat(std::string fileName) {
     count++;
   }
 
-  // validate that player names are ASCII characters
-  if (!isASCII(hold[0]) || !isASCII(hold[3])) {
+  // validate that player names are ASCII characters including current players turn
+  if (!isASCII(hold[0]) || !isASCII(hold[3]) || !isASCII(hold[count-1])) {
     nameVal = false;
   }
 
