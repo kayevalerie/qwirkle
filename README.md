@@ -7,4 +7,4 @@
 ### Minor Enhancements
 - Better Invalid Input
 - Colour
-- Expandable Board?
+- Expandable Board

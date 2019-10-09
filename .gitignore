@@ -1,5 +1,10 @@
 # ignore all file extensions
 *.*
-# except source and header files
+
+# except source files, header files and markdown files
 !*.h
 !*.cpp
+!*.md
+
+# and unit tests folder
+!"unit tests"
