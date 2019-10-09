@@ -15,6 +15,7 @@ class Game {
   Player playerTwo;
   Board board;
   LinkedList* tileBag;
+  Player* currentPlayer;
 
   void clear();
   bool handleCommand(Player* currentPlayer);
@@ -36,6 +37,7 @@ class Game {
   void setPlayerOne(Player& newPlayerOne);
   void setPlayerTwo(Player& newPlayerTwo);
   void setTileBag(LinkedList* newTileBag);
+  void setCurrentPlayer(Player& player);
   Board* getBoard();
   Player getPlayerOne();
   Player getPlayerTwo();

@@ -50,26 +50,11 @@ Game::~Game() { clear(); }
 
 void Game::clear() { delete tileBag; }
 
-void Game::setPlayerOne(Player& newPlayerOne) {
-  playerOne = Player(newPlayerOne);
+void Game::setPlayerOne(Player& newPlayerOne) { playerOne = newPlayerOne; }
 
-  std::cout << "IN SET PLAYER 1, hand of p to copy is";
-  newPlayerOne.getHand()->displayContents(false);
+void Game::setPlayerTwo(Player& newPlayerTwo) { playerTwo = newPlayerTwo; }
 
-  std::cout << "\nIN SET PLAYER 2, hand of p1 is";
-  playerOne.getHand()->displayContents(false);
-}
-
-void Game::setPlayerTwo(Player& newPlayerTwo) {
-  playerTwo = newPlayerTwo;
-
-  std::cout << "IN SET PLAYER 2, hand of p to copy is";
-  newPlayerTwo.getHand()->displayContents(false);
-
-  std::cout << "\nIN SET PLAYER 2, hand of p2 is";
-  playerTwo.getHand()->displayContents(false);
-}
-
+void Game::setCurrentPlayer(Player& player) { currentPlayer = &player; }
 void Game::setTileBag(LinkedList* newTileBag) {
   tileBag = new LinkedList(*newTileBag);
 }
