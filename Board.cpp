@@ -17,6 +17,10 @@ Board::Board()
 Board::~Board() { clear(); }
 
 void Board::clear() {
+  leftDiagonals = 0;
+  rightDiagonals = 0;
+
+  // reset grid to initial size
   grid = std::vector<std::vector<Tile> >(INIT_ROWS,
                                          std::vector<Tile>(INIT_COLS / 2));
   adjustCols(INIT_COLS);
@@ -648,7 +652,7 @@ bool Board::addTileFromSave(Tile tile, char row, int col) {
   return valid;
 }
 
-void Board::displayBoard() {
+void Board::displayBoard(bool saveFile) {
   char rowLetter = 'A';
 
   for (unsigned int i = 0; i < grid[1].size() * 2; i++) {
@@ -666,14 +670,26 @@ void Board::displayBoard() {
     std::cout << rowLetter << " ";
     for (unsigned int j = 0; j < grid[i].size(); j++) {
       if (i % 2 == 0) {
-        std::cout << "| " << grid[i][j].toString();
+        std::cout << "| ";
+        if (saveFile)
+          std::cout << grid[i][j].noColorString();
+        else
+          std::cout << grid[i][j].toString();
         std::cout << " ";
       } else if (i % 2 != 0) {
         if (j == 0) {
-          std::cout << "   | " << grid[i][j].toString();
+          std::cout << "   | ";
+          if (saveFile)
+            std::cout << grid[i][j].noColorString();
+          else
+            std::cout << grid[i][j].toString();
           std::cout << " ";
         } else {
-          std::cout << "| " << grid[i][j].toString();
+          std::cout << "| ";
+          if (saveFile)
+            std::cout << grid[i][j].noColorString();
+          else
+            std::cout << grid[i][j].toString();
           std::cout << " ";
         }
       }

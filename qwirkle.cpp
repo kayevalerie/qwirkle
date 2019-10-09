@@ -49,19 +49,15 @@ void displayMenu() {
       valid = false;
     }
 
-    if (choice == 1){
-        newGameMenu();
-    }
-    else if (choice == 2){
-        loadGameMenu();
-    }
-    else if (choice == 3){
-        showStudentInfo();
-    }
-    else if (choice == 4){
+    if (choice == 1) {
+      newGameMenu();
+    } else if (choice == 2) {
+      loadGameMenu();
+    } else if (choice == 3) {
+      showStudentInfo();
+    } else if (choice == 4) {
       quit = true;
-    }
-    else
+    } else
       valid = false;
 
     if (!valid) std::cout << "This option does not exist, please try again\n";
@@ -120,7 +116,7 @@ void newGameMenu() {
   std::cout << "Let's play!" << std::endl;
 
   Game game(player1Name, player2Name);
-  game.run();
+  game.run(0);
 }
 
 void loadGameMenu() {
@@ -141,7 +137,7 @@ void loadGameMenu() {
   }
 }
 
-void exitGame() { std::cout << "\nGoodbye! \n";}
+void exitGame() { std::cout << "\nGoodbye!\n"; }
 
 void showStudentInfo() {
   std::cout << "----------------------------------\n"
@@ -161,9 +157,9 @@ void showStudentInfo() {
             << "Student ID: s3602478\n"
             << "Email: s3602478@student.rmit.edu.au\n"
             << "----------------------------------\n";
-  if(std::cin.peek() == 'q'){
-      std::cout << "Good Bye\n";
-      std::exit(EXIT_FAILURE);
+  if (std::cin.peek() == 'q') {
+    std::cout << "Good Bye\n";
+    std::exit(EXIT_FAILURE);
   }
 }
 

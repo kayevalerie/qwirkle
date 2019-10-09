@@ -83,10 +83,10 @@ void Game::run(int turn) {
     std::cout << "Score for " << playerTwo.getName() << ": "
               << playerTwo.getPoints() << '\n';
 
-    board.displayBoard();
+    board.displayBoard(false);
 
     std::cout << "\nYour hand is\n";
-    currentPlayer->getHand()->displayContents();
+    currentPlayer->getHand()->displayContents(false);
     if (handleCommand(currentPlayer, turn)) turn++;
 
   } while (!isFinished());
@@ -101,8 +101,6 @@ void Game::run(int turn) {
     std::cout << "Player " << getWinningPlayer()->getName() << " won!\n";
   else
     std::cout << "It's a draw!\n";
-
-  // goodbye message here
 }
 
 bool Game::isFinished() {
@@ -144,7 +142,7 @@ bool Game::handleCommand(Player* currentPlayer, int turn) {
 
     if (std::cin.eof() || (tokens.size() == 1 && tokens[0] == "q")) {
       quit = true;
-      std::cout << "Good Bye\n";
+      std::cout << "\nGoodbye!\n";
       std::exit(EXIT_FAILURE);
     }
 
@@ -306,8 +304,8 @@ void Game::saveGame(std::string filename, Player* currentPlayer) {
   fw << playerOne.getPoints() << "\n";
   std::streambuf* oldbuf = std::cout.rdbuf();
   std::cout.rdbuf(fw.rdbuf());
-  playerOne.getHand()
-      ->displayContents();  // contents to cout will be written to file
+  playerOne.getHand()->displayContents(
+      true);                // contents to cout will be written to file
   std::cout.rdbuf(oldbuf);  // reset back to standard input
   // SOURCE https://stackoverflow.com/a/10151286  (to include as reference)
 
@@ -315,11 +313,11 @@ void Game::saveGame(std::string filename, Player* currentPlayer) {
   fw << playerTwo.getPoints() << "\n";
   oldbuf = std::cout.rdbuf();
   std::cout.rdbuf(fw.rdbuf());
-  playerTwo.getHand()->displayContents();
+  playerTwo.getHand()->displayContents(true);
 
-  board.displayBoard();
+  board.displayBoard(true);
 
-  tileBag->displayContents();
+  tileBag->displayContents(true);
 
   std::cout.rdbuf(oldbuf);
 

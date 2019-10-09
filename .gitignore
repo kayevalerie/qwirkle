@@ -1,6 +1,5 @@
-.vscode/*
-*.o
-qwirkle
-vgcore.*
-.Game.cpp.swp
-.DS_Store
+# ignore all file extensions
+*.*
+# except source and header files
+!*.h
+!*.cpp

@@ -21,14 +21,13 @@ class Board {
   bool isOccupied(int row, int col);
   bool isInBounds(int row, int col);
 
-  // bool hasValidAdjacentTiles(Tile tile, int row, int col, int turn);
   std::vector<int> matchAdjacentTiles(Tile tile, int row, int col);
   bool hasValidAdjacentTiles(std::vector<int> match_adjacents);
   bool hasValidLeftDiagonalTiles(Tile tile, char row, int col);
   bool hasValidRightDiagonalTiles(Tile tile, char row, int col);
+
   void resize();
   void adjustCols(int cols);
-
   Tile getTile(int row, int col);
 
  public:
@@ -41,8 +40,7 @@ class Board {
   bool isValidPosition(char row, int col);
   bool isInBounds(char row, int col);
   bool isOccupied(char row, int col);
-  // bool hasSameTileInLines(Tile tile, char row, int col);
-  void displayBoard();
+  void displayBoard(bool saveFile);
   int getLeftDiagonalTiles();
   int getRightDiagonalTiles();
 };
