@@ -171,7 +171,7 @@ bool Game::handleCommand(Player* currentPlayer) {
     // place tile action
     else if (tokens.size() == PCOMMANDSIZE && !tokens[0].compare("place") &&
              !tokens[2].compare("at")) {
-      if (tokens[1].length() == 2 && tokens[3].length() == 2) {
+      if (tokens[1].length() == 2 && tokens[3].length() >= 2) {
         if (Helper::isASCII(tokens[3].substr(0, 1)) &&
             Helper::isNumber(tokens[3].substr(1, tokens[3].length()))) {
           if (!placeTile(tokens[1], tokens[3], currentPlayer)) {
@@ -231,7 +231,7 @@ bool Game::placeTile(std::string tileInput, std::string locationInput,
                      Player* currentPlayer) {
   bool valid = true;
   char row = locationInput.at(0);
-  int col = locationInput.at(1) - '0';
+  int col = std::stoi(locationInput.substr(1, locationInput.length()));
 
   if (isCodeValid(tileInput)) {
     if (board.isValidPosition(row, col) && board.isInBounds(row, col)) {
