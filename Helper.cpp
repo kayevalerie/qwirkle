@@ -32,26 +32,24 @@ bool isNumber(std::string h) {
   return valid;
 }
 
-bool isTilesListValid(std::string a) {
-  std::istringstream iss(a);
-  std::string tile;
-  std::string validColours = "RGBPOY";
-  std::string validShapes = "123456";
-  std::vector<std::string> temp;
-  bool valid = true;
+bool isTilesListValid(std::string a)
+{
+    std::istringstream iss(a);
+    std::string tile;
+    std::string validTileChars = "RGBPOY123456";
+    std::vector<std::string> temp;
+    while (iss.good())
+    {
+        getline(iss, tile, ',');
 
-  while (iss.good()) {
-    getline(iss, tile, ',');
-
-    if (tile.length() != 2 ||
-        validColours.find(tile.at(0)) != std::string::npos ||
-        validShapes.find(tile.at(1)) != std::string::npos) {
-      valid = false;
+        if (tile.length() != 2 || tile.find_first_not_of(validTileChars) != std::string::npos)
+        {
+            return false;
+        }
     }
-  }
-
-  return valid;
+    return true;
 }
+
 
 bool isColHeadValid(std::string q) {
   bool valid = true;
@@ -194,7 +192,7 @@ bool isValidFormat(std::string fileName) {
       gridVal = false;
     }
   }
-
+  std::cout << "fileVal: " << fileVal << " nameVal: " << nameVal << " scoreVal: " << scoreVal << " handVal: " << handVal << " boardVal: " << boardVal << " gridVal: " << gridVal << std::endl;
   return (fileVal && nameVal && scoreVal && handVal && boardVal && gridVal);
 }
 
