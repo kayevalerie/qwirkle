@@ -15,6 +15,7 @@ class Game {
   Player playerTwo;
   Board board;
   LinkedList* tileBag;
+  Player* currentPlayer;
 
   void clear();
   bool handleCommand(Player* currentPlayer, int turn);
