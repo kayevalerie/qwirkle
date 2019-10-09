@@ -271,7 +271,12 @@ void readFile(std::string filename) {
         }
       }
       if (lineNumber == 18) {
-        // todo
+        if (line.compare(players[0]->getName()) == 0) {
+                    game.setCurrentPlayer(*players[0]);
+        }
+        else if (line.compare(players[1]->getName()) == 0) {
+                      game.setCurrentPlayer(*players[1]);
+              }
       }
       lineNumber++;
     }
