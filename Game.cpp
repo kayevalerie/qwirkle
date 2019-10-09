@@ -144,7 +144,8 @@ bool Game::handleCommand(Player* currentPlayer, int turn) {
 
     if (std::cin.eof() || (tokens.size() == 1 && tokens[0] == "q")) {
       quit = true;
-      std::cout << "QUIT\n";
+      std::cout << "Good Bye\n";
+      std::exit(EXIT_FAILURE);
     }
 
     else if (tokens.size() == 1 && tokens[0] == "s") {
