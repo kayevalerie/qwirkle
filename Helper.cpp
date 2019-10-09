@@ -100,7 +100,7 @@ bool isDashValid(std::string l)
     bool valid = true;
     int rowLength = l.length();
     int dashCount = 0;
-    unsigned int i;
+    int i;
     if (rowLength > 0)
     {
         char dashRow[rowLength];
@@ -246,7 +246,7 @@ bool isValidFormat(std::string fileName)
     bool boardVal = true;
     bool gridVal = true;
 
-    unsigned int i;
+    int i;
     std::fstream infile;
     infile.open(fileName);
 
