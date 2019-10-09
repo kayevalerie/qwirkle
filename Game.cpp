@@ -59,8 +59,8 @@ void Game::setPlayerTwo(Player& newPlayerTwo) {
   playerTwo = newPlayerTwo;
 }
 
-void Game::setCurrentPlayer(Player& currentPlayer) {
-    currentPlayer = &currentPlayer;
+void Game::setCurrentPlayer(Player& player) {
+    currentPlayer = &player;
 }
 void Game::setTileBag(LinkedList* newTileBag) {
   tileBag = new LinkedList(*newTileBag);
