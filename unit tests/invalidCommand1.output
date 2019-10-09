@@ -8,13 +8,12 @@ Menu
 4. Quit
 
 > Enter the name of the file from which to load the game:
-Qwirkle game loaded successfully.
+> Qwirkle game loaded successfully.
 
 playerone, it's your turn
 
 Score for playerone: 2 
 Score for playertwo: 0
-
     0    2    4    6
   -----------------------
 A |    |    |    |    |
@@ -28,9 +27,7 @@ F    |    |    |    |    |
 
 Your hand is 
 R1,O2,R2,G5,B3,P2
-
 > 
-
 Command not recognized. Try 'place <tile> at <location>' or 'replace <tile>'
-
 >
+Goodbye!
