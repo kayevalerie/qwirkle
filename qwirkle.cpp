@@ -123,7 +123,7 @@ void loadGameMenu() {
   std::string fileName;
   bool valid = false;
   do {
-  std::cout << "Enter the name of the file from which to load the game:\n";
+  std::cout << "Enter the name of the file from which to load the game:\n>";
     while (std::cin.peek() == '\n') {
       std::cout << "Please input the name of the file\n> ";
       std::cin.ignore();
