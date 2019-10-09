@@ -44,6 +44,7 @@ class Board {
   int getLeftDiagonalTiles();
   int getRightDiagonalTiles();
   int getFilledSpaces();
+  void resize(int rows, int cols);
 };
 
 #endif  // ASSIGN2_BOARD_H
