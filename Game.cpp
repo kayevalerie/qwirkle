@@ -341,4 +341,4 @@ void Game::saveGame(std::string filename, Player* currentPlayer) {
   std::cout << "\nGame successfully saved\n";
 }
 
-Board Game::getBoard() { return board; }
+Board* Game::getBoard() { return &board; }
