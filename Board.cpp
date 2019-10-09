@@ -288,6 +288,8 @@ bool Board::hasValidAdjacentTiles(std::vector<int> match_adjacents) {
     if (match_adjacents[0] == 2 || match_adjacents[1] == 2 ||
         match_adjacents[2] == 2 || match_adjacents[3] == 2)
       valid = false;
+  } else if (count == 4) {
+    valid = false;
   }
 
   return valid;

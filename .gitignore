@@ -1,6 +1,9 @@
 # ignore all file extensions
 *.*
 
+# ignore executable
+qwirkle
+
 # except source files, header files and markdown files
 !*.h
 !*.cpp
