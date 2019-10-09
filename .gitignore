@@ -1,13 +1,6 @@
-# ignore all file extensions
-*.*
-
-# ignore executable
+*.o
 qwirkle
-
-# except source files, header files and markdown files
-!*.h
-!*.cpp
-!*.md
-
-# and unit tests folder
-!unit\ tests
+vgcore.*
+.Game.cpp.swp
+.DS_Store
+.vscode/
