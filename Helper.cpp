@@ -192,7 +192,7 @@ bool isValidFormat(std::string fileName) {
       gridVal = false;
     }
   }
-  std::cout << "fileVal: " << fileVal << " nameVal: " << nameVal << " scoreVal: " << scoreVal << " handVal: " << handVal << " boardVal: " << boardVal << " gridVal: " << gridVal << std::endl;
+ 
   return (fileVal && nameVal && scoreVal && handVal && boardVal && gridVal);
 }
 
