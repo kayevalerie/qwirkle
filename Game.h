@@ -32,7 +32,7 @@ class Game {
   // playerThreeName, std::string playerFourName);
   Game();
   ~Game();
-  void run();
+  void run(int turn);
   void setPlayerOne(Player& newPlayerOne);
   void setPlayerTwo(Player& newPlayerTwo);
   void setTileBag(LinkedList* newTileBag);
