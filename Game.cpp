@@ -63,9 +63,8 @@ void Game::setTileBag(LinkedList* newTileBag) {
   tileBag = new LinkedList(*newTileBag);
 }
 
-void Game::run() {
-  Player* currentPlayer = &playerOne;
-  int turn = 0;
+void Game::run(int turn) {
+  Player* currentPlayer;
 
   do {
     if (turn % 2 == 0)
@@ -145,8 +144,7 @@ bool Game::handleCommand(Player* currentPlayer, int turn) {
 
     if (std::cin.eof() || (tokens.size() == 1 && tokens[0] == "q")) {
       quit = true;
-      std::cout << "Good Bye\n";
-      std::exit(EXIT_FAILURE);
+      std::cout << "QUIT\n";
     }
 
     else if (tokens.size() == 1 && tokens[0] == "s") {
@@ -343,4 +341,4 @@ void Game::saveGame(std::string filename, Player* currentPlayer) {
   std::cout << "\nGame successfully saved\n";
 }
 
-Board Game::getBoard() { return board; }
+Board* Game::getBoard() { return &board; }

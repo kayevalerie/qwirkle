@@ -8,13 +8,17 @@
 
 // input validation methods
 
-namespace Helper {
+namespace Helper
+{
 
-bool isASCII(std::string n) {
+bool isASCII(std::string n)
+{
   bool valid = true;
 
-  for (unsigned int i = 0; i < n.size(); i++) {
-    if (!isalpha(n[i])) {
+  for (unsigned int i = 0; i < n.size(); i++)
+  {
+    if (!isalpha(n[i]))
+    {
       valid = false;
     }
   }
@@ -22,17 +26,21 @@ bool isASCII(std::string n) {
   return valid;
 }
 
-bool isNumber(std::string h) {
+bool isNumber(std::string h)
+{
   bool valid = true;
-  for (unsigned int i = 0; i < h.size(); i++) {
-    if (!isdigit(h[i])) {
+  for (unsigned int i = 0; i < h.size(); i++)
+  {
+    if (!isdigit(h[i]))
+    {
       valid = false;
     }
   }
   return valid;
 }
 
-bool isTilesListValid(std::string a) {
+bool isTilesListValid(std::string a)
+{
   std::istringstream iss(a);
   std::string tile;
   std::string validColours = "RGBPOY";
@@ -40,12 +48,14 @@ bool isTilesListValid(std::string a) {
   std::vector<std::string> temp;
   bool valid = true;
 
-  while (iss.good()) {
+  while (iss.good())
+  {
     getline(iss, tile, ',');
 
     if (tile.length() != 2 ||
         validColours.find(tile.at(0)) == std::string::npos ||
-        validShapes.find(tile.at(1)) == std::string::npos) {
+        validShapes.find(tile.at(1)) == std::string::npos)
+    {
       valid = false;
     }
   }
@@ -53,18 +63,23 @@ bool isTilesListValid(std::string a) {
   return valid;
 }
 
-bool isColHeadValid(std::string q) {
+bool isColHeadValid(std::string q)
+{
   bool valid = true;
   std::vector<char> temp;
 
-  for (unsigned int i = 0; i <= q.length(); i++) {
-    if (q[i] != ' ') {
+  for (unsigned int i = 0; i <= q.length(); i++)
+  {
+    if (q[i] != ' ')
+    {
       temp.push_back(q[i]);
     }
   }
 
-  for (unsigned int j = 0; j < temp.size() - 1; j++) {
-    if (temp[j + 1] != temp[temp.size() - 1] && temp[j] + 2 != temp[j + 1]) {
+  for (unsigned int j = 0; j < temp.size() - 1; j++)
+  {
+    if (temp[j + 1] != temp[temp.size() - 1] && temp[j] + 2 != temp[j + 1])
+    {
       valid = false;
     }
   }
@@ -72,25 +87,32 @@ bool isColHeadValid(std::string q) {
   return valid;
 }
 
-bool isDashValid(std::string l) {
+bool isDashValid(std::string l)
+{
   bool valid = true;
   unsigned int rowLength = l.length();
   int dashCount = 0;
 
-  if (rowLength > 0) {
+  if (rowLength > 0)
+  {
     char dashRow[rowLength];
     strcpy(dashRow, l.c_str());
-    if (dashRow[0] == ' ' && dashRow[1] == ' ') {
-      for (unsigned int i = 2; i < rowLength; i++) {
-        if (dashRow[i] != '-') {
+    if (dashRow[0] == ' ' && dashRow[1] == ' ')
+    {
+      for (unsigned int i = 2; i < rowLength; i++)
+      {
+        if (dashRow[i] != '-')
+        {
           valid = false;
         }
-        if (dashRow[i] == '-') {
+        if (dashRow[i] == '-')
+        {
           dashCount++;
         }
       }
 
-      if (dashCount < 24) {
+      if (dashCount < 24)
+      {
         valid = false;
       }
     }
@@ -99,41 +121,56 @@ bool isDashValid(std::string l) {
   return valid;
 }
 
-bool isRowsValid(std::string b) {
+bool isRowsValid(std::string b)
+{
   std::istringstream isb(b);
   std::vector<std::string> token2;
   int rowLength2 = b.length();
   bool valid = true;
 
-  if (rowLength2 > 0) {
+  if (rowLength2 > 0)
+  {
     char rowA[rowLength2];
     std::string test;
     strcpy(rowA, b.c_str());
     char letter = rowA[0];
 
-    if (!isalpha(rowA[0]) || rowA[1] != ' ') {
+    if (!isalpha(rowA[0]) || rowA[1] != ' ')
+    {
       valid = false;
-    } else {
-      while (isb.good()) {
+    }
+    else
+    {
+      while (isb.good())
+      {
         getline(isb, test, '|');
         token2.push_back(test);
       }
 
-      if (letter % 2 != 0) {
-        if (token2[0].length() != 2) {
+      if (letter % 2 != 0)
+      {
+        if (token2[0].length() != 2)
+        {
           valid = false;
         }
-        for (unsigned int i = 1; i < token2.size(); i++) {
-          if (token2[i].length() != 4) {
+        for (unsigned int i = 1; i < token2.size(); i++)
+        {
+          if (token2[i].length() != 4)
+          {
             valid = false;
           }
         }
-      } else {
-        if (token2[0].length() != 5) {
+      }
+      else
+      {
+        if (token2[0].length() != 5)
+        {
           valid = false;
         }
-        for (unsigned int i = 1; i < token2.size() - 1; i++) {
-          if (token2[i].length() != 4) {
+        for (unsigned int i = 1; i < token2.size() - 1; i++)
+        {
+          if (token2[i].length() != 4)
+          {
             valid = false;
           }
         }
@@ -144,7 +181,8 @@ bool isRowsValid(std::string b) {
   return valid;
 }
 
-bool isValidFormat(std::string fileName) {
+bool isValidFormat(std::string fileName)
+{
   bool fileVal = true;
   bool nameVal = true;
   bool scoreVal = true;
@@ -155,47 +193,59 @@ bool isValidFormat(std::string fileName) {
   std::fstream infile;
   infile.open(fileName);
 
-  if (infile.fail()) fileVal = false;
+  if (infile.fail())
+    fileVal = false;
 
   std::string hold[50];
   std::string line;
   int count = 0;
 
-  while (getline(infile, line)) {
+  while (getline(infile, line))
+  {
     hold[count] = line;
     count++;
   }
 
   // validate that player names are ASCII characters
-  if (!isASCII(hold[0]) || !isASCII(hold[3]) || !isASCII(hold[count-1])) {
+  if (!isASCII(hold[0]) || !isASCII(hold[3]) || !isASCII(hold[count - 1]))
+  {
     nameVal = false;
   }
 
   // validate that player scores are integers
-  if (!isNumber(hold[1]) || !isNumber(hold[4])) {
+  if (!isNumber(hold[1]) || !isNumber(hold[4]))
+  {
     scoreVal = false;
   }
 
   // // validate player hands and tilebag
   if (!isTilesListValid(hold[2]) || !isTilesListValid(hold[5]) ||
-      !isTilesListValid(hold[count - 2])) {
+      !isTilesListValid(hold[count - 2]))
+  {
     handVal = false;
   }
 
   // validate that board is same as cout
   if (!isDashValid(hold[7]) || !isColHeadValid(hold[6]) ||
-      !isDashValid(hold[count - 4]) || !isColHeadValid(hold[count - 3])) {
+      !isDashValid(hold[count - 4]) || !isColHeadValid(hold[count - 3]))
+  {
     boardVal = false;
   }
 
   unsigned int sizeOfGrid = count - 4;
-  for (unsigned int i = 8; i < sizeOfGrid; i++) {
-    if (isRowsValid(hold[i]) == false) {
+  for (unsigned int i = 8; i < sizeOfGrid; i++)
+  {
+    if (isRowsValid(hold[i]) == false)
+    {
+      gridVal = false;
+    }
+    if (i < sizeOfGrid - 1 && hold[i + 1].at(0) != hold[i].at(0) + 1)
+    {
       gridVal = false;
     }
   }
-  
+
   return (fileVal && nameVal && scoreVal && handVal && boardVal && gridVal);
 }
 
-}  // namespace Helper
+} // namespace Helper
