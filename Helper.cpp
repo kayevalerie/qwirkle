@@ -167,7 +167,7 @@ bool isValidFormat(std::string fileName) {
   }
 
   // validate that player names are ASCII characters
-  if (!isASCII(hold[0]) || !isASCII(hold[3])) {
+  if (!isASCII(hold[0]) || !isASCII(hold[3]) || !isASCII(hold[count-1])) {
     nameVal = false;
   }
 
@@ -194,7 +194,7 @@ bool isValidFormat(std::string fileName) {
       gridVal = false;
     }
   }
-  std::cout << "fileVal: " << fileVal << " nameVal: " << nameVal << " scoreVal: " << scoreVal << " handVal: " << handVal << " boardVal: " << boardVal << " gridVal: " << gridVal << std::endl;
+  
   return (fileVal && nameVal && scoreVal && handVal && boardVal && gridVal);
 }
 
