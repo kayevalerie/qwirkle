@@ -63,9 +63,8 @@ void Game::setTileBag(LinkedList* newTileBag) {
   tileBag = new LinkedList(*newTileBag);
 }
 
-void Game::run() {
-  Player* currentPlayer = &playerOne;
-  int turn = 0;
+void Game::run(int turn) {
+  Player* currentPlayer;
 
   do {
     if (turn % 2 == 0)
