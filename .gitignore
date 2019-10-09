@@ -10,4 +10,4 @@ qwirkle
 !*.md
 
 # and unit tests folder
-!"unit tests"
+!unit\ tests
