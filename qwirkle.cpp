@@ -9,7 +9,7 @@ void showStudentInfo();
 void loadGameMenu();
 void newGameMenu();
 void exitGame();
-void readFile(std::string filename);
+bool readFile(std::string filename);
 
 int main(void) {
   std::cout << "Welcome to Qwirkle!\n";
@@ -133,7 +133,7 @@ void loadGameMenu() {
 
     
     if (Helper::isValidFormat(fileName)) {
-      readFile(fileName);
+       readFile(fileName) ;
     } else {
       std::cout << "The format of this file is not correct. Please try again\n";
     }
@@ -169,7 +169,8 @@ void showStudentInfo() {
   }
 }
 
-void readFile(std::string filename) {
+bool readFile(std::string filename) {
+  bool success = false;
   std::ifstream infile(filename);
   std::string line;
 
@@ -189,9 +190,7 @@ void readFile(std::string filename) {
     int lineNumber = 1;
     int playerNumber = 0;
     int turn = 0;
-    std::cout << "im in the infile is open\n";
     while (getline(infile, line)) {
-      std::cout << "in the while loop\n";
       std::stringstream sstream(line);
       if (lineNumber <= 6) {
         // reading in players' details
@@ -214,14 +213,12 @@ void readFile(std::string filename) {
           players[playerNumber] =
               new Player(playerName, playerScore, playerTiles);
           playerNumber++;
-          std::cout << "created players successfully\n";
         }
       }
       // adding the players
       if (lineNumber == 8) {
         game.setPlayerOne(*players[0]);
         game.setPlayerTwo(*players[1]);
-        std::cout << "added players to the game\n";
       }
       // reading in the board
 
@@ -246,33 +243,23 @@ void readFile(std::string filename) {
                 std::cout << "Cannot read in the file\n";
               } else {
                 turn++;
-                std::cout << "added a tile to the board\n";
               }
             }
             col = col + 2;
-            std::cout << "col is: " << col << '\n';
           }
         }
         row = row + 1;
-        std::cout << "increased the row. row is :" << row << '\n';
       }
       // reading in the tile bag
       if (lineNumber == 17) {
         std::cout << "in line 17\n";
         while (getline(sstream, intermediate, ',')) {
           if (!intermediate.empty()) {
-            std::cout << "intermediate size here is :" << intermediate.length()
-                      << '\n';
             color = intermediate.at(0);
             shape = intermediate.at(1);
-            std::cout << "creating and adding to the tile bag\n";
             tileBag->addTile(Tile(static_cast<Colour>(color),
                                   static_cast<Shape>(shape - '0')));
-            std::cout << "added tile "
-                      << Tile(static_cast<Colour>(color),
-                              static_cast<Shape>(shape - '0'))
-                             .toString()
-                      << "to the tile bag\n";
+            
           }
         }
       }
@@ -289,8 +276,11 @@ void readFile(std::string filename) {
     game.setTileBag(tileBag);
     std::cout << "Qwirkle game loaded successfully. \n";
     game.run(turn);
+    success = true;
     infile.close();
   } else {
-    std::cout << "Cannot read in the file";
+    success = false;
+    std::cout << "Cannot read in the file\n";
   }
+  return success;
 }
