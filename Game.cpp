@@ -52,13 +52,16 @@ Game::~Game() { clear(); }
 void Game::clear() { delete tileBag; }
 
 void Game::setPlayerOne(Player& newPlayerOne) {
-  playerOne = Player(newPlayerOne);
+  playerOne = newPlayerOne;
 }
 
 void Game::setPlayerTwo(Player& newPlayerTwo) {
-  playerTwo = Player(newPlayerTwo);
+  playerTwo = newPlayerTwo;
 }
 
+void Game::setCurrentPlayer(Player& player) {
+    currentPlayer = &player;
+}
 void Game::setTileBag(LinkedList* newTileBag) {
   tileBag = new LinkedList(*newTileBag);
 }
@@ -235,7 +238,7 @@ bool Game::placeTile(std::string tileInput, std::string locationInput,
 
         if (currentPlayer->getHand()->contains(tile)) {
           if (board.addTile(tile, row, col, turn)) {
-            updatePoints(currentPlayer);
+            updatePoints(currentPlayer, turn);
             currentPlayer->getHand()->deleteTile(tile);
             currentPlayer->getHand()->addTile(drawTileFromBag());
           } else {
@@ -267,8 +270,13 @@ bool Game::placeTile(std::string tileInput, std::string locationInput,
   return valid;
 }
 
-void Game::updatePoints(Player* currentPlayer) {
+void Game::updatePoints(Player* currentPlayer, int turn) {
+  // std::cout << "LEFT POINTS: " << board.getLeftDiagonalTiles();
+  // std::cout << "\nRIGHT POINTS: " << board.getRightDiagonalTiles();
+
   int points = board.getLeftDiagonalTiles() + board.getRightDiagonalTiles();
+  if (turn == 0) points++;
+
   bool qwirkle = false;
 
   if (board.getLeftDiagonalTiles() == QWIRKLE_COUNT) {

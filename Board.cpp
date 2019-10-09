@@ -307,7 +307,7 @@ int Board::translateCol(int col) {
 }
 
 bool Board::hasValidLeftDiagonalTiles(Tile tile, char row, int col) {
-  leftDiagonals = 0;  // count current tile
+  leftDiagonals = 0;
 
   bool hasSameTile = false, foundOtherTile = false, colorMatch = false,
        shapeMatch = false, allMatch = true;
@@ -450,7 +450,7 @@ bool Board::hasValidLeftDiagonalTiles(Tile tile, char row, int col) {
 
   }  // while
 
-  if (!foundOtherTile) leftDiagonals++;
+  if (foundOtherTile) leftDiagonals++;
 
   return !hasSameTile && allMatch;
 }
@@ -598,7 +598,7 @@ bool Board::hasValidRightDiagonalTiles(Tile tile, char row, int col) {
 
   }  // while
 
-  if (!foundOtherTile) rightDiagonals = 0;
+  if (foundOtherTile) rightDiagonals++;
 
   return !hasSameTile && allMatch;
 }
@@ -629,8 +629,8 @@ bool Board::addTile(Tile tile, char row, int col, int turn) {
         hasValidRightDiagonalTiles(tile, row, col)) {
       grid.at(row_pos).at(col_pos) = tile;
 
-      // expand the board when user places a tile at the last column
-      if (col_pos == getCols(row_pos) - 1) {
+      // expand the board when user places a tile on the last column or row
+      if (col_pos == getCols(row_pos) - 1 || row_pos == getRows() - 1) {
         resize();
       }
     } else
