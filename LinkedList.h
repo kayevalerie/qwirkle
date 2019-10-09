@@ -27,7 +27,7 @@ class LinkedList {
                    Tile newTile);  // remove a specific tile from the
                                    // list and replace with a new one
   void deleteTile(Tile tile);
-  void displayContents();
+  void displayContents(bool saveFile);
 };
 
 #endif  // ASSIGN2_LINKEDLIST_H

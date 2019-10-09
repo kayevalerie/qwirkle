@@ -63,9 +63,8 @@ void Game::setTileBag(LinkedList* newTileBag) {
   tileBag = new LinkedList(*newTileBag);
 }
 
-void Game::run() {
-  Player* currentPlayer = &playerOne;
-  int turn = 0;
+void Game::run(int turn) {
+  Player* currentPlayer;
 
   do {
     if (turn % 2 == 0)
@@ -84,10 +83,10 @@ void Game::run() {
     std::cout << "Score for " << playerTwo.getName() << ": "
               << playerTwo.getPoints() << '\n';
 
-    board.displayBoard();
+    board.displayBoard(false);
 
     std::cout << "\nYour hand is\n";
-    currentPlayer->getHand()->displayContents();
+    currentPlayer->getHand()->displayContents(false);
     if (handleCommand(currentPlayer, turn)) turn++;
 
   } while (!isFinished());
@@ -102,8 +101,6 @@ void Game::run() {
     std::cout << "Player " << getWinningPlayer()->getName() << " won!\n";
   else
     std::cout << "It's a draw!\n";
-
-  // goodbye message here
 }
 
 bool Game::isFinished() {
@@ -145,7 +142,8 @@ bool Game::handleCommand(Player* currentPlayer, int turn) {
 
     if (std::cin.eof() || (tokens.size() == 1 && tokens[0] == "q")) {
       quit = true;
-      std::cout << "QUIT\n";
+      std::cout << "\nGoodbye!\n";
+      std::exit(EXIT_FAILURE);
     }
 
     else if (tokens.size() == 1 && tokens[0] == "s") {
@@ -236,21 +234,14 @@ bool Game::placeTile(std::string tileInput, std::string locationInput,
                   static_cast<Shape>(tileInput.at(1) - '0'));
 
         if (currentPlayer->getHand()->contains(tile)) {
-          if (!board.hasSameTileInLines(tile, row, col)) {
-            if (board.addTile(tile, row, col, turn)) {
-              computePoints(currentPlayer, tile, row, col);
-              currentPlayer->getHand()->deleteTile(tile);
-              currentPlayer->getHand()->addTile(drawTileFromBag());
-            } else {
-              valid = false;
-              std::cout
-                  << "\nThat tile cannot be placed there. Please try again\n";
-            }
-          }  // hasSameTileInLines
-          else {
+          if (board.addTile(tile, row, col, turn)) {
+            updatePoints(currentPlayer);
+            currentPlayer->getHand()->deleteTile(tile);
+            currentPlayer->getHand()->addTile(drawTileFromBag());
+          } else {
             valid = false;
-            std::cout << "\nThe same tile already exists in the line. Please "
-                         "try again\n";
+            std::cout
+                << "\nThat tile cannot be placed there. Please try again\n";
           }
         }  // contains
         else {
@@ -276,28 +267,23 @@ bool Game::placeTile(std::string tileInput, std::string locationInput,
   return valid;
 }
 
-void Game::computePoints(Player* currentPlayer, Tile tile, char row, int col) {
-  int left = board.countLeftDiagonalTiles(tile, row, col);
-  int right = board.countRightDiagonalTiles(tile, row, col);
-
-  std::cout << "LEFT  = " << left;
-  std::cout << "\tRIGHT  = " << right << "\n";
-
+void Game::updatePoints(Player* currentPlayer) {
+  int points = board.getLeftDiagonalTiles() + board.getRightDiagonalTiles();
   bool qwirkle = false;
 
-  if (left == QWIRKLE_COUNT) {
-    left += QWIRKLE_COUNT;
+  if (board.getLeftDiagonalTiles() == QWIRKLE_COUNT) {
+    points += QWIRKLE_COUNT;
     qwirkle = true;
   }
 
-  if (right == QWIRKLE_COUNT) {
-    right += QWIRKLE_COUNT;
+  if (board.getRightDiagonalTiles() == QWIRKLE_COUNT) {
+    points += QWIRKLE_COUNT;
     qwirkle = true;
   }
 
   if (qwirkle) std::cout << "\nQWIRKLE!!!\n";
 
-  currentPlayer->setPoints(currentPlayer->getPoints() + left + right);
+  currentPlayer->setPoints(currentPlayer->getPoints() + points);
 }
 
 Tile Game::drawTileFromBag() {
@@ -318,8 +304,8 @@ void Game::saveGame(std::string filename, Player* currentPlayer) {
   fw << playerOne.getPoints() << "\n";
   std::streambuf* oldbuf = std::cout.rdbuf();
   std::cout.rdbuf(fw.rdbuf());
-  playerOne.getHand()
-      ->displayContents();  // contents to cout will be written to file
+  playerOne.getHand()->displayContents(
+      true);                // contents to cout will be written to file
   std::cout.rdbuf(oldbuf);  // reset back to standard input
   // SOURCE https://stackoverflow.com/a/10151286  (to include as reference)
 
@@ -327,11 +313,11 @@ void Game::saveGame(std::string filename, Player* currentPlayer) {
   fw << playerTwo.getPoints() << "\n";
   oldbuf = std::cout.rdbuf();
   std::cout.rdbuf(fw.rdbuf());
-  playerTwo.getHand()->displayContents();
+  playerTwo.getHand()->displayContents(true);
 
-  board.displayBoard();
+  board.displayBoard(true);
 
-  tileBag->displayContents();
+  tileBag->displayContents(true);
 
   std::cout.rdbuf(oldbuf);
 
@@ -342,4 +328,4 @@ void Game::saveGame(std::string filename, Player* currentPlayer) {
   std::cout << "\nGame successfully saved\n";
 }
 
-Board Game::getBoard() { return board; }
+Board* Game::getBoard() { return &board; }

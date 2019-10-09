@@ -209,13 +209,16 @@ void LinkedList::deleteTile(Tile tile) {
   }
 }
 
-void LinkedList::displayContents() {
+void LinkedList::displayContents(bool saveFile) {
   if (list_size > 0) {  // if list is not empty
     Node* current = head;
     unsigned int i = 0;
 
     while (i < list_size) {
-      std::cout << current->getTile().toString();
+      if (saveFile)
+        std::cout << current->getTile().noColorString();
+      else
+        std::cout << current->getTile().toString();
 
       if (i != list_size - 1) std::cout << ",";
 
@@ -244,7 +247,6 @@ void LinkedList::shuffle() {
     std::uniform_int_distribution<int> uniform_dist(min, max);
     int randomIndex = uniform_dist(engine);
     Node* toBeShuffled = get(randomIndex);
-    // std::cout << "tile is: " << toBeShuffled->getTile().toString() << '\n';
     addTile(toBeShuffled->getTile());
     deleteAt(randomIndex);
     max--;

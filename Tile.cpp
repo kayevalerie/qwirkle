@@ -15,9 +15,32 @@ bool Tile::equals(Tile tile) {
   return colour == tile.colour && shape == tile.shape;
 }
 
-std::string Tile::toString() {
-  // todo: match other colors to have bg color instead
+std::string Tile::noColorString() {
+  std::string colourCode = " ";
+  std::string shapeCode = " ";
 
+  if (colour != Colour::NONE &&
+      shape != Shape::NONE) {  // if this tile has been initialized
+    shapeCode = std::to_string(int(shape));
+
+    if (colour == Colour::RED)
+      colourCode = "R";
+    else if (colour == Colour::ORANGE)
+      colourCode = "O";
+    else if (colour == Colour::YELLOW)
+      colourCode = "Y";
+    else if (colour == Colour::GREEN)
+      colourCode = "G";
+    else if (colour == Colour::PURPLE)
+      colourCode = "P";
+    else if (colour == Colour::BLUE)
+      colourCode = "B";
+  }
+
+  return colourCode + shapeCode;
+}
+
+std::string Tile::toString() {
   std::string colourCode = " ";
   std::string shapeCode = " ";
 

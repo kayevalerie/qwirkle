@@ -20,7 +20,7 @@ class Game {
   bool handleCommand(Player* currentPlayer, int turn);
   bool placeTile(std::string tileInput, std::string locationInput,
                  Player* currentPlayer, int turn);
-  void computePoints(Player* currentPlayer, Tile tile, char row, int col);
+  void updatePoints(Player* currentPlayer);
   Tile drawTileFromBag();
   bool isFinished();
   Player* getWinningPlayer();
@@ -32,11 +32,11 @@ class Game {
   // playerThreeName, std::string playerFourName);
   Game();
   ~Game();
-  void run();
+  void run(int turn);
   void setPlayerOne(Player& newPlayerOne);
   void setPlayerTwo(Player& newPlayerTwo);
   void setTileBag(LinkedList* newTileBag);
-  Board getBoard();
+  Board* getBoard();
 };
 
 #endif  // ASSIGN2_GAME_H

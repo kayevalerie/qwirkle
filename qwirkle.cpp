@@ -49,15 +49,15 @@ void displayMenu() {
       valid = false;
     }
 
-    if (choice == 1)
+    if (choice == 1) {
       newGameMenu();
-    else if (choice == 2)
+    } else if (choice == 2) {
       loadGameMenu();
-    else if (choice == 3)
+    } else if (choice == 3) {
       showStudentInfo();
-    else if (choice == 4)
+    } else if (choice == 4) {
       quit = true;
-    else
+    } else
       valid = false;
 
     if (!valid) std::cout << "This option does not exist, please try again\n";
@@ -116,7 +116,7 @@ void newGameMenu() {
   std::cout << "Let's play!" << std::endl;
 
   Game game(player1Name, player2Name);
-  game.run();
+  game.run(0);
 }
 
 void loadGameMenu() {
@@ -137,7 +137,7 @@ void loadGameMenu() {
   }
 }
 
-void exitGame() { std::cout << "\nGoodbye! \n"; }
+void exitGame() { std::cout << "\nGoodbye!\n"; }
 
 void showStudentInfo() {
   std::cout << "----------------------------------\n"
@@ -157,6 +157,10 @@ void showStudentInfo() {
             << "Student ID: s3602478\n"
             << "Email: s3602478@student.rmit.edu.au\n"
             << "----------------------------------\n";
+  if (std::cin.peek() == 'q') {
+    std::cout << "Good Bye\n";
+    std::exit(EXIT_FAILURE);
+  }
 }
 
 void readFile(std::string filename) {
@@ -178,6 +182,7 @@ void readFile(std::string filename) {
     char row = 'A';
     int lineNumber = 1;
     int playerNumber = 0;
+    int turn = 0;
     std::cout << "im in the infile is open\n";
     while (getline(infile, line)) {
       std::cout << "in the while loop\n";
@@ -220,17 +225,21 @@ void readFile(std::string filename) {
           if (!intermediate.empty()) tokens.push_back(intermediate);
         }
         int col = 0;
+        if (lineNumber % 2 == 0) {
+          col = 1;
+        }
         for (unsigned int i = 1; i < tokens.size(); i++) {
           // checking individual cells for tiles
           std::cout << "token[" << i << "] is " << tokens[i] << '\n';
           if (tokens[i].length() > 2) {
             if ((tokens[i].at(1) != ' ') && (tokens[i].at(2) != ' ')) {
-              if (!game.getBoard().addTile(
+              if (!game.getBoard()->addTileFromSave(
                       Tile(static_cast<Colour>(tokens[i].at(1)),
                            static_cast<Shape>(tokens[i].at(2) - '0')),
-                      row, col, 1)) {
+                      row, col)) {
                 std::cout << "Cannot read in the file\n";
               } else {
+                turn++;
                 std::cout << "added a tile to the board\n";
               }
             }
@@ -268,7 +277,7 @@ void readFile(std::string filename) {
     }
     game.setTileBag(tileBag);
     std::cout << "Qwirkle game loaded successfully. \n";
-    game.run();
+    game.run(turn);
     infile.close();
   } else {
     std::cout << "Cannot read in the file";

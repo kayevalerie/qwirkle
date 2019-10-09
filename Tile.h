@@ -16,6 +16,7 @@ class Tile {
   Colour getColour();
   Shape getShape();
   bool equals(Tile tile);
+  std::string noColorString();
   std::string toString();
 };
 
