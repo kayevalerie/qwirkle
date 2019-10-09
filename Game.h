@@ -17,10 +17,10 @@ class Game {
   LinkedList* tileBag;
 
   void clear();
-  bool handleCommand(Player* currentPlayer, int turn);
+  bool handleCommand(Player* currentPlayer);
   bool placeTile(std::string tileInput, std::string locationInput,
-                 Player* currentPlayer, int turn);
-  void updatePoints(Player* currentPlayer, int turn);
+                 Player* currentPlayer);
+  void updatePoints(Player* currentPlayer);
   Tile drawTileFromBag();
   bool isFinished();
   Player* getWinningPlayer();
@@ -37,6 +37,8 @@ class Game {
   void setPlayerTwo(Player& newPlayerTwo);
   void setTileBag(LinkedList* newTileBag);
   Board* getBoard();
+  Player getPlayerOne();
+  Player getPlayerTwo();
 };
 
 #endif  // ASSIGN2_GAME_H

@@ -292,6 +292,12 @@ bool Board::hasValidAdjacentTiles(std::vector<int> match_adjacents) {
     valid = false;
   }
 
+  // std::cout << "match_adjacents = ";
+  // for (int i = 0; i < ADJACENT_SIZE; i++) {
+  //   std::cout << match_adjacents[i] << ',';
+  // }
+  // std::cout << "\n";
+
   return valid;
 }
 
@@ -615,18 +621,31 @@ void Board::resize() {
   }
 }
 
-bool Board::addTile(Tile tile, char row, int col, int turn) {
+bool Board::addTile(Tile tile, char row, int col) {
   bool valid = true;
   int row_pos = row - 'A';
   int col_pos = translateCol(col);
 
-  if (turn == 0)
+  if (getFilledSpaces() == 0)
     grid.at(row_pos).at(col_pos) = tile;
 
   else {
-    if (hasValidAdjacentTiles(matchAdjacentTiles(tile, row_pos, col_pos)) &&
-        hasValidLeftDiagonalTiles(tile, row, col) &&
-        hasValidRightDiagonalTiles(tile, row, col)) {
+    std::vector<int> result = matchAdjacentTiles(tile, row_pos, col_pos);
+
+    // check for crossing tiles
+    if ((result[0] == 0 && result[3] == 1) ||
+        (result[0] == 1 && result[3] == 0) ||
+        (result[1] == 0 && result[2] == 1) ||
+        (result[1] == 1 && result[2] == 0) ||
+        (result[1] == 0 && result[3] == 1) ||
+        (result[1] == 1 && result[3] == 0) ||
+        (result[0] == 0 && result[2] == 1) ||
+        (result[0] == 1 && result[2] == 0))
+      grid.at(row_pos).at(col_pos) = tile;
+
+    else if (hasValidAdjacentTiles(result) &&
+             hasValidLeftDiagonalTiles(tile, row, col) &&
+             hasValidRightDiagonalTiles(tile, row, col)) {
       grid.at(row_pos).at(col_pos) = tile;
 
       // expand the board when user places a tile on the last column or row
@@ -646,6 +665,18 @@ int Board::getRightDiagonalTiles() { return rightDiagonals; }
 
 Tile Board::getTile(int row, int col) { return grid[row][col]; }
 
+int Board::getFilledSpaces() {
+  int count = 0;
+
+  for (unsigned int i = 0; i < grid.size(); i++)
+    for (unsigned int j = 0; j < grid[i].size(); j++)
+      if (grid[i][j].getColour() != Colour::NONE &&
+          grid[i][j].getShape() != Shape::NONE)
+        count++;
+
+  return count;
+}
+
 bool Board::addTileFromSave(Tile tile, char row, int col) {
   bool valid = true;
   int row_pos = row - 'A';
@@ -659,7 +690,10 @@ void Board::displayBoard(bool saveFile) {
 
   for (unsigned int i = 0; i < grid[1].size() * 2; i++) {
     if (i % 2 == 0) {
-      std::cout << std::setw(5) << i;
+      if (i < 10)
+        std::cout << std::setw(5) << i;
+      else
+        std::cout << std::setw(6) << i;
     }
   }
 
@@ -708,7 +742,10 @@ void Board::displayBoard(bool saveFile) {
   std::cout << "\n   ";
   for (unsigned int i = 0; i < grid[1].size() * 2; i++) {
     if (i % 2 != 0) {
-      std::cout << std::setw(5) << i;
+      if (i < 10)
+        std::cout << std::setw(5) << i;
+      else
+        std::cout << std::setw(6) << i;
     }
   }
 
