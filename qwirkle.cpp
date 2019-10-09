@@ -129,10 +129,16 @@ void loadGameMenu() {
       std::cin.ignore();
     }
     getline(std::cin, fileName);
+    if(Helper::fileExist(fileName) == true){
+
+    
     if (Helper::isValidFormat(fileName)) {
       readFile(fileName);
     } else {
       std::cout << "The format of this file is not correct. Please try again\n";
+    }
+    }else{
+      std::cout << "File does not exist.\n";
     }
   }
 }
