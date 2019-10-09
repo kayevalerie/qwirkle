@@ -5,8 +5,8 @@
 #include <string>
 
 namespace Helper {
+// file and input validation methods
 bool isValidFormat(std::string filename);
-// bool isValidTile(Colour colour, Shape shape);
 bool isASCII(std::string n);
 bool isNumber(std::string h);
 bool fileExists(std::string fileName);

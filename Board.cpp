@@ -555,6 +555,18 @@ bool Board::hasValidRightDiagonalTiles(Tile tile, char row, int col) {
   return !hasSameTile && allMatch;
 }
 
+// manual resizing (when loading game)
+void Board::resize(int rows, int cols) {
+  grid.resize(rows);
+
+  for (int i = 0; i < cols; i++) {
+    grid[i].resize(cols / 2);
+  }
+
+  adjustCols(cols);
+}
+
+// automatic resizing (during game)
 void Board::resize() {
   if (getRows() < 26) {
     grid.resize(getRows() + 2);
