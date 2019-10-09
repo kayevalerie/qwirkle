@@ -1,5 +1,6 @@
 #include "Game.h"
 #include <stdio.h>
+#include <cstdio>
 #include <cstring>
 #include <fstream>
 #include <iostream>
@@ -67,11 +68,6 @@ void Game::run(int turn) {
       currentPlayer = &playerOne;
     else
       currentPlayer = &playerTwo;
-
-    // for now
-    // std::cout << "tile bag is: ";
-    // tileBag->displayContents();
-    // std::cout << "\n";
 
     std::cout << '\n' << currentPlayer->getName() << ", it's your turn\n\n";
     std::cout << "Score for " << playerOne.getName() << ": "
@@ -151,21 +147,22 @@ bool Game::handleCommand(Player* currentPlayer) {
 
         std::getline(std::cin, filename);
 
-        std::ofstream fw;
-        fw.exceptions(std::ofstream::badbit);
+        char* cstr = new char[filename.length() + 1];
+        std::strcpy(cstr, filename.c_str());
+        FILE* fp = fopen(cstr, "wx");
 
-        try {
-          fw.open(filename);
-        } catch (const std::ofstream::failure& e) {
+        if (fp) {
+          fclose(fp);
+          validFilename = true;
+        } else {
           validFilename = false;
-          std::cout << "\nInvalid filename";
+          std::cout << "\nCan't save to the file. Are you trying to overwrite "
+                       "an existing file?\n";
         }
-
-        fw.close();
-
       } while (!validFilename);
 
       saveGame(filename, currentPlayer);
+      validCommand = false;
     }
 
     // place tile action
@@ -220,8 +217,7 @@ bool Game::handleCommand(Player* currentPlayer) {
 
     if (hint)
       std::cout << "\nCommand not recognized. Try 'place <tile> at <location>' "
-                   "or 'replace <tile>'\n";  // todo : UPDATE ERROR MESSAGES IN
-                                             // UNIT TESTS
+                   "or 'replace <tile>'\n";
   } while (!quit && !validCommand);
 
   return !quit;
@@ -274,12 +270,10 @@ bool Game::placeTile(std::string tileInput, std::string locationInput,
 }
 
 void Game::updatePoints(Player* currentPlayer) {
-  // std::cout << "LEFT POINTS: " << board.getLeftDiagonalTiles();
-  // std::cout << "\nRIGHT POINTS: " << board.getRightDiagonalTiles();
-
   int points = board.getLeftDiagonalTiles() + board.getRightDiagonalTiles();
-  if (board.getFilledSpaces() == 1)
-    points++;  // when a tile is placed for the first time
+
+  // if a tile is placed for the first time
+  if (board.getFilledSpaces() == 1) points++;  // add one point
 
   bool qwirkle = false;
 
@@ -307,7 +301,6 @@ Tile Game::drawTileFromBag() {
   return tile;
 }
 
-// problem: saves escape codes into file
 void Game::saveGame(std::string filename, Player* currentPlayer) {
   std::ofstream fw;
   fw.open(filename);
@@ -316,10 +309,12 @@ void Game::saveGame(std::string filename, Player* currentPlayer) {
   fw << playerOne.getPoints() << "\n";
   std::streambuf* oldbuf = std::cout.rdbuf();
   std::cout.rdbuf(fw.rdbuf());
+
   playerOne.getHand()->displayContents(
-      true);                // contents to cout will be written to file
-  std::cout.rdbuf(oldbuf);  // reset back to standard input
-  // SOURCE https://stackoverflow.com/a/10151286  (to include as reference)
+      true);  // contents to cout will be written to file
+
+  std::cout.rdbuf(oldbuf);  // reset back to standard input (SOURCE:
+                            // https://stackoverflow.com/a/10151286)
 
   fw << playerTwo.getName() << "\n";
   fw << playerTwo.getPoints() << "\n";
@@ -341,7 +336,3 @@ void Game::saveGame(std::string filename, Player* currentPlayer) {
 }
 
 Board* Game::getBoard() { return &board; }
-
-Player Game::getPlayerOne() { return playerOne; }
-
-Player Game::getPlayerTwo() { return playerTwo; }

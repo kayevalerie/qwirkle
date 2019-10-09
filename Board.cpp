@@ -48,12 +48,8 @@ bool Board::isInBounds(char row, int col) {
   return isInBounds(row - 'A', translateCol(col));
 }
 
-bool Board::isValidPosition(char row,
-                            int col) {  // does not accept positions like A1, B2
+bool Board::isValidPosition(char row, int col) {
   int row_pos = row - 'A';
-
-  // std::cout << "row_pos = " << row_pos;
-  // std::cout << "\tcol = " << col << '\n';
 
   return (row_pos % 2 == 0 && col % 2 == 0) ||
          (row_pos % 2 != 0 && col % 2 != 0);
@@ -72,15 +68,11 @@ std::vector<int> Board::matchAdjacentTiles(Tile tile, int row, int col) {
   std::vector<int> match_adjacents = {-1, -1, -1, -1};
   Tile *toCheck = nullptr;
 
-  if (row % 2 == 1) {  // if checking for odd col
-    if (isInBounds(row - 1, col) &&
-        isOccupied(row - 1, col)) {  // check top left
-
+  // if checking for odd column
+  if (row % 2 == 1) {
+    // check top left position
+    if (isInBounds(row - 1, col) && isOccupied(row - 1, col)) {
       toCheck = &grid[row - 1][col];
-      // std::cout << "\nTL \t" << toCheck->toString() << "\tTO COMPARE SHAPE =
-      // "
-      //           << std::to_string((int)(toCheck->getShape()))
-      //           << "TILE SHAPE = " << std::to_string((int)(tile.getShape()));
 
       if (toCheck->getColour() == tile.getColour())
         match_adjacents[0] = 0;
@@ -90,14 +82,9 @@ std::vector<int> Board::matchAdjacentTiles(Tile tile, int row, int col) {
         match_adjacents[0] = 2;
     }
 
-    if (isInBounds(row + 1, col + 1) &&
-        isOccupied(row + 1, col + 1)) {  // check bottom right
-
+    // check bottom right position
+    if (isInBounds(row + 1, col + 1) && isOccupied(row + 1, col + 1)) {
       toCheck = &grid[row + 1][col + 1];
-      // std::cout << "\nBR \t" << toCheck->toString() << "\tTO COMPARE SHAPE =
-      // "
-      //           << std::to_string((int)(toCheck->getShape()))
-      //           << "TILE SHAPE = " << std::to_string((int)(tile.getShape()));
 
       if (toCheck->getColour() == tile.getColour())
         match_adjacents[1] = 0;
@@ -107,14 +94,9 @@ std::vector<int> Board::matchAdjacentTiles(Tile tile, int row, int col) {
         match_adjacents[1] = 2;
     }
 
-    if (isInBounds(row - 1, col + 1) &&
-        isOccupied(row - 1, col + 1)) {  // check top right
-
+    // check top right position
+    if (isInBounds(row - 1, col + 1) && isOccupied(row - 1, col + 1)) {
       toCheck = &grid[row - 1][col + 1];
-      // std::cout << "\nTR \t" << toCheck->toString() << "\tTO COMPARE SHAPE =
-      // "
-      //           << std::to_string((int)(toCheck->getShape()))
-      //           << "TILE SHAPE = " << std::to_string((int)(tile.getShape()));
 
       if (toCheck->getColour() == tile.getColour())
         match_adjacents[2] = 0;
@@ -124,82 +106,9 @@ std::vector<int> Board::matchAdjacentTiles(Tile tile, int row, int col) {
         match_adjacents[2] = 2;
     }
 
-    if (isInBounds(row + 1, col) &&
-        isOccupied(row + 1, col)) {  // check bottom left
-
+    // check bottom left position
+    if (isInBounds(row + 1, col) && isOccupied(row + 1, col)) {
       toCheck = &grid[row + 1][col];
-      // std::cout << "\nBL \t" << toCheck->toString() << "\tTO COMPARE SHAPE =
-      // "
-      //           << std::to_string((int)(toCheck->getShape()))
-      //           << "TILE SHAPE = " << std::to_string((int)(tile.getShape()));
-
-      if (toCheck->getColour() == tile.getColour())
-        match_adjacents[3] = 0;
-      else if (toCheck->getShape() == tile.getShape())
-        match_adjacents[3] = 1;
-      else
-        match_adjacents[3] = 2;
-    }
-  } else {  // if even col
-    if (isInBounds(row - 1, col - 1) &&
-        isOccupied(row - 1, col - 1)) {  // check top left
-
-      toCheck = &grid[row - 1][col - 1];
-      // std::cout << "\nTL \t" << toCheck->toString() << "\tTO COMPARE SHAPE =
-      // "
-      //           << std::to_string((int)(toCheck->getShape()))
-      //           << "TILE SHAPE = " << std::to_string((int)(tile.getShape()));
-
-      if (toCheck->getColour() == tile.getColour())
-        match_adjacents[0] = 0;
-      else if (toCheck->getShape() == tile.getShape())
-        match_adjacents[0] = 1;
-      else
-        match_adjacents[0] = 2;
-    }
-
-    if (isInBounds(row + 1, col) &&
-        isOccupied(row + 1, col)) {  // check bottom right
-
-      toCheck = &grid[row + 1][col];
-      // std::cout << "\nBR \t" << toCheck->toString() << "\tTO COMPARE SHAPE =
-      // "
-      //           << std::to_string((int)(toCheck->getShape()))
-      //           << "TILE SHAPE = " << std::to_string((int)(tile.getShape()));
-
-      if (toCheck->getColour() == tile.getColour())
-        match_adjacents[1] = 0;
-      else if (toCheck->getShape() == tile.getShape())
-        match_adjacents[1] = 1;
-      else
-        match_adjacents[1] = 2;
-    }
-
-    if (isInBounds(row - 1, col) &&
-        isOccupied(row - 1, col)) {  // check top right
-
-      toCheck = &grid[row - 1][col];
-      // std::cout << "\nTR \t" << toCheck->toString() << "\tTO COMPARE SHAPE =
-      // "
-      //           << std::to_string((int)(toCheck->getShape()))
-      //           << "TILE SHAPE = " << std::to_string((int)(tile.getShape()));
-
-      if (toCheck->getColour() == tile.getColour())
-        match_adjacents[2] = 0;
-      else if (toCheck->getShape() == tile.getShape())
-        match_adjacents[2] = 1;
-      else
-        match_adjacents[2] = 2;
-    }
-
-    if (isInBounds(row + 1, col - 1) &&
-        isOccupied(row + 1, col - 1)) {  // check bottom left
-
-      toCheck = &grid[row + 1][col - 1];
-      // std::cout << "\nBL \t" << toCheck->toString() << "\tTO COMPARE SHAPE =
-      // "
-      //           << std::to_string((int)(toCheck->getShape()))
-      //           << "TILE SHAPE = " << std::to_string((int)(tile.getShape()));
 
       if (toCheck->getColour() == tile.getColour())
         match_adjacents[3] = 0;
@@ -210,10 +119,56 @@ std::vector<int> Board::matchAdjacentTiles(Tile tile, int row, int col) {
     }
   }
 
-  // std::cout << "\tmatch_adjacents = ";
-  // for (unsigned int i = 0; i < match_adjacents.size(); i++)
-  //   std::cout << match_adjacents[i] << ',';
-  // std::cout << '\n';
+  // if even col
+  else {
+    // check top left position
+    if (isInBounds(row - 1, col - 1) && isOccupied(row - 1, col - 1)) {
+      toCheck = &grid[row - 1][col - 1];
+
+      if (toCheck->getColour() == tile.getColour())
+        match_adjacents[0] = 0;
+      else if (toCheck->getShape() == tile.getShape())
+        match_adjacents[0] = 1;
+      else
+        match_adjacents[0] = 2;
+    }
+
+    // check bottom right position
+    if (isInBounds(row + 1, col) && isOccupied(row + 1, col)) {
+      toCheck = &grid[row + 1][col];
+
+      if (toCheck->getColour() == tile.getColour())
+        match_adjacents[1] = 0;
+      else if (toCheck->getShape() == tile.getShape())
+        match_adjacents[1] = 1;
+      else
+        match_adjacents[1] = 2;
+    }
+
+    // check top right position
+    if (isInBounds(row - 1, col) && isOccupied(row - 1, col)) {
+      toCheck = &grid[row - 1][col];
+
+      if (toCheck->getColour() == tile.getColour())
+        match_adjacents[2] = 0;
+      else if (toCheck->getShape() == tile.getShape())
+        match_adjacents[2] = 1;
+      else
+        match_adjacents[2] = 2;
+    }
+
+    // check bottom left position
+    if (isInBounds(row + 1, col - 1) && isOccupied(row + 1, col - 1)) {
+      toCheck = &grid[row + 1][col - 1];
+
+      if (toCheck->getColour() == tile.getColour())
+        match_adjacents[3] = 0;
+      else if (toCheck->getShape() == tile.getShape())
+        match_adjacents[3] = 1;
+      else
+        match_adjacents[3] = 2;
+    }
+  }
 
   return match_adjacents;
 }
@@ -346,9 +301,9 @@ bool Board::hasValidAdjacentTiles(std::vector<int> match_adjacents) {
 int Board::translateCol(int col) {
   int curCol = -1;
 
-  if (col % 2 == 0) {  // even column
+  if (col % 2 == 0)
     curCol = (col / 2);
-  } else  // odd column
+  else
     curCol = (col - 1) / 2;
 
   return curCol;
@@ -366,48 +321,35 @@ bool Board::hasValidLeftDiagonalTiles(Tile tile, char row, int col) {
   int curCol = translateCol(col);
   bool oddCol;
 
-  if (col % 2 == 0) {  // if currently in even position
+  if (col % 2 == 0)  // if currently in even position
     oddCol = false;
-  } else
+  else
     oddCol = true;
 
   std::vector<int> match_adjacents = matchAdjacentTiles(tile, curRow, curCol);
 
-  if (match_adjacents[0] == 0) {  // found a color match
-    colorMatch = true;
+  // found a color match
+  if (match_adjacents[0] == 0) colorMatch = true;
 
-    // std::cout << "found color match, curr shapeMatch =" << shapeMatch
-    //           << "\tcolorMatch =" << colorMatch << '\n';
-
-  } else if (match_adjacents[0] == 1) {  // found a shape match
+  // found a shape match
+  else if (match_adjacents[0] == 1)
     shapeMatch = true;
-
-    // std::cout << "found shape match, curr shapeMatch =" << shapeMatch
-    //           << "\tcolorMatch =" << colorMatch << '\n';
-  }
 
   while (allMatch && !hasSameTile && isInBounds(curRow, curCol)) {
     if (isOccupied(curRow, curCol)) {
-      // std::cout << "curRow = " << curRow << "\tcurCol = " << curCol <<
-      // "\t\t";
-
       match_adjacents =
           matchAdjacentTiles(getTile(curRow, curCol), curRow, curCol);
 
-      if (match_adjacents[0] == 0) {  // found a color match
+      // found a color match
+      if (match_adjacents[0] == 0) {
         colorMatch = true;
         if (shapeMatch) allMatch = false;
+      }
 
-        // std::cout << "found color match, curr shapeMatch =" << shapeMatch
-        //           << "\tcolorMatch =" << colorMatch << '\n';
-
-      } else if (match_adjacents[0] == 1) {  // found a shape match
-
+      // found a shape match
+      else if (match_adjacents[0] == 1) {
         shapeMatch = true;
         if (colorMatch) allMatch = false;
-
-        // std::cout << "found shape match, curr shapeMatch =" << shapeMatch
-        //           << "\tcolorMatch =" << colorMatch << '\n';
       }
 
       if (curRow != row - 'A' || curCol != translateCol(col)) {
@@ -435,62 +377,50 @@ bool Board::hasValidLeftDiagonalTiles(Tile tile, char row, int col) {
   curRow = row - 'A';
   curCol = translateCol(col);
 
-  if (col % 2 != 0) {
+  if (col % 2 != 0)
     oddCol = true;
-  } else
+  else
     oddCol = false;
 
   match_adjacents = matchAdjacentTiles(tile, curRow, curCol);
 
-  if (match_adjacents[1] == 0) {  // found a color match
-    colorMatch = true;
+  // found a color match
+  if (match_adjacents[1] == 0) colorMatch = true;
 
-    // std::cout << "found color match, curr shapeMatch =" << shapeMatch
-    //           << "\tcolorMatch =" << colorMatch << '\n';
-
-  } else if (match_adjacents[1] == 1) {  // found a shape match
+  // found a shape match
+  else if (match_adjacents[1] == 1)
     shapeMatch = true;
-
-    // std::cout << "found shape match, curr shapeMatch =" << shapeMatch
-    //           << "\tcolorMatch =" << colorMatch << '\n';
-  }
 
   while (allMatch && !hasSameTile && isInBounds(curRow, curCol)) {
     if (isOccupied(curRow, curCol)) {
-      // std::cout << "curRow = " << curRow << "\tcurCol = " << curCol <<
-      // "\t\t";
-
       match_adjacents =
           matchAdjacentTiles(getTile(curRow, curCol), curRow, curCol);
 
-      if (match_adjacents[1] == 0) {  // found a color match
+      // found a color match
+      if (match_adjacents[1] == 0) {
         colorMatch = true;
         if (shapeMatch) allMatch = false;
+      }
 
-        // std::cout << "found shape match, curr shapeMatch =" << shapeMatch
-        //           << "\tcolorMatch =" << colorMatch << '\n';
-
-      } else if (match_adjacents[1] == 1) {  // found a shape match
+      // found a shape match
+      else if (match_adjacents[1] == 1) {
         shapeMatch = true;
         if (colorMatch) allMatch = false;
-
-        // std::cout << "found shape match, curr shapeMatch =" << shapeMatch
-        //           << "\tcolorMatch =" << colorMatch << '\n';
       }
 
       if (curRow != row - 'A' || curCol != translateCol(col)) {
         foundOtherTile = true;
 
-        if (grid[curRow][curCol].equals(tile)) {
+        if (grid[curRow][curCol].equals(tile))
           hasSameTile = true;
-        } else
+        else
           leftDiagonals++;
       }
     }
 
     curRow++;
 
-    if (oddCol) {  // if currently in odd position
+    if (oddCol) {
       curCol++;
       oddCol = false;
     } else
@@ -521,41 +451,28 @@ bool Board::hasValidRightDiagonalTiles(Tile tile, char row, int col) {
 
   std::vector<int> match_adjacents = matchAdjacentTiles(tile, curRow, curCol);
 
-  if (match_adjacents[2] == 0) {  // found a color match
-    colorMatch = true;
+  // found a color match
+  if (match_adjacents[2] == 0) colorMatch = true;
 
-    // std::cout << "found color match, curr shapeMatch =" << shapeMatch
-    //           << "\tcolorMatch =" << colorMatch << '\n';
-
-  } else if (match_adjacents[2] == 1) {  // found a shape match
+  // found a shape match
+  else if (match_adjacents[2] == 1)
     shapeMatch = true;
-
-    // std::cout << "found shape match, curr shapeMatch =" << shapeMatch
-    //           << "\tcolorMatch =" << colorMatch << '\n';
-  }
 
   while (allMatch && !hasSameTile && isInBounds(curRow, curCol)) {
     if (isOccupied(curRow, curCol)) {
-      // std::cout << "curRow = " << curRow << "\tcurCol = " << curCol <<
-      // "\t\t";
-
       match_adjacents =
           matchAdjacentTiles(getTile(curRow, curCol), curRow, curCol);
 
-      if (match_adjacents[2] == 0) {  // found a color match
-
+      // found a color match
+      if (match_adjacents[2] == 0) {
         colorMatch = true;
         if (shapeMatch) allMatch = false;
+      }
 
-        // std::cout << "found color match, curr shapeMatch =" << shapeMatch
-        //           << "\tcolorMatch =" << colorMatch << '\n';
-
-      } else if (match_adjacents[2] == 1) {  // found a shape match
+      // found a shape match
+      else if (match_adjacents[2] == 1) {
         shapeMatch = true;
         if (colorMatch) allMatch = false;
-
-        // std::cout << "found shape match, curr shapeMatch =" << shapeMatch
-        //           << "\tcolorMatch =" << colorMatch << '\n';
       }
 
       if (curRow != row - 'A' || curCol != translateCol(col)) {
@@ -572,7 +489,7 @@ bool Board::hasValidRightDiagonalTiles(Tile tile, char row, int col) {
 
     if (oddCol) {
       curCol++;        // if currently in odd position
-      oddCol = false;  // next position is an even position
+      oddCol = false;  // the next position is an even position
     } else
       oddCol = true;
 
@@ -589,42 +506,28 @@ bool Board::hasValidRightDiagonalTiles(Tile tile, char row, int col) {
 
   match_adjacents = matchAdjacentTiles(tile, curRow, curCol);
 
-  if (match_adjacents[3] == 0) {  // found a color match
-    colorMatch = true;
+  // found a color match
+  if (match_adjacents[3] == 0) colorMatch = true;
 
-    // std::cout << "found color match, curr shapeMatch =" << shapeMatch
-    //           << "\tcolorMatch =" << colorMatch << '\n';
-
-  } else if (match_adjacents[3] == 1) {  // found a shape match
+  // found a shape match
+  else if (match_adjacents[3] == 1)
     shapeMatch = true;
-
-    // std::cout << "found shape match, curr shapeMatch =" << shapeMatch
-    //           << "\tcolorMatch =" << colorMatch << '\n';
-  }
 
   while (allMatch && !hasSameTile && isInBounds(curRow, curCol)) {
     if (isOccupied(curRow, curCol)) {
-      // std::cout << "curRow = " << curRow << "\tcurCol = " << curCol <<
-      // "\t\t";
-
       match_adjacents =
           matchAdjacentTiles(getTile(curRow, curCol), curRow, curCol);
 
-      if (match_adjacents[3] == 0) {  // found a color match
-
+      // found a color match
+      if (match_adjacents[3] == 0) {
         colorMatch = true;
         if (shapeMatch) allMatch = false;
+      }
 
-        // std::cout << "found color match, curr shapeMatch =" << shapeMatch
-        //           << "\tcolorMatch =" << colorMatch << '\n';
-
-      } else if (match_adjacents[3] == 1) {  // found a shape match
-
+      // found a shape match
+      else if (match_adjacents[3] == 1) {
         shapeMatch = true;
         if (colorMatch) allMatch = false;
-
-        // std::cout << "found shape match, curr shapeMatch =" << shapeMatch
-        //           << "\tcolorMatch =" << colorMatch << '\n';
       }
 
       if (curRow != row - 'A' || curCol != translateCol(col)) {
@@ -673,19 +576,6 @@ bool Board::addTile(Tile tile, char row, int col) {
     grid.at(row_pos).at(col_pos) = tile;
 
   else {
-    // std::vector<int> result = matchAdjacentTiles(tile, row_pos, col_pos);
-
-    // // check for crossing tiles
-    // if ((result[0] == 0 && result[3] == 1) ||
-    //     (result[0] == 1 && result[3] == 0) ||
-    //     (result[1] == 0 && result[2] == 1) ||
-    //     (result[1] == 1 && result[2] == 0) ||
-    //     (result[1] == 0 && result[3] == 1) ||
-    //     (result[1] == 1 && result[3] == 0) ||
-    //     (result[0] == 0 && result[2] == 1) ||
-    //     (result[0] == 1 && result[2] == 0))
-    //   grid.at(row_pos).at(col_pos) = tile;
-
     if (hasValidAdjacentTiles(matchAdjacentTiles(tile, row_pos, col_pos)) &&
         hasValidLeftDiagonalTiles(tile, row, col) &&
         hasValidRightDiagonalTiles(tile, row, col)) {
@@ -735,8 +625,10 @@ void Board::displayBoard(bool saveFile) {
     if (i % 2 == 0) {
       if (i < 10)
         std::cout << std::setw(5) << i;
-      else
+      else if (i == 10)
         std::cout << std::setw(6) << i;
+      else
+        std::cout << std::setw(5) << i;
     }
   }
 
@@ -785,10 +677,12 @@ void Board::displayBoard(bool saveFile) {
   std::cout << "\n   ";
   for (unsigned int i = 0; i < grid[1].size() * 2; i++) {
     if (i % 2 != 0) {
-      if (i < 10)
+      if (i < 11)
         std::cout << std::setw(5) << i;
-      else
+      else if (i == 11)
         std::cout << std::setw(6) << i;
+      else
+        std::cout << std::setw(5) << i;
     }
   }
 
