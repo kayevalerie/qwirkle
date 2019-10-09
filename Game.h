@@ -20,7 +20,7 @@ class Game {
   bool handleCommand(Player* currentPlayer, int turn);
   bool placeTile(std::string tileInput, std::string locationInput,
                  Player* currentPlayer, int turn);
-  void computePoints(Player* currentPlayer, Tile tile, char row, int col);
+  void updatePoints(Player* currentPlayer);
   Tile drawTileFromBag();
   bool isFinished();
   Player* getWinningPlayer();

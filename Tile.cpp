@@ -16,8 +16,6 @@ bool Tile::equals(Tile tile) {
 }
 
 std::string Tile::toString() {
-  // todo: match other colors to have bg color instead
-
   std::string colourCode = " ";
   std::string shapeCode = " ";
 

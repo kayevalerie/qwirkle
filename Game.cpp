@@ -236,21 +236,15 @@ bool Game::placeTile(std::string tileInput, std::string locationInput,
                   static_cast<Shape>(tileInput.at(1) - '0'));
 
         if (currentPlayer->getHand()->contains(tile)) {
-          if (!board.hasSameTileInLines(tile, row, col)) {
-            if (board.addTile(tile, row, col, turn)) {
-              computePoints(currentPlayer, tile, row, col);
-              currentPlayer->getHand()->deleteTile(tile);
-              currentPlayer->getHand()->addTile(drawTileFromBag());
-            } else {
-              valid = false;
-              std::cout
-                  << "\nThat tile cannot be placed there. Please try again\n";
-            }
-          }  // hasSameTileInLines
+          if (board.addTile(tile, row, col, turn)) {
+            updatePoints(currentPlayer);
+            currentPlayer->getHand()->deleteTile(tile);
+            currentPlayer->getHand()->addTile(drawTileFromBag());
+          }  // addTile
           else {
             valid = false;
-            std::cout << "\nThe same tile already exists in the line. Please "
-                         "try again\n";
+            std::cout
+                << "\nThat tile cannot be placed there. Please try again\n";
           }
         }  // contains
         else {
@@ -276,9 +270,9 @@ bool Game::placeTile(std::string tileInput, std::string locationInput,
   return valid;
 }
 
-void Game::computePoints(Player* currentPlayer, Tile tile, char row, int col) {
-  int left = board.countLeftDiagonalTiles(tile, row, col);
-  int right = board.countRightDiagonalTiles(tile, row, col);
+void Game::updatePoints(Player* currentPlayer) {
+  int left = board.getRightDiagonalTiles();
+  int right = board.getLeftDiagonalTiles();
 
   std::cout << "LEFT  = " << left;
   std::cout << "\tRIGHT  = " << right << "\n";
