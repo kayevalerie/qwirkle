@@ -52,7 +52,11 @@ bool Board::isValidPosition(char row,
                             int col) {  // does not accept positions like A1, B2
   int row_pos = row - 'A';
 
-  return (row_pos % 2 && col % 2) || (!(row_pos % 2) && !(col % 2));
+  // std::cout << "row_pos = " << row_pos;
+  // std::cout << "\tcol = " << col << '\n';
+
+  return (row_pos % 2 == 0 && col % 2 == 0) ||
+         (row_pos % 2 != 0 && col % 2 != 0);
 }
 
 bool Board::isOccupied(int row, int col) {
@@ -222,13 +226,17 @@ bool Board::hasValidAdjacentTiles(std::vector<int> match_adjacents) {
     if (match_adjacents[i] == -1) count++;
   }
 
+  // no empty spots
   if (count == 0) {
     if (match_adjacents[0] == 2 || match_adjacents[1] == 2 ||
         match_adjacents[2] == 2 || match_adjacents[3] == 2 ||
         match_adjacents[0] != match_adjacents[1] ||
         match_adjacents[2] != match_adjacents[3])
       valid = false;
-  } else if (count == 1) {
+  }
+
+  // one empty spot
+  else if (count == 1) {
     if (match_adjacents[0] == -1) {  // top left cell empty
       if (match_adjacents[2] == 2 || match_adjacents[3] == 2 ||
           match_adjacents[1] == 2 || match_adjacents[2] != match_adjacents[3])
@@ -246,57 +254,91 @@ bool Board::hasValidAdjacentTiles(std::vector<int> match_adjacents) {
           match_adjacents[1] == 2 || match_adjacents[0] != match_adjacents[1])
         valid = false;
     }
-  } else if (count == 2) {
-    if (match_adjacents[0] == -1 &&
-        match_adjacents[1] == -1) {  // left diagonals empty
+  }
+
+  // two empty spots
+  else if (count == 2) {
+    // left diagonals empty
+    if (match_adjacents[0] == -1 && match_adjacents[1] == -1) {
       if (match_adjacents[2] == 2 || match_adjacents[3] == 2 ||
           (match_adjacents[2] == 0 && match_adjacents[3] == 1) ||
           (match_adjacents[2] == 1 && match_adjacents[3] == 0))
         valid = false;
-    } else if (match_adjacents[2] == -1 &&
-               match_adjacents[3] == -1) {  // right diagonals empty
+    }
+
+    // right diagonals empty
+    else if (match_adjacents[2] == -1 && match_adjacents[3] == -1) {
       if (match_adjacents[0] == 2 || match_adjacents[1] == 2 ||
           (match_adjacents[0] == 0 && match_adjacents[1] == 1) ||
           (match_adjacents[0] == 1 && match_adjacents[1] == 0))
         valid = false;
-    } else if (match_adjacents[0] == -1 &&
-               match_adjacents[2] == -1) {  // top cells empty
+    }
+
+    // top cells empty
+    else if (match_adjacents[0] == -1 && match_adjacents[2] == -1) {
       if (match_adjacents[1] == 2 || match_adjacents[3] == 2 ||
           (match_adjacents[1] == 0 && match_adjacents[3] == 1) ||
           (match_adjacents[1] == 1 && match_adjacents[3] == 0))
         valid = false;
-    } else if (match_adjacents[1] == -1 &&
-               match_adjacents[3] == -1) {  // bottom cells empty
+
+      // crossing
+      if ((match_adjacents[1] == 0 && match_adjacents[3] == 1) ||
+          (match_adjacents[1] == 1 && match_adjacents[3] == 0))
+        valid = true;
+    }
+
+    // bottom cells empty
+    else if (match_adjacents[1] == -1 && match_adjacents[3] == -1) {
       if (match_adjacents[0] == 2 || match_adjacents[2] == 2 ||
           (match_adjacents[0] == 0 && match_adjacents[2] == 1) ||
           (match_adjacents[0] == 1 && match_adjacents[2] == 0))
         valid = false;
-    } else if (match_adjacents[0] == -1 &&
-               match_adjacents[3] == -1) {  // left cells empty
+
+      // crossing
+      if ((match_adjacents[0] == 0 && match_adjacents[2] == 1) ||
+          (match_adjacents[0] == 1 && match_adjacents[2] == 0))
+        valid = true;
+
+    }
+
+    // left cells empty
+    else if (match_adjacents[0] == -1 && match_adjacents[3] == -1) {
       if (match_adjacents[1] == 2 || match_adjacents[2] == 2 ||
           (match_adjacents[1] == 0 && match_adjacents[2] == 1) ||
           (match_adjacents[1] == 1 && match_adjacents[2] == 0))
         valid = false;
-    } else if (match_adjacents[1] == -1 &&
-               match_adjacents[2] == -1) {  // right cells empty
+
+      // crossing
+      if ((match_adjacents[1] == 0 && match_adjacents[2] == 1) ||
+          (match_adjacents[1] == 1 && match_adjacents[2] == 0))
+        valid = true;
+
+    }
+
+    // right cells empty
+    else if (match_adjacents[1] == -1 && match_adjacents[2] == -1) {
       if (match_adjacents[0] == 2 || match_adjacents[3] == 2 ||
           (match_adjacents[0] == 0 && match_adjacents[3] == 1) ||
           (match_adjacents[0] == 1 && match_adjacents[3] == 0))
         valid = false;
+
+      // crossing
+      if ((match_adjacents[0] == 0 && match_adjacents[3] == 1) ||
+          (match_adjacents[0] == 1 && match_adjacents[3] == 0))
+        valid = true;
     }
-  } else if (count == 3) {
+  }
+
+  // three empty spots
+  else if (count == 3) {
     if (match_adjacents[0] == 2 || match_adjacents[1] == 2 ||
         match_adjacents[2] == 2 || match_adjacents[3] == 2)
       valid = false;
-  } else if (count == 4) {
-    valid = false;
   }
 
-  // std::cout << "match_adjacents = ";
-  // for (int i = 0; i < ADJACENT_SIZE; i++) {
-  //   std::cout << match_adjacents[i] << ',';
-  // }
-  // std::cout << "\n";
+  // all empty spots
+  else if (count == 4)
+    valid = false;
 
   return valid;
 }
@@ -562,7 +604,8 @@ bool Board::hasValidRightDiagonalTiles(Tile tile, char row, int col) {
 
   while (allMatch && !hasSameTile && isInBounds(curRow, curCol)) {
     if (isOccupied(curRow, curCol)) {
-      std::cout << "curRow = " << curRow << "\tcurCol = " << curCol << "\t\t";
+      // std::cout << "curRow = " << curRow << "\tcurCol = " << curCol <<
+      // "\t\t";
 
       match_adjacents =
           matchAdjacentTiles(getTile(curRow, curCol), curRow, curCol);
@@ -630,22 +673,22 @@ bool Board::addTile(Tile tile, char row, int col) {
     grid.at(row_pos).at(col_pos) = tile;
 
   else {
-    std::vector<int> result = matchAdjacentTiles(tile, row_pos, col_pos);
+    // std::vector<int> result = matchAdjacentTiles(tile, row_pos, col_pos);
 
-    // check for crossing tiles
-    if ((result[0] == 0 && result[3] == 1) ||
-        (result[0] == 1 && result[3] == 0) ||
-        (result[1] == 0 && result[2] == 1) ||
-        (result[1] == 1 && result[2] == 0) ||
-        (result[1] == 0 && result[3] == 1) ||
-        (result[1] == 1 && result[3] == 0) ||
-        (result[0] == 0 && result[2] == 1) ||
-        (result[0] == 1 && result[2] == 0))
-      grid.at(row_pos).at(col_pos) = tile;
+    // // check for crossing tiles
+    // if ((result[0] == 0 && result[3] == 1) ||
+    //     (result[0] == 1 && result[3] == 0) ||
+    //     (result[1] == 0 && result[2] == 1) ||
+    //     (result[1] == 1 && result[2] == 0) ||
+    //     (result[1] == 0 && result[3] == 1) ||
+    //     (result[1] == 1 && result[3] == 0) ||
+    //     (result[0] == 0 && result[2] == 1) ||
+    //     (result[0] == 1 && result[2] == 0))
+    //   grid.at(row_pos).at(col_pos) = tile;
 
-    else if (hasValidAdjacentTiles(result) &&
-             hasValidLeftDiagonalTiles(tile, row, col) &&
-             hasValidRightDiagonalTiles(tile, row, col)) {
+    if (hasValidAdjacentTiles(matchAdjacentTiles(tile, row_pos, col_pos)) &&
+        hasValidLeftDiagonalTiles(tile, row, col) &&
+        hasValidRightDiagonalTiles(tile, row, col)) {
       grid.at(row_pos).at(col_pos) = tile;
 
       // expand the board when user places a tile on the last column or row
