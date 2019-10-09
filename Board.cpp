@@ -625,8 +625,10 @@ void Board::displayBoard(bool saveFile) {
     if (i % 2 == 0) {
       if (i < 10)
         std::cout << std::setw(5) << i;
-      else
+      else if (i == 10)
         std::cout << std::setw(6) << i;
+      else
+        std::cout << std::setw(5) << i;
     }
   }
 
@@ -675,10 +677,12 @@ void Board::displayBoard(bool saveFile) {
   std::cout << "\n   ";
   for (unsigned int i = 0; i < grid[1].size() * 2; i++) {
     if (i % 2 != 0) {
-      if (i < 10)
+      if (i < 11)
         std::cout << std::setw(5) << i;
-      else
+      else if (i == 11)
         std::cout << std::setw(6) << i;
+      else
+        std::cout << std::setw(5) << i;
     }
   }
 

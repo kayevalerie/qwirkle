@@ -69,11 +69,6 @@ void Game::run(int turn) {
     else
       currentPlayer = &playerTwo;
 
-    // for now
-    // std::cout << "tile bag is: ";
-    // tileBag->displayContents();
-    // std::cout << "\n";
-
     std::cout << '\n' << currentPlayer->getName() << ", it's your turn\n\n";
     std::cout << "Score for " << playerOne.getName() << ": "
               << playerOne.getPoints() << '\n';
@@ -222,8 +217,7 @@ bool Game::handleCommand(Player* currentPlayer) {
 
     if (hint)
       std::cout << "\nCommand not recognized. Try 'place <tile> at <location>' "
-                   "or 'replace <tile>'\n";  // todo : UPDATE ERROR MESSAGES IN
-                                             // UNIT TESTS
+                   "or 'replace <tile>'\n";
   } while (!quit && !validCommand);
 
   return !quit;
@@ -315,10 +309,12 @@ void Game::saveGame(std::string filename, Player* currentPlayer) {
   fw << playerOne.getPoints() << "\n";
   std::streambuf* oldbuf = std::cout.rdbuf();
   std::cout.rdbuf(fw.rdbuf());
+
   playerOne.getHand()->displayContents(
-      true);                // contents to cout will be written to file
-  std::cout.rdbuf(oldbuf);  // reset back to standard input
-  // SOURCE https://stackoverflow.com/a/10151286  (to include as reference)
+      true);  // contents to cout will be written to file
+
+  std::cout.rdbuf(oldbuf);  // reset back to standard input (SOURCE:
+                            // https://stackoverflow.com/a/10151286)
 
   fw << playerTwo.getName() << "\n";
   fw << playerTwo.getPoints() << "\n";

@@ -7,24 +7,28 @@
 #include <vector>
 
 // input validation methods
-
 namespace Helper {
+
 bool isASCII(std::string n) {
+  bool valid = true;
+
   for (unsigned int i = 0; i < n.size(); i++) {
     if (isalpha(n[i]) == 0) {
-      return false;
+      valid = false;
     }
   }
-  return true;
+  return valid;
 }
 
 bool isNumber(std::string h) {
+  bool valid = true;
+
   for (unsigned int i = 0; i < h.size(); i++) {
     if (isdigit(h[i]) == 0) {
-      return false;
+      valid = false;
     }
   }
-  return true;
+  return valid;
 }
 
 bool isTilesListValid(std::string a) {
@@ -55,7 +59,6 @@ bool isColHeadValid(std::string q) {
   for (unsigned int i = 0; i <= q.length(); i++) {
     if (i <= 29 && q[i] != ' ' && q[i + 1] == ' ') {
       int num = q[i] - '0';
-
       temp.push_back(num);
     }
 
@@ -82,19 +85,15 @@ bool isDashValid(std::string l) {
   if (rowLength > 0) {
     char dashRow[rowLength];
     strcpy(dashRow, l.c_str());
+
     if (dashRow[0] == ' ' && dashRow[1] == ' ') {
       for (int i = 2; i < rowLength; i++) {
-        if (dashRow[i] != '-') {
-          valid = false;
-        }
-        if (dashRow[i] == '-') {
-          dashCount++;
-        }
+        if (dashRow[i] != '-') valid = false;
+
+        if (dashRow[i] == '-') dashCount++;
       }
 
-      if (dashCount < 24) {
-        valid = false;
-      }
+      if (dashCount < 24) valid = false;
     }
   }
 
@@ -105,8 +104,6 @@ bool isRowsValid(std::string b) {
   std::istringstream isb(b);
   std::vector<std::string> token2;
   int rowLength2 = b.length();
-  //   unsigned int i;
-  //   unsigned int j;
   bool valid = true;
   std::string validColours = "RGBPOY";
   std::string validShapes = "123456";
@@ -176,7 +173,7 @@ bool isRowsValid(std::string b) {
   return valid;
 }
 
-bool fileExist(std::string fileName) {
+bool fileExists(std::string fileName) {
   std::fstream infile;
   infile.open(fileName);
   bool fileopen = true;
@@ -185,6 +182,7 @@ bool fileExist(std::string fileName) {
     fileopen = false;
   }
   infile.close();
+
   return fileopen;
 }
 
@@ -196,14 +194,11 @@ bool isValidFormat(std::string fileName) {
   bool boardVal = true;
   bool gridVal = true;
 
-  //   unsigned int i;
   std::fstream infile;
   infile.open(fileName);
 
-  if (infile.fail()) {
+  if (infile.fail())
     fileVal = false;
-  }
-
   else {
     std::string hold[50];
     std::string line;
@@ -214,28 +209,24 @@ bool isValidFormat(std::string fileName) {
       count++;
     }
 
-    // validate name is ASCII - check each char of string
-
+    // validate name is in ASCII
     if (isASCII(hold[0]) == false || isASCII(hold[3]) == false) {
       nameVal = false;
     }
 
-    // validate score is number
+    // validate score is a number
     if (isNumber(hold[1]) == false || isNumber(hold[4]) == false) {
       scoreVal = false;
     }
 
-    // // validate player hands and bag
-
+    // validate player hands and tilebag
     if (isTilesListValid(hold[2]) == false ||
         isTilesListValid(hold[5]) == false ||
         isTilesListValid(hold[count - 2]) == false) {
       handVal = false;
     }
 
-    // // //validate board is same as cout (board must have the 4 spaces after |
-    // on lines A C E)
-
+    // validate board format (board must have the 4 spaces after row)
     if (isDashValid(hold[7]) == false || isColHeadValid(hold[6]) == false ||
         isDashValid(hold[count - 4]) == false ||
         isColHeadValid(hold[count - 3]) == false) {
@@ -255,6 +246,7 @@ bool isValidFormat(std::string fileName) {
       }
     }
   }
+
   return (fileVal && nameVal && scoreVal && handVal && boardVal && gridVal);
 }
 

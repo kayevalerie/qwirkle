@@ -84,7 +84,6 @@ void newGameMenu() {
     if (!Helper::isASCII(player1Name)) {
       std::cout << "Error: name must only contain letters. Please input your "
                    "name again\n";
-      // needs a test case
     } else {
       end1 = 1;
     }
@@ -130,7 +129,7 @@ void loadGameMenu() {
       std::cin.ignore();
     }
     getline(std::cin, fileName);
-    if (Helper::fileExist(fileName) == true) {
+    if (Helper::fileExists(fileName)) {
       if (Helper::isValidFormat(fileName)) {
         readFile(fileName);
       } else {
