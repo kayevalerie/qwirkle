@@ -36,6 +36,7 @@ class Game {
   void setPlayerOne(Player& newPlayerOne);
   void setPlayerTwo(Player& newPlayerTwo);
   void setTileBag(LinkedList* newTileBag);
+  void setCurrentPlayer(Player* currentPlayer);
   Board* getBoard();
 };
 
