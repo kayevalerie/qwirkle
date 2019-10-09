@@ -122,8 +122,8 @@ void newGameMenu() {
 void loadGameMenu() {
   std::string fileName;
   bool valid = false;
-  std::cout << "Enter the name of the file from which to load the game:\n";
-  while (!valid) {
+  do {
+  std::cout << "Enter the name of the file from which to load the game:\n>";
     while (std::cin.peek() == '\n') {
       std::cout << "Please input the name of the file\n> ";
       std::cin.ignore();
@@ -139,10 +139,9 @@ void loadGameMenu() {
       std::cout << "\n> ";
     }
     }else{
-      std::cout << "File does not exist.\n";
-      std::cout << "\n> ";
+      std::cout << "This file does not exist. Please try again\n";
     }
-  }
+  } while (!valid);
 }
 
 void exitGame() { std::cout << "\nGoodbye!\n"; }
@@ -166,7 +165,7 @@ void showStudentInfo() {
             << "Email: s3602478@student.rmit.edu.au\n"
             << "----------------------------------\n";
   if (std::cin.peek() == 'q') {
-    std::cout << "Good Bye\n";
+    std::cout << "Goodbye\n";
     std::exit(EXIT_FAILURE);
   }
 }
@@ -235,7 +234,6 @@ bool readFile(std::string filename) {
         }
         for (unsigned int i = 1; i < tokens.size(); i++) {
           // checking individual cells for tiles
-          std::cout << "token[" << i << "] is " << tokens[i] << '\n';
           if (tokens[i].length() > 2) {
             if ((tokens[i].at(1) != ' ') && (tokens[i].at(2) != ' ')) {
               if (!game.getBoard()->addTileFromSave(

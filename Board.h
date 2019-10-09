@@ -35,7 +35,7 @@ class Board {
   ~Board();
   int getRows();
   int getCols(int row);
-  bool addTile(Tile tile, char row, int col, int turn);
+  bool addTile(Tile tile, char row, int col);
   bool addTileFromSave(Tile tile, char row, int col);
   bool isValidPosition(char row, int col);
   bool isInBounds(char row, int col);
@@ -43,6 +43,7 @@ class Board {
   void displayBoard(bool saveFile);
   int getLeftDiagonalTiles();
   int getRightDiagonalTiles();
+  int getFilledSpaces();
 };
 
 #endif  // ASSIGN2_BOARD_H

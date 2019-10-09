@@ -22,9 +22,6 @@ void Player::setPoints(int points) { this->points = points; }
 
 int Player::getPoints() { return points; }
 
-void Player::setHand(LinkedList* tiles) {
-  hand = new LinkedList(*tiles);
-  // not sure if a copy needed
-}
+void Player::setHand(LinkedList* tiles) { hand = new LinkedList(*tiles); }
 
 LinkedList* Player::getHand() { return hand; }
