@@ -52,13 +52,16 @@ Game::~Game() { clear(); }
 void Game::clear() { delete tileBag; }
 
 void Game::setPlayerOne(Player& newPlayerOne) {
-  playerOne = Player(newPlayerOne);
+  playerOne = newPlayerOne;
 }
 
 void Game::setPlayerTwo(Player& newPlayerTwo) {
-  playerTwo = Player(newPlayerTwo);
+  playerTwo = newPlayerTwo;
 }
 
+void Game::setCurrentPlayer(Player& currentPlayer) {
+    currentPlayer = &currentPlayer;
+}
 void Game::setTileBag(LinkedList* newTileBag) {
   tileBag = new LinkedList(*newTileBag);
 }
