@@ -232,9 +232,10 @@ void readFile(std::string filename) {
               if (!game.getBoard()->addTileFromSave(
                       Tile(static_cast<Colour>(tokens[i].at(1)),
                            static_cast<Shape>(tokens[i].at(2) - '0')),
-                      row, col, turn)) {
+                      row, col)) {
                 std::cout << "Cannot read in the file\n";
               } else {
+                turn++;
                 std::cout << "added a tile to the board\n";
               }
             }
