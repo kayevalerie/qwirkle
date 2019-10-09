@@ -239,7 +239,7 @@ bool isValidFormat(std::string fileName)
     {
       gridVal = false;
     }
-    if (i < sizeOfGrid - 1 && hold[i + 1] .at(0) != hold[i].at(0) + 1)
+    if (i < sizeOfGrid - 1 && hold[i + 1].at(0) != hold[i].at(0) + 1)
     {
       gridVal = false;
     }
