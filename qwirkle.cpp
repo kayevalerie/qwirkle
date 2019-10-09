@@ -58,7 +58,10 @@ void displayMenu() {
       showStudentInfo();
     } else if (choice == 4) {
       quit = true;
-    } else
+    } else if (std::cin.eof()){
+        std::cout << "GoodBye!\n";
+        std::exit(EXIT_FAILURE);
+    }else
       valid = false;
 
     if (!valid) std::cout << "This option does not exist, please try again\n";
@@ -134,10 +137,16 @@ void loadGameMenu() {
     if (Helper::fileExists(fileName)) {
       if (Helper::isValidFormat(fileName)) {
         readFile(fileName);
+      }else if(std::cin.eof()){
+          std::cout << "Goodbye!\n";
+          std::exit(EXIT_FAILURE);
       } else {
         std::cout
             << "The format of this file is not correct. Please try again\n";
       }
+    }else if (std::cin.eof()){
+        std::cout << "Goodbye!\n";
+        std::exit(EXIT_FAILURE);
     } else {
       std::cout << "This file does not exist. Please try again\n";
     }
@@ -164,7 +173,7 @@ void showStudentInfo() {
             << "Student ID: s3602478\n"
             << "Email: s3602478@student.rmit.edu.au\n"
             << "----------------------------------\n";
-  if (std::cin.peek() == 'q') {
+  if (std::cin.peek() == 'q' || std::cin.eof()) {
     std::cout << "Goodbye\n";
     std::exit(EXIT_FAILURE);
   }
