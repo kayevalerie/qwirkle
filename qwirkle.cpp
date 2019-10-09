@@ -164,7 +164,7 @@ void showStudentInfo() {
             << "Email: s3602478@student.rmit.edu.au\n"
             << "----------------------------------\n";
   if (std::cin.peek() == 'q') {
-    std::cout << "Good Bye\n";
+    std::cout << "Goodbye\n";
     std::exit(EXIT_FAILURE);
   }
 }
@@ -233,7 +233,6 @@ bool readFile(std::string filename) {
         }
         for (unsigned int i = 1; i < tokens.size(); i++) {
           // checking individual cells for tiles
-          std::cout << "token[" << i << "] is " << tokens[i] << '\n';
           if (tokens[i].length() > 2) {
             if ((tokens[i].at(1) != ' ') && (tokens[i].at(2) != ' ')) {
               if (!game.getBoard()->addTileFromSave(
