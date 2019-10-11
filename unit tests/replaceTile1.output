@@ -7,8 +7,10 @@ Menu
 3. Show student information
 4. Quit
 
-> Enter the name of the file from which to load the game:
-> Qwirkle game loaded successfully. 
+> 
+Enter the name of the file from which to load the game:
+> 
+Qwirkle game loaded successfully. 
 
 playerone, it's your turn
 
@@ -16,8 +18,8 @@ Score for playerone: 2
 Score for playertwo: 0
     0    2    4    6
   ------------------------
-A |    |    |    | B4 | 
-B    | O1 |    |    |    |
+A |    |    |    |    | 
+B    |    | Y1 | B4 |    |
 C |    |    | Y4 |    |  
 D    |    |    | Y3 |    |
 E |    |    |    |    |  
