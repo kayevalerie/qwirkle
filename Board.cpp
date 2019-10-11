@@ -557,13 +557,13 @@ bool Board::hasValidRightDiagonalTiles(Tile tile, char row, int col) {
 
 // manual resizing (when loading game)
 void Board::resize(int rows, int cols) {
-  grid.resize(rows);
+  if (rows != INIT_ROWS) grid.resize(rows);
 
-  for (int i = 0; i < cols; i++) {
-    grid[i].resize(cols / 2);
+  if (cols != INIT_COLS) {
+    for (int i = 0; i < cols; i++) grid[i].resize(cols / 2);
+
+    adjustCols(cols);
   }
-
-  adjustCols(cols);
 }
 
 // automatic resizing (during game)

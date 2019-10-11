@@ -27,7 +27,7 @@ void displayMenu() {
   bool valid = true;
 
   do {
-      std::cin.clear();
+    std::cin.clear();
     std::cout << "\n"
               << "Menu\n"
               << "-------\n"
@@ -59,10 +59,10 @@ void displayMenu() {
       showStudentInfo();
     } else if (choice == 4) {
       quit = true;
-    } else if (std::cin.eof()){
-        std::cout << "GoodBye!\n";
-        std::exit(EXIT_FAILURE);
-    }else
+    } else if (std::cin.eof()) {
+      std::cout << "GoodBye!\n";
+      std::exit(EXIT_FAILURE);
+    } else
       valid = false;
 
     if (!valid) std::cout << "This option does not exist, please try again\n";
@@ -128,7 +128,7 @@ void loadGameMenu() {
   bool valid = false;
 
   do {
-      std::cin.clear();
+    std::cin.clear();
     std::cout << "Enter the name of the file from which to load the game:\n> ";
     while (std::cin.peek() == '\n') {
       std::cout << "Please input the name of the file\n> ";
@@ -138,16 +138,16 @@ void loadGameMenu() {
     if (Helper::fileExists(fileName)) {
       if (Helper::isValidFormat(fileName)) {
         readFile(fileName);
-      }else if(std::cin.eof()){
-          std::cout << "Goodbye!\n";
-          std::exit(EXIT_FAILURE);
+      } else if (std::cin.eof()) {
+        std::cout << "Goodbye!\n";
+        std::exit(EXIT_FAILURE);
       } else {
         std::cout
             << "The format of this file is not correct. Please try again\n";
       }
-    }else if (std::cin.eof()){
-        std::cout << "Goodbye!\n";
-        std::exit(EXIT_FAILURE);
+    } else if (std::cin.eof()) {
+      std::cout << "Goodbye!\n";
+      std::exit(EXIT_FAILURE);
     } else {
       std::cout << "This file does not exist. Please try again\n";
     }
