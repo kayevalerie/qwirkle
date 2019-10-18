@@ -6,6 +6,8 @@
 #include <sstream>
 #include <vector>
 
+#define MIN_LINE_COUNT 18
+
 // input validation methods
 namespace Helper {
 
@@ -209,40 +211,44 @@ bool isValidFormat(std::string fileName) {
       count++;
     }
 
-    // validate name is in ASCII
-    if (isASCII(hold[0]) == false || isASCII(hold[3]) == false) {
-      nameVal = false;
-    }
-
-    // validate score is a number
-    if (isNumber(hold[1]) == false || isNumber(hold[4]) == false) {
-      scoreVal = false;
-    }
-
-    // validate player hands and tilebag
-    if (isTilesListValid(hold[2]) == false ||
-        isTilesListValid(hold[5]) == false ||
-        isTilesListValid(hold[count - 2]) == false) {
-      handVal = false;
-    }
-
-    // validate board format (board must have the 4 spaces after row)
-    if (isDashValid(hold[7]) == false || isColHeadValid(hold[6]) == false ||
-        isDashValid(hold[count - 4]) == false ||
-        isColHeadValid(hold[count - 3]) == false) {
-      boardVal = false;
-    }
-
-    int sizeOfGrid = count - 4;
-
-    for (int i = 8; i < sizeOfGrid; i++)
-
-    {
-      if (isRowsValid(hold[i]) == false) {
-        gridVal = false;
+    if (count < MIN_LINE_COUNT) {
+      fileVal = false;
+    } else {
+      // validate name is in ASCII
+      if (isASCII(hold[0]) == false || isASCII(hold[3]) == false) {
+        nameVal = false;
       }
-      if (i < sizeOfGrid - 1 && hold[i + 1].at(0) != hold[i].at(0) + 1) {
-        gridVal = false;
+
+      // validate score is a number
+      if (isNumber(hold[1]) == false || isNumber(hold[4]) == false) {
+        scoreVal = false;
+      }
+
+      // validate player hands and tilebag
+      if (isTilesListValid(hold[2]) == false ||
+          isTilesListValid(hold[5]) == false ||
+          isTilesListValid(hold[count - 2]) == false) {
+        handVal = false;
+      }
+
+      // validate board format (board must have the 4 spaces after row)
+      if (isDashValid(hold[7]) == false || isColHeadValid(hold[6]) == false ||
+          isDashValid(hold[count - 4]) == false ||
+          isColHeadValid(hold[count - 3]) == false) {
+        boardVal = false;
+      }
+
+      int sizeOfGrid = count - 4;
+
+      for (int i = 8; i < sizeOfGrid; i++)
+
+      {
+        if (isRowsValid(hold[i]) == false) {
+          gridVal = false;
+        }
+        if (i < sizeOfGrid - 1 && hold[i + 1].at(0) != hold[i].at(0) + 1) {
+          gridVal = false;
+        }
       }
     }
   }
